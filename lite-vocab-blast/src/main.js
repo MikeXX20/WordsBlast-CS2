@@ -35,6 +35,7 @@ let session = null;
 let currentRound = null;
 let isPaused = false;
 let frameId = null;
+let masteredAudioPlayed = false;
 const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
 
@@ -93,6 +94,7 @@ function startGame() {
   state.lastDirection = direction;
   audio.start();
   session = createSession(state.cards, direction);
+  masteredAudioPlayed = false;
   isPaused = false;
   els.pauseButton.textContent = "Pause";
   els.app.classList.add("is-playing");
@@ -161,6 +163,7 @@ function chooseAnswer(choice, button) {
   renderProgress();
   renderHud();
   playAnswerSound(isCorrect);
+  playMasteredSoundIfComplete();
 
   window.setTimeout(() => {
     if (session.lives <= 0) {
@@ -174,8 +177,9 @@ function chooseAnswer(choice, button) {
 function endGame() {
   els.app.classList.remove("is-playing");
   const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
-  if (allMastered) {
+  if (allMastered && !masteredAudioPlayed) {
     audio.mastered();
+    masteredAudioPlayed = true;
   }
   els.prompt.textContent = allMastered ? "All words mastered." : session ? `Session complete. Score: ${session.score}` : "Choose a mode and start Blast.";
   els.arena.innerHTML = '<div class="empty-arena">Press Start Blast to practice again.</div>';
@@ -258,6 +262,13 @@ function playAnswerSound(isCorrect) {
   if (event === "mastered") return;
   if (event === "correct") audio.correct();
   else audio.wrong();
+}
+
+function playMasteredSoundIfComplete() {
+  const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  if (!allMastered || masteredAudioPlayed) return;
+  audio.mastered();
+  masteredAudioPlayed = true;
 }
 
 function startAnimation() {
