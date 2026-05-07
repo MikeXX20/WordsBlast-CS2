@@ -5,6 +5,7 @@ export function createDefaultState() {
     cards: [],
     bestScore: 0,
     lastDirection: 'term-to-meaning',
+    audioEnabled: true,
   };
 }
 
@@ -16,7 +17,7 @@ export function loadState(storage = window.localStorage) {
       return createDefaultState();
     }
 
-    return JSON.parse(rawState);
+    return { ...createDefaultState(), ...JSON.parse(rawState) };
   } catch {
     return createDefaultState();
   }

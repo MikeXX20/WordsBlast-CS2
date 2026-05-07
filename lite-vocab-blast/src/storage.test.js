@@ -21,6 +21,7 @@ describe('storage', () => {
       cards: [],
       bestScore: 0,
       lastDirection: 'term-to-meaning',
+      audioEnabled: true,
     });
   });
 
@@ -34,10 +35,28 @@ describe('storage', () => {
       cards: [{ id: '1', term: 'hola', seenCount: 2 }],
       bestScore: 8,
       lastDirection: 'meaning-to-term',
+      audioEnabled: false,
     };
 
     assert.deepEqual(saveState(state, storage), { ok: true });
     assert.deepEqual(loadState(storage), state);
+  });
+
+  it("merges defaults into older saved state", () => {
+    const storage = createMemoryStorage({
+      "lite-vocab-blast:state:v1": JSON.stringify({
+        cards: [],
+        bestScore: 10,
+        lastDirection: "meaning-to-term",
+      }),
+    });
+
+    assert.deepEqual(loadState(storage), {
+      cards: [],
+      bestScore: 10,
+      lastDirection: "meaning-to-term",
+      audioEnabled: true,
+    });
   });
 
   it('returns default state when stored JSON is corrupt', () => {

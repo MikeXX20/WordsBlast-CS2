@@ -70,6 +70,9 @@ button {
   color: #fff;
 }
 button:hover { border-color: var(--primary-strong); }
+.sound-toggle[aria-pressed="true"] {
+  border-color: var(--primary);
+}
 
 .stats {
   display: grid;

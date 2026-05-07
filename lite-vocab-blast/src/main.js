@@ -1,4 +1,5 @@
 import { parseVocabulary } from "./parser.js";
+import { createGameAudio, soundForAnswer } from "./audio.js";
 import { answerCurrent, createSession, nextRound } from "./game.js";
 import { recordAnswer, summarizeProgress } from "./progress.js";
 import { createDefaultState, loadState, saveState } from "./storage.js";
@@ -15,6 +16,8 @@ const els = {
   weakCount: document.querySelector("#weakCount"),
   bestScore: document.querySelector("#bestScore"),
   startButton: document.querySelector("#startButton"),
+  soundButton: document.querySelector("#soundButton"),
+  soundGameButton: document.querySelector("#soundGameButton"),
   pauseButton: document.querySelector("#pauseButton"),
   restartButton: document.querySelector("#restartButton"),
   score: document.querySelector("#score"),
@@ -30,9 +33,12 @@ let session = null;
 let currentRound = null;
 let isPaused = false;
 let frameId = null;
+const audio = createGameAudio();
+audio.setEnabled(state.audioEnabled);
 
 renderProgress();
 renderIdleGame();
+renderSoundButtons();
 
 els.importButton.addEventListener("click", () => {
   const result = parseVocabulary(els.importText.value);
@@ -64,6 +70,8 @@ els.clearButton.addEventListener("click", () => {
 
 els.startButton.addEventListener("click", startGame);
 els.restartButton.addEventListener("click", startGame);
+els.soundButton.addEventListener("click", toggleSound);
+els.soundGameButton.addEventListener("click", toggleSound);
 els.pauseButton.addEventListener("click", () => {
   if (!session) return;
   isPaused = !isPaused;
@@ -78,6 +86,7 @@ function startGame() {
 
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
+  audio.start();
   session = createSession(state.cards, direction);
   isPaused = false;
   els.pauseButton.textContent = "Pause";
@@ -146,6 +155,7 @@ function chooseAnswer(choice, button) {
   persistState();
   renderProgress();
   renderHud();
+  playAnswerSound(isCorrect);
 
   window.setTimeout(() => {
     if (session.lives <= 0) {
@@ -159,6 +169,9 @@ function chooseAnswer(choice, button) {
 function endGame() {
   els.app.classList.remove("is-playing");
   const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  if (allMastered) {
+    audio.mastered();
+  }
   els.prompt.textContent = allMastered ? "All words mastered." : session ? `Session complete. Score: ${session.score}` : "Choose a mode and start Blast.";
   els.arena.innerHTML = '<div class="empty-arena">Press Start Blast to practice again.</div>';
   renderHud();
@@ -200,6 +213,32 @@ function persistState() {
   if (!result.ok) {
     els.importSummary.textContent = `Progress may not save: ${result.reason}`;
   }
+}
+
+function toggleSound() {
+  state = { ...state, audioEnabled: !state.audioEnabled };
+  audio.setEnabled(state.audioEnabled);
+  persistState();
+  renderSoundButtons();
+  if (state.audioEnabled) {
+    audio.start();
+  }
+}
+
+function renderSoundButtons() {
+  for (const button of [els.soundButton, els.soundGameButton]) {
+    button.textContent = state.audioEnabled ? "Sound On" : "Sound Off";
+    button.setAttribute("aria-pressed", String(state.audioEnabled));
+  }
+}
+
+function playAnswerSound(isCorrect) {
+  audio.shoot();
+  const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  const event = soundForAnswer({ isCorrect, allMastered });
+  if (event === "mastered") return;
+  if (event === "correct") audio.correct();
+  else audio.wrong();
 }
 
 function startAnimation() {
