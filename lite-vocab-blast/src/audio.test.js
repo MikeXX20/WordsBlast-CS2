@@ -21,4 +21,11 @@ describe("audio controls", () => {
 
     assert.equal(audio.assets.correct, "./assets/audio/ak-headshot.mp3");
   });
+
+  it("exposes mastered reward clips and chooses one randomly", () => {
+    const audio = createGameAudio({ AudioContextClass: null, random: () => 0 });
+
+    assert.ok(audio.assets.mastered.length > 0);
+    assert.equal(audio.pickMasteredAsset(), audio.assets.mastered[0]);
+  });
 });

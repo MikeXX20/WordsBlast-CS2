@@ -1,5 +1,11 @@
+const MASTERED_CLIP_COUNT = 102;
+
 export const AUDIO_ASSETS = {
   correct: "./assets/audio/ak-headshot.mp3",
+  mastered: Array.from(
+    { length: MASTERED_CLIP_COUNT },
+    (_, index) => `./assets/audio/mastered/mastered-${String(index).padStart(3, "0")}.mp3`,
+  ),
 };
 
 export function createAudioState({ enabled = true } = {}) {
@@ -21,11 +27,17 @@ export function soundForAnswer({ isCorrect, allMastered }) {
   return allMastered ? "mastered" : "wrong";
 }
 
-export function createGameAudio({ AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext } = {}) {
+export function createGameAudio({
+  AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext,
+  random = Math.random,
+} = {}) {
   const state = createAudioState();
 
   return {
     assets: AUDIO_ASSETS,
+    pickMasteredAsset() {
+      return pickMasteredAsset(random);
+    },
     get enabled() {
       return state.enabled;
     },
@@ -63,8 +75,9 @@ export function createGameAudio({ AudioContextClass = globalThis.AudioContext ||
       playTone(state, 180, 0.12, "sawtooth", 0.08);
     },
     mastered() {
-      if (!canPlay(state)) return;
       stopBackground(state);
+      if (state.enabled && playAssetPath(state, pickMasteredAsset(random), 0.45)) return;
+      if (!canPlay(state)) return;
       [523, 659, 784, 1046, 1318].forEach((frequency, index) => {
         playTone(state, frequency, 0.22, "triangle", 0.1, index * 0.11);
       });
@@ -73,14 +86,23 @@ export function createGameAudio({ AudioContextClass = globalThis.AudioContext ||
   };
 }
 
+function pickMasteredAsset(random) {
+  const index = Math.floor(Math.min(0.999999, Math.max(0, random())) * AUDIO_ASSETS.mastered.length);
+  return AUDIO_ASSETS.mastered[index];
+}
+
 function playAsset(state, name) {
-  if (typeof Audio === "undefined" || !AUDIO_ASSETS[name]) return false;
-  if (!state.players[name]) {
-    state.players[name] = new Audio(AUDIO_ASSETS[name]);
-    state.players[name].volume = 0.38;
-    state.players[name].preload = "auto";
+  return playAssetPath(state, AUDIO_ASSETS[name], 0.38);
+}
+
+function playAssetPath(state, path, volume) {
+  if (typeof Audio === "undefined" || !path) return false;
+  if (!state.players[path]) {
+    state.players[path] = new Audio(path);
+    state.players[path].volume = volume;
+    state.players[path].preload = "auto";
   }
-  const player = state.players[name];
+  const player = state.players[path];
   player.currentTime = 0;
   const playPromise = player.play();
   if (playPromise?.catch) {
