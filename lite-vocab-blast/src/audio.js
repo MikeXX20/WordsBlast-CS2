@@ -87,7 +87,9 @@ const MASTERED_CLIPS = [
 export const AUDIO_ASSETS = {
   background: "./assets/audio/lobby-background.mp3",
   correct: "./assets/audio/ak-headshot.mp3",
+  menu: "./assets/audio/menu.mp3",
   mastered: MASTERED_CLIPS,
+  roll: "./assets/audio/roll.mp3",
 };
 
 export function createAudioState({ enabled = true } = {}) {
@@ -164,6 +166,14 @@ export function createGameAudio({
       if (!player) return;
       player.loop = true;
       playPreparedPlayer(player);
+    },
+    menu() {
+      if (!state.enabled) return;
+      playAssetPath(state, AudioClass, AUDIO_ASSETS.menu, 0.32);
+    },
+    roll() {
+      if (!state.enabled) return;
+      playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, 0.4);
     },
     shoot() {
       if (!canPlay(state)) return;

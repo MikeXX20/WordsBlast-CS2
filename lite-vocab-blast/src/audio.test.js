@@ -21,6 +21,36 @@ describe("audio controls", () => {
 
     assert.equal(audio.assets.correct, "./assets/audio/ak-headshot.mp3");
     assert.equal(audio.assets.background, "./assets/audio/lobby-background.mp3");
+    assert.equal(audio.assets.menu, "./assets/audio/menu.mp3");
+    assert.equal(audio.assets.roll, "./assets/audio/roll.mp3");
+  });
+
+  it("plays menu and start roll clips as modest UI sounds", () => {
+    const created = [];
+    class FakeAudio {
+      constructor(path) {
+        this.path = path;
+        this.volume = 1;
+        this.playCount = 0;
+        created.push(this);
+      }
+      load() {}
+      play() {
+        this.playCount += 1;
+        return Promise.resolve();
+      }
+    }
+
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio });
+    audio.menu();
+    audio.roll();
+
+    assert.deepEqual(created.map((player) => player.path), [
+      "./assets/audio/menu.mp3",
+      "./assets/audio/roll.mp3",
+    ]);
+    assert.deepEqual(created.map((player) => player.volume), [0.32, 0.4]);
+    assert.deepEqual(created.map((player) => player.playCount), [1, 1]);
   });
 
   it("exposes mastered reward clips and chooses one randomly", () => {

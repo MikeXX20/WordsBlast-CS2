@@ -48,6 +48,7 @@ renderTheme();
 renderMusicButton();
 
 els.importButton.addEventListener("click", () => {
+  audio.menu();
   const result = parseVocabulary(els.importText.value);
   if (result.cards.length === 0) {
     els.importSummary.textContent = "Paste vocabulary first.";
@@ -64,6 +65,7 @@ els.importButton.addEventListener("click", () => {
 });
 
 els.clearButton.addEventListener("click", () => {
+  audio.menu();
   state = createDefaultState();
   session = null;
   currentRound = null;
@@ -82,6 +84,9 @@ els.soundGameButton.addEventListener("click", toggleSound);
 els.musicButton.addEventListener("click", toggleMusic);
 els.nightButton.addEventListener("click", toggleNightMode);
 els.nightGameButton.addEventListener("click", toggleNightMode);
+for (const directionInput of document.querySelectorAll("input[name='direction']")) {
+  directionInput.addEventListener("change", () => audio.menu());
+}
 document.addEventListener("pointerdown", startPageMusicOnce, { once: true });
 els.pauseButton.addEventListener("click", () => {
   if (!session) return;
@@ -97,6 +102,7 @@ function startGame() {
 
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
+  audio.roll();
   audio.start();
   audio.startBackgroundMusic();
   audio.prepareMastered();
@@ -232,6 +238,7 @@ function persistState() {
 }
 
 function toggleSound() {
+  audio.menu();
   state = { ...state, audioEnabled: !state.audioEnabled };
   audio.setEnabled(state.audioEnabled);
   persistState();
@@ -242,6 +249,7 @@ function toggleSound() {
 }
 
 function toggleMusic() {
+  audio.menu();
   state = { ...state, musicMuted: !state.musicMuted };
   audio.setMusicMuted(state.musicMuted);
   persistState();
@@ -270,6 +278,7 @@ function renderSoundButtons() {
 }
 
 function toggleNightMode() {
+  audio.menu();
   state = { ...state, nightMode: !state.nightMode };
   persistState();
   renderTheme();
