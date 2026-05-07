@@ -1,3 +1,5 @@
+export const MASTERY_CORRECT_COUNT = 3;
+
 function counter(value) {
   return Number.isFinite(value) ? value : 0;
 }
@@ -6,7 +8,7 @@ export function recordAnswer(card, isCorrect) {
   return {
     ...card,
     seenCount: counter(card.seenCount) + 1,
-    correctCount: counter(card.correctCount) + (isCorrect ? 1 : 0),
+    correctCount: Math.min(MASTERY_CORRECT_COUNT, counter(card.correctCount) + (isCorrect ? 1 : 0)),
     missCount: counter(card.missCount) + (isCorrect ? 0 : 1),
   };
 }

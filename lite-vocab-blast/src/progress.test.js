@@ -14,6 +14,17 @@ describe('progress', () => {
     });
   });
 
+  it("caps correct answers at mastery count", () => {
+    const card = { id: "1", seenCount: 3, correctCount: 3, missCount: 0 };
+
+    assert.deepEqual(recordAnswer(card, true), {
+      id: "1",
+      seenCount: 4,
+      correctCount: 3,
+      missCount: 0,
+    });
+  });
+
   it('records a wrong answer', () => {
     const card = { id: '1', seenCount: 1, correctCount: 1, missCount: 1 };
 

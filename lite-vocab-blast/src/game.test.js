@@ -72,6 +72,26 @@ describe("game session", () => {
     assert.ok(round.choices.includes("serene"));
   });
 
+  it("does not create a round when every card is mastered", () => {
+    const masteredCards = cards.map((card) => ({ ...card, correctCount: 3 }));
+    const session = createSession(masteredCards, "term-to-meaning", () => 0);
+
+    assert.equal(nextRound(session), null);
+    assert.equal(session.currentRound, null);
+  });
+
+  it("skips mastered cards when creating rounds", () => {
+    const mixedCards = [
+      { ...cards[0], correctCount: 3 },
+      { ...cards[1], correctCount: 2 },
+    ];
+    const session = createSession(mixedCards, "term-to-meaning", () => 0);
+    const round = nextRound(session);
+
+    assert.equal(round.card.id, "two");
+    assert.deepEqual(round.choices, ["bright and clear"]);
+  });
+
   it("caps adaptive speed at 0.72 after level 9", () => {
     assert.ok(getDifficulty({ level: 9, recentAccuracy: 1 }).speed <= 0.72);
     assert.equal(getDifficulty({ level: 14, recentAccuracy: 1 }).speed, 0.72);

@@ -2,6 +2,7 @@ const DIRECTIONS = new Set(["term-to-meaning", "meaning-to-term"]);
 const STARTING_LIVES = 3;
 const MAX_CHOICES = 4;
 const RECENT_WINDOW = 10;
+const MASTERY_CORRECT_COUNT = 3;
 
 export function createSession(cards, direction, random = Math.random) {
   if (!Array.isArray(cards) || cards.length === 0) {
@@ -28,6 +29,12 @@ export function createSession(cards, direction, random = Math.random) {
 }
 
 export function nextRound(session) {
+  const activeCards = getActiveCards(session.cards);
+  if (activeCards.length === 0) {
+    session.currentRound = null;
+    return null;
+  }
+
   const card = pickCard(session);
   const roundNumber = session.roundsPlayed + 1;
   const recentAccuracy = getRecentAccuracy(session.recentAnswers);
@@ -37,7 +44,7 @@ export function nextRound(session) {
     card,
     prompt: getPrompt(card, session.direction),
     correctText,
-    choices: buildChoices(session.cards, card, session.direction, session.random),
+    choices: buildChoices(activeCards, card, session.direction, session.random),
     difficulty: getDifficulty({ level: session.level, recentAccuracy }),
   };
 
@@ -102,12 +109,21 @@ function pickCard(session) {
     ? session.cards.find((card) => card.id === weakCardId)
     : null;
 
-  if (weakCard) {
+  if (weakCard && !isMastered(weakCard)) {
     return weakCard;
   }
 
-  const index = Math.floor(clamp(session.random(), 0, 0.999999) * session.cards.length);
-  return session.cards[index];
+  const activeCards = getActiveCards(session.cards);
+  const index = Math.floor(clamp(session.random(), 0, 0.999999) * activeCards.length);
+  return activeCards[index];
+}
+
+function getActiveCards(cards) {
+  return cards.filter((card) => !isMastered(card));
+}
+
+function isMastered(card) {
+  return Number(card.correctCount) >= MASTERY_CORRECT_COUNT;
 }
 
 function buildChoices(cards, currentCard, direction, random) {

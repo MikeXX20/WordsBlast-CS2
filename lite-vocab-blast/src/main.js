@@ -93,6 +93,11 @@ function showNextRound() {
   }
 
   currentRound = nextRound(session);
+  if (!currentRound) {
+    endGame();
+    return;
+  }
+
   renderRound();
 }
 
@@ -129,10 +134,12 @@ function chooseAnswer(choice, button) {
   const isCorrect = choice.trim().toLocaleLowerCase() === currentRound.correctText.trim().toLocaleLowerCase();
   button.classList.add(isCorrect ? "correct-hit" : "wrong-hit");
 
+  const updatedCards = state.cards.map((card) => card.id === cardId ? recordAnswer(card, isCorrect) : card);
   state = {
     ...state,
-    cards: state.cards.map((card) => card.id === cardId ? recordAnswer(card, isCorrect) : card),
+    cards: updatedCards,
   };
+  session.cards = updatedCards;
 
   const result = answerCurrent(session, choice);
   state.bestScore = Math.max(state.bestScore, result.score);
@@ -151,7 +158,8 @@ function chooseAnswer(choice, button) {
 
 function endGame() {
   els.app.classList.remove("is-playing");
-  els.prompt.textContent = session ? `Session complete. Score: ${session.score}` : "Choose a mode and start Blast.";
+  const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  els.prompt.textContent = allMastered ? "All words mastered." : session ? `Session complete. Score: ${session.score}` : "Choose a mode and start Blast.";
   els.arena.innerHTML = '<div class="empty-arena">Press Start Blast to practice again.</div>';
   renderHud();
   stopAnimation();
