@@ -93,6 +93,7 @@ function startGame() {
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
   audio.start();
+  audio.prepareMastered();
   session = createSession(state.cards, direction);
   masteredAudioPlayed = false;
   isPaused = false;

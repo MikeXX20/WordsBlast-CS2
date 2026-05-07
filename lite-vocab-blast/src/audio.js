@@ -96,6 +96,7 @@ export function createAudioState({ enabled = true } = {}) {
     masterGain: null,
     musicTimer: null,
     players: {},
+    preparedMasteredPath: null,
   };
 }
 
@@ -110,6 +111,7 @@ export function soundForAnswer({ isCorrect, allMastered }) {
 
 export function createGameAudio({
   AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext,
+  AudioClass = globalThis.Audio,
   random = Math.random,
 } = {}) {
   const state = createAudioState();
@@ -118,6 +120,13 @@ export function createGameAudio({
     assets: AUDIO_ASSETS,
     pickMasteredAsset() {
       return pickMasteredAsset(random);
+    },
+    prepareMastered() {
+      const path = state.preparedMasteredPath || pickMasteredAsset(random);
+      state.preparedMasteredPath = path;
+      const player = preloadAssetPath(state, AudioClass, path, 0.55);
+      primePlayer(player);
+      return path;
     },
     get enabled() {
       return state.enabled;
@@ -146,7 +155,7 @@ export function createGameAudio({
     },
     correct() {
       if (!state.enabled) return;
-      if (playAsset(state, "correct")) return;
+      if (playAsset(state, AudioClass, "correct")) return;
       if (!canPlay(state)) return;
       playTone(state, 740, 0.05, "square", 0.11);
       playTone(state, 1180, 0.08, "triangle", 0.08, 0.05);
@@ -157,7 +166,9 @@ export function createGameAudio({
     },
     mastered() {
       stopBackground(state);
-      if (state.enabled && playAssetPath(state, pickMasteredAsset(random), 0.45)) return;
+      const path = state.preparedMasteredPath || pickMasteredAsset(random);
+      state.preparedMasteredPath = null;
+      if (state.enabled && playAssetPath(state, AudioClass, path, 0.55)) return;
       if (!canPlay(state)) return;
       [523, 659, 784, 1046, 1318].forEach((frequency, index) => {
         playTone(state, frequency, 0.22, "triangle", 0.1, index * 0.11);
@@ -167,24 +178,60 @@ export function createGameAudio({
   };
 }
 
+function primePlayer(player) {
+  if (!player) return;
+  player.muted = true;
+  const playPromise = player.play();
+  if (playPromise?.then) {
+    playPromise
+      .then(() => {
+        player.pause?.();
+        try {
+          player.currentTime = 0;
+        } catch {}
+        player.muted = false;
+      })
+      .catch(() => {
+        player.muted = false;
+      });
+  } else {
+    player.pause?.();
+    try {
+      player.currentTime = 0;
+    } catch {}
+    player.muted = false;
+  }
+}
+
 function pickMasteredAsset(random) {
   const index = Math.floor(Math.min(0.999999, Math.max(0, random())) * AUDIO_ASSETS.mastered.length);
   return AUDIO_ASSETS.mastered[index];
 }
 
-function playAsset(state, name) {
-  return playAssetPath(state, AUDIO_ASSETS[name], 0.38);
+function playAsset(state, AudioClass, name) {
+  return playAssetPath(state, AudioClass, AUDIO_ASSETS[name], 0.38);
 }
 
-function playAssetPath(state, path, volume) {
-  if (typeof Audio === "undefined" || !path) return false;
+function preloadAssetPath(state, AudioClass, path, volume) {
+  if (!AudioClass || !path) return null;
   if (!state.players[path]) {
-    state.players[path] = new Audio(path);
-    state.players[path].volume = volume;
-    state.players[path].preload = "auto";
+    state.players[path] = new AudioClass(path);
   }
-  const player = state.players[path];
-  player.currentTime = 0;
+  state.players[path].volume = volume;
+  state.players[path].preload = "auto";
+  state.players[path].load?.();
+  return state.players[path];
+}
+
+function playAssetPath(state, AudioClass, path, volume) {
+  const player = preloadAssetPath(state, AudioClass, path, volume);
+  if (!player) return false;
+  player.muted = false;
+  try {
+    player.currentTime = 0;
+  } catch {
+    // Some browsers reject seeking before metadata is ready; playback can still start.
+  }
   const playPromise = player.play();
   if (playPromise?.catch) {
     playPromise.catch(() => {});
