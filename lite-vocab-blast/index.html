@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lite Vocabulary Blast</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <main id="app" class="app">
+      <section class="setup-panel" aria-label="Vocabulary setup">
+        <header class="brand">
+          <h1>Vocab Blast</h1>
+          <p>Import words, choose a direction, and practice at a gentle pace.</p>
+        </header>
+
+        <section class="panel-section">
+          <label for="importText">Import vocabulary</label>
+          <textarea id="importText" rows="8" placeholder="apple - 苹果&#10;accelerate - speed up"></textarea>
+          <div class="button-row">
+            <button id="importButton" type="button">Import</button>
+            <button id="clearButton" type="button" class="secondary">Clear</button>
+          </div>
+          <p id="importSummary" class="status" role="status"></p>
+          <ul id="importErrors" class="error-list" aria-live="polite"></ul>
+        </section>
+
+        <section class="panel-section">
+          <h2>Deck</h2>
+          <dl class="stats">
+            <div><dt>Cards</dt><dd id="cardCount">0</dd></div>
+            <div><dt>Accuracy</dt><dd id="accuracy">0%</dd></div>
+            <div><dt>Weak words</dt><dd id="weakCount">0</dd></div>
+            <div><dt>Best score</dt><dd id="bestScore">0</dd></div>
+          </dl>
+        </section>
+
+        <section class="panel-section">
+          <h2>Mode</h2>
+          <fieldset class="mode-field">
+            <legend>Practice direction</legend>
+            <label><input type="radio" name="direction" value="term-to-meaning" checked /> Word to Meaning</label>
+            <label><input type="radio" name="direction" value="meaning-to-term" /> Meaning to Word</label>
+          </fieldset>
+          <button id="startButton" type="button" class="primary">Start Blast</button>
+        </section>
+      </section>
+
+      <section class="game-panel" aria-label="Blast game">
+        <div class="hud">
+          <span>Score <strong id="score">0</strong></span>
+          <span>Level <strong id="level">1</strong></span>
+          <span>Lives <strong id="lives">3</strong></span>
+          <span>Combo <strong id="combo">0</strong></span>
+        </div>
+        <div id="prompt" class="prompt">Import at least one card to begin.</div>
+        <div id="arena" class="arena" aria-live="polite"></div>
+        <div class="game-actions">
+          <button id="pauseButton" type="button" class="secondary">Pause</button>
+          <button id="restartButton" type="button" class="secondary">Restart</button>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
