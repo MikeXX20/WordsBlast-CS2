@@ -1,9 +1,14 @@
+export const AUDIO_ASSETS = {
+  correct: "./assets/audio/ak-headshot.mp3",
+};
+
 export function createAudioState({ enabled = true } = {}) {
   return {
     enabled,
     context: null,
     masterGain: null,
     musicTimer: null,
+    players: {},
   };
 }
 
@@ -20,6 +25,7 @@ export function createGameAudio({ AudioContextClass = globalThis.AudioContext ||
   const state = createAudioState();
 
   return {
+    assets: AUDIO_ASSETS,
     get enabled() {
       return state.enabled;
     },
@@ -46,6 +52,8 @@ export function createGameAudio({ AudioContextClass = globalThis.AudioContext ||
       playBurst(state, 0.028, 120, 80, 0.045);
     },
     correct() {
+      if (!state.enabled) return;
+      if (playAsset(state, "correct")) return;
       if (!canPlay(state)) return;
       playTone(state, 740, 0.05, "square", 0.11);
       playTone(state, 1180, 0.08, "triangle", 0.08, 0.05);
@@ -63,6 +71,22 @@ export function createGameAudio({ AudioContextClass = globalThis.AudioContext ||
       playNoiseSweep(state, 0.5, 0.04);
     },
   };
+}
+
+function playAsset(state, name) {
+  if (typeof Audio === "undefined" || !AUDIO_ASSETS[name]) return false;
+  if (!state.players[name]) {
+    state.players[name] = new Audio(AUDIO_ASSETS[name]);
+    state.players[name].volume = 0.38;
+    state.players[name].preload = "auto";
+  }
+  const player = state.players[name];
+  player.currentTime = 0;
+  const playPromise = player.play();
+  if (playPromise?.catch) {
+    playPromise.catch(() => {});
+  }
+  return true;
 }
 
 function ensureContext(state, AudioContextClass) {
