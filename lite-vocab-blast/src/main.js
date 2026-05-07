@@ -18,6 +18,8 @@ const els = {
   startButton: document.querySelector("#startButton"),
   soundButton: document.querySelector("#soundButton"),
   soundGameButton: document.querySelector("#soundGameButton"),
+  nightButton: document.querySelector("#nightButton"),
+  nightGameButton: document.querySelector("#nightGameButton"),
   pauseButton: document.querySelector("#pauseButton"),
   restartButton: document.querySelector("#restartButton"),
   score: document.querySelector("#score"),
@@ -39,6 +41,7 @@ audio.setEnabled(state.audioEnabled);
 renderProgress();
 renderIdleGame();
 renderSoundButtons();
+renderTheme();
 
 els.importButton.addEventListener("click", () => {
   const result = parseVocabulary(els.importText.value);
@@ -72,6 +75,8 @@ els.startButton.addEventListener("click", startGame);
 els.restartButton.addEventListener("click", startGame);
 els.soundButton.addEventListener("click", toggleSound);
 els.soundGameButton.addEventListener("click", toggleSound);
+els.nightButton.addEventListener("click", toggleNightMode);
+els.nightGameButton.addEventListener("click", toggleNightMode);
 els.pauseButton.addEventListener("click", () => {
   if (!session) return;
   isPaused = !isPaused;
@@ -229,6 +234,20 @@ function renderSoundButtons() {
   for (const button of [els.soundButton, els.soundGameButton]) {
     button.textContent = state.audioEnabled ? "Sound On" : "Sound Off";
     button.setAttribute("aria-pressed", String(state.audioEnabled));
+  }
+}
+
+function toggleNightMode() {
+  state = { ...state, nightMode: !state.nightMode };
+  persistState();
+  renderTheme();
+}
+
+function renderTheme() {
+  document.body.classList.toggle("night-mode", state.nightMode);
+  for (const button of [els.nightButton, els.nightGameButton]) {
+    button.textContent = state.nightMode ? "Night On" : "Night Off";
+    button.setAttribute("aria-pressed", String(state.nightMode));
   }
 }
 

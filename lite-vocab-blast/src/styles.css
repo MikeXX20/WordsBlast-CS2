@@ -12,6 +12,20 @@
   --answer-border: #e2b44b;
 }
 
+body.night-mode {
+  color-scheme: dark;
+  --bg: #111827;
+  --surface: #182231;
+  --line: #334155;
+  --text: #f8fafc;
+  --muted: #a7b3c4;
+  --primary: #38bdf8;
+  --primary-strong: #7dd3fc;
+  --danger: #fb7185;
+  --answer: #263449;
+  --answer-border: #f59e0b;
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -59,7 +73,7 @@ textarea {
 button {
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #fff;
+  background: var(--surface);
   color: var(--text);
   padding: 9px 12px;
   cursor: pointer;
@@ -71,6 +85,9 @@ button {
 }
 button:hover { border-color: var(--primary-strong); }
 .sound-toggle[aria-pressed="true"] {
+  border-color: var(--primary);
+}
+.theme-toggle[aria-pressed="true"] {
   border-color: var(--primary);
 }
 
@@ -119,7 +136,7 @@ button:hover { border-color: var(--primary-strong); }
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fbfcfd;
+  background: color-mix(in srgb, var(--surface) 82%, var(--bg));
 }
 .answer-bubble {
   position: absolute;

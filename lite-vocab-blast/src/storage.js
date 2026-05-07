@@ -6,6 +6,7 @@ export function createDefaultState() {
     bestScore: 0,
     lastDirection: 'term-to-meaning',
     audioEnabled: true,
+    nightMode: false,
   };
 }
 

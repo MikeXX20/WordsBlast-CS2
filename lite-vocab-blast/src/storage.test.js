@@ -22,6 +22,7 @@ describe('storage', () => {
       bestScore: 0,
       lastDirection: 'term-to-meaning',
       audioEnabled: true,
+      nightMode: false,
     });
   });
 
@@ -36,6 +37,7 @@ describe('storage', () => {
       bestScore: 8,
       lastDirection: 'meaning-to-term',
       audioEnabled: false,
+      nightMode: true,
     };
 
     assert.deepEqual(saveState(state, storage), { ok: true });
@@ -56,6 +58,7 @@ describe('storage', () => {
       bestScore: 10,
       lastDirection: "meaning-to-term",
       audioEnabled: true,
+      nightMode: false,
     });
   });
 
