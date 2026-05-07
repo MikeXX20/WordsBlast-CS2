@@ -6,6 +6,7 @@ import { createDefaultState, loadState, saveState } from "./storage.js";
 
 const els = {
   app: document.querySelector("#app"),
+  musicButton: document.querySelector("#musicButton"),
   importText: document.querySelector("#importText"),
   importButton: document.querySelector("#importButton"),
   clearButton: document.querySelector("#clearButton"),
@@ -38,11 +39,13 @@ let frameId = null;
 let masteredAudioPlayed = false;
 const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
+audio.setMusicMuted(state.musicMuted);
 
 renderProgress();
 renderIdleGame();
 renderSoundButtons();
 renderTheme();
+renderMusicButton();
 
 els.importButton.addEventListener("click", () => {
   const result = parseVocabulary(els.importText.value);
@@ -76,8 +79,10 @@ els.startButton.addEventListener("click", startGame);
 els.restartButton.addEventListener("click", startGame);
 els.soundButton.addEventListener("click", toggleSound);
 els.soundGameButton.addEventListener("click", toggleSound);
+els.musicButton.addEventListener("click", toggleMusic);
 els.nightButton.addEventListener("click", toggleNightMode);
 els.nightGameButton.addEventListener("click", toggleNightMode);
+document.addEventListener("pointerdown", startPageMusicOnce, { once: true });
 els.pauseButton.addEventListener("click", () => {
   if (!session) return;
   isPaused = !isPaused;
@@ -93,6 +98,7 @@ function startGame() {
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
   audio.start();
+  audio.startBackgroundMusic();
   audio.prepareMastered();
   session = createSession(state.cards, direction);
   masteredAudioPlayed = false;
@@ -233,6 +239,27 @@ function toggleSound() {
   if (state.audioEnabled) {
     audio.start();
   }
+}
+
+function toggleMusic() {
+  state = { ...state, musicMuted: !state.musicMuted };
+  audio.setMusicMuted(state.musicMuted);
+  persistState();
+  renderMusicButton();
+  if (!state.musicMuted) {
+    audio.startBackgroundMusic();
+  }
+}
+
+function startPageMusicOnce() {
+  if (!state.musicMuted) {
+    audio.startBackgroundMusic();
+  }
+}
+
+function renderMusicButton() {
+  els.musicButton.textContent = state.musicMuted ? "Music Off" : "Music On";
+  els.musicButton.setAttribute("aria-pressed", String(!state.musicMuted));
 }
 
 function renderSoundButtons() {

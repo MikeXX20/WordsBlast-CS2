@@ -23,6 +23,7 @@ describe('storage', () => {
       lastDirection: 'term-to-meaning',
       audioEnabled: true,
       nightMode: false,
+      musicMuted: false,
     });
   });
 
@@ -38,6 +39,7 @@ describe('storage', () => {
       lastDirection: 'meaning-to-term',
       audioEnabled: false,
       nightMode: true,
+      musicMuted: true,
     };
 
     assert.deepEqual(saveState(state, storage), { ok: true });
@@ -59,6 +61,7 @@ describe('storage', () => {
       lastDirection: "meaning-to-term",
       audioEnabled: true,
       nightMode: false,
+      musicMuted: false,
     });
   });
 

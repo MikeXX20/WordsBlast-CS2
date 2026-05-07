@@ -20,6 +20,7 @@ describe("audio controls", () => {
     const audio = createGameAudio({ AudioContextClass: null });
 
     assert.equal(audio.assets.correct, "./assets/audio/ak-headshot.mp3");
+    assert.equal(audio.assets.background, "./assets/audio/lobby-background.mp3");
   });
 
   it("exposes mastered reward clips and chooses one randomly", () => {
@@ -58,5 +59,39 @@ describe("audio controls", () => {
     assert.equal(prepared, "./assets/audio/mastered/001_00-00_Darude%20-%20Moments%20CSGO.mp3");
     assert.equal(created.length, 1);
     assert.equal(created[0].playCount, 2);
+  });
+
+  it("starts and mutes page background music", () => {
+    const created = [];
+    class FakeAudio {
+      constructor(path) {
+        this.path = path;
+        this.volume = 1;
+        this.loop = false;
+        this.muted = false;
+        this.playCount = 0;
+        this.pauseCount = 0;
+        created.push(this);
+      }
+      load() {}
+      play() {
+        this.playCount += 1;
+        return Promise.resolve();
+      }
+      pause() {
+        this.pauseCount += 1;
+      }
+    }
+
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio });
+    audio.setMusicMuted(false);
+    audio.startBackgroundMusic();
+    audio.setMusicMuted(true);
+
+    assert.equal(created.length, 1);
+    assert.equal(created[0].path, "./assets/audio/lobby-background.mp3");
+    assert.equal(created[0].loop, true);
+    assert.equal(created[0].playCount, 1);
+    assert.equal(created[0].pauseCount, 1);
   });
 });

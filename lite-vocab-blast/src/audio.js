@@ -85,6 +85,7 @@ const MASTERED_CLIPS = [
 ];
 
 export const AUDIO_ASSETS = {
+  background: "./assets/audio/lobby-background.mp3",
   correct: "./assets/audio/ak-headshot.mp3",
   mastered: MASTERED_CLIPS,
 };
@@ -97,6 +98,7 @@ export function createAudioState({ enabled = true } = {}) {
     musicTimer: null,
     players: {},
     preparedMasteredPath: null,
+    musicMuted: false,
   };
 }
 
@@ -131,6 +133,15 @@ export function createGameAudio({
     get enabled() {
       return state.enabled;
     },
+    setMusicMuted(muted) {
+      state.musicMuted = Boolean(muted);
+      const player = state.players[AUDIO_ASSETS.background];
+      if (state.musicMuted) {
+        player?.pause?.();
+      } else if (player) {
+        playPreparedPlayer(player);
+      }
+    },
     setEnabled(enabled) {
       state.enabled = Boolean(enabled);
       if (state.masterGain) {
@@ -146,7 +157,13 @@ export function createGameAudio({
       if (state.context.state === "suspended") {
         await state.context.resume();
       }
-      startBackground(state);
+    },
+    startBackgroundMusic() {
+      if (state.musicMuted) return;
+      const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, 0.22);
+      if (!player) return;
+      player.loop = true;
+      playPreparedPlayer(player);
     },
     shoot() {
       if (!canPlay(state)) return;
@@ -232,11 +249,15 @@ function playAssetPath(state, AudioClass, path, volume) {
   } catch {
     // Some browsers reject seeking before metadata is ready; playback can still start.
   }
+  playPreparedPlayer(player);
+  return true;
+}
+
+function playPreparedPlayer(player) {
   const playPromise = player.play();
   if (playPromise?.catch) {
     playPromise.catch(() => {});
   }
-  return true;
 }
 
 function ensureContext(state, AudioContextClass) {

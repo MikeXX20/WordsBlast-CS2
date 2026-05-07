@@ -84,6 +84,16 @@ button {
   color: #fff;
 }
 button:hover { border-color: var(--primary-strong); }
+.floating-mute {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 20;
+  box-shadow: 0 8px 18px rgba(0,0,0,.12);
+}
+.floating-mute[aria-pressed="true"] {
+  border-color: var(--primary);
+}
 .sound-toggle[aria-pressed="true"] {
   border-color: var(--primary);
 }

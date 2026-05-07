@@ -7,6 +7,7 @@ export function createDefaultState() {
     lastDirection: 'term-to-meaning',
     audioEnabled: true,
     nightMode: false,
+    musicMuted: false,
   };
 }
 
