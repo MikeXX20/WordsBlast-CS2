@@ -1,0 +1,84 @@
+number,start_seconds,end_seconds,duration_seconds,title,filename
+1,0.000,7.000,7.000,Darude - Moments CSGO,001_00-00_Darude - Moments CSGO.mp3
+2,7.000,16.000,9.000,Twin Atlantic - GLA,002_00-07_Twin Atlantic - GLA.mp3
+3,16.000,24.000,8.000,Roam - Backbone,003_00-16_Roam - Backbone.mp3
+4,24.000,33.000,9.000,Beartooth - Disgusting,004_00-24_Beartooth - Disgusting.mp3
+5,33.000,47.000,14.000,New Beat Fund - Sponge Fingerz,005_00-33_New Beat Fund - Sponge Fingerz.mp3
+6,47.000,56.000,9.000,Michael Bross - Invasion!,006_00-47_Michael Bross - Invasion!.mp3
+7,56.000,67.000,11.000,Mord Fustang - Diamonds,007_00-56_Mord Fustang - Diamonds.mp3
+8,67.000,74.000,7.000,Daniel Sadowski - The 8-Bit Kit,008_01-07_Daniel Sadowski - The 8-Bit Kit.mp3
+9,74.000,80.000,6.000,Skog - II-Headshot,009_01-14_Skog - II-Headshot.mp3
+10,80.000,89.000,9.000,Troels Folmann - Uber Blasto Phone,010_01-20_Troels Folmann - Uber Blasto Phone.mp3
+11,89.000,96.000,7.000,KiTheory - MOLOTOV,011_01-29_KiTheory - MOLOTOV.mp3
+12,96.000,105.000,9.000,Damjan Mravunac - The Talos Principle,012_01-36_Damjan Mravunac - The Talos Principle.mp3
+13,105.000,112.000,7.000,Daniel Sadowski - Total Domination,013_01-45_Daniel Sadowski - Total Domination.mp3
+14,112.000,118.312,6.312,Mateo Messina - For No Mankind,014_01-52_Mateo Messina - For No Mankind.mp3
+15,118.312,126.590,8.278,Chapter 015,015_01-58_Chapter 015.mp3
+16,126.590,134.436,7.846,Chapter 016,016_02-07_Chapter 016.mp3
+17,134.436,140.375,5.939,Chapter 017,017_02-14_Chapter 017.mp3
+18,140.375,148.360,7.985,Chapter 018,018_02-20_Chapter 018.mp3
+19,148.360,155.498,7.138,Chapter 019,019_02-28_Chapter 019.mp3
+20,155.498,166.056,10.558,Chapter 020,020_02-35_Chapter 020.mp3
+21,166.056,173.513,7.457,Chapter 021,021_02-46_Chapter 021.mp3
+22,173.513,201.543,28.030,Chapter 022,022_02-54_Chapter 022.mp3
+23,201.543,210.758,9.215,Chapter 023,023_03-22_Chapter 023.mp3
+24,210.758,218.735,7.977,Chapter 024,024_03-31_Chapter 024.mp3
+25,218.735,227.587,8.852,Chapter 025,025_03-39_Chapter 025.mp3
+26,227.587,235.763,8.176,Chapter 026,026_03-48_Chapter 026.mp3
+27,235.763,245.514,9.751,Chapter 027,027_03-56_Chapter 027.mp3
+28,245.514,255.019,9.505,Chapter 028,028_04-06_Chapter 028.mp3
+29,255.019,276.224,21.205,Chapter 029,029_04-15_Chapter 029.mp3
+30,276.224,286.892,10.668,Chapter 030,030_04-36_Chapter 030.mp3
+31,286.892,298.082,11.190,Chapter 031,031_04-47_Chapter 031.mp3
+32,298.082,307.108,9.026,Chapter 032,032_04-58_Chapter 032.mp3
+33,307.108,320.314,13.206,Chapter 033,033_05-07_Chapter 033.mp3
+34,320.314,332.620,12.306,Chapter 034,034_05-20_Chapter 034.mp3
+35,332.620,343.323,10.703,Chapter 035,035_05-33_Chapter 035.mp3
+36,343.323,352.932,9.609,Chapter 036,036_05-43_Chapter 036.mp3
+37,352.932,363.196,10.264,Chapter 037,037_05-53_Chapter 037.mp3
+38,363.196,372.429,9.233,Chapter 038,038_06-03_Chapter 038.mp3
+39,372.429,380.362,7.933,Chapter 039,039_06-12_Chapter 039.mp3
+40,380.362,398.777,18.415,Chapter 040,040_06-20_Chapter 040.mp3
+41,398.777,407.182,8.405,Chapter 041,041_06-39_Chapter 041.mp3
+42,407.182,415.582,8.400,Chapter 042,042_06-47_Chapter 042.mp3
+43,415.582,424.209,8.627,Chapter 043,043_06-56_Chapter 043.mp3
+44,424.209,436.507,12.298,Chapter 044,044_07-04_Chapter 044.mp3
+45,436.507,460.315,23.808,Chapter 045,045_07-17_Chapter 045.mp3
+46,460.315,468.073,7.758,Chapter 046,046_07-40_Chapter 046.mp3
+47,468.073,477.211,9.138,Chapter 047,047_07-48_Chapter 047.mp3
+48,477.211,494.000,16.789,Chapter 048,048_07-57_Chapter 048.mp3
+49,494.000,501.696,7.696,Chapter 049,049_08-14_Chapter 049.mp3
+50,501.696,531.395,29.699,Chapter 050,050_08-22_Chapter 050.mp3
+51,531.395,540.645,9.250,Chapter 051,051_08-51_Chapter 051.mp3
+52,540.645,550.071,9.426,Chapter 052,052_09-01_Chapter 052.mp3
+53,550.071,559.228,9.157,Chapter 053,053_09-10_Chapter 053.mp3
+54,559.228,565.836,6.608,Chapter 054,054_09-19_Chapter 054.mp3
+55,565.836,574.737,8.901,Chapter 055,055_09-26_Chapter 055.mp3
+56,574.737,580.746,6.009,Chapter 056,056_09-35_Chapter 056.mp3
+57,580.746,592.560,11.814,Chapter 057,057_09-41_Chapter 057.mp3
+58,592.560,603.958,11.398,Chapter 058,058_09-53_Chapter 058.mp3
+59,603.958,611.835,7.877,Chapter 059,059_10-04_Chapter 059.mp3
+60,611.835,619.835,8.000,Chapter 060,060_10-12_Chapter 060.mp3
+61,619.835,626.721,6.886,Chapter 061,061_10-20_Chapter 061.mp3
+62,626.721,642.434,15.713,Chapter 062,062_10-27_Chapter 062.mp3
+63,642.434,666.892,24.458,Chapter 063,063_10-42_Chapter 063.mp3
+64,666.892,674.637,7.745,Chapter 064,064_11-07_Chapter 064.mp3
+65,674.637,692.572,17.935,Chapter 065,065_11-15_Chapter 065.mp3
+66,692.572,698.181,5.609,Chapter 066,066_11-33_Chapter 066.mp3
+67,698.181,703.817,5.636,Chapter 067,067_11-38_Chapter 067.mp3
+68,703.817,725.217,21.400,Chapter 068,068_11-44_Chapter 068.mp3
+69,725.217,732.661,7.444,Chapter 069,069_12-05_Chapter 069.mp3
+70,732.661,741.978,9.317,Chapter 070,070_12-13_Chapter 070.mp3
+71,741.978,751.472,9.494,Chapter 071,071_12-22_Chapter 071.mp3
+72,751.472,758.371,6.899,Chapter 072,072_12-31_Chapter 072.mp3
+73,758.371,769.640,11.269,Chapter 073,073_12-38_Chapter 073.mp3
+74,769.640,779.762,10.122,Chapter 074,074_12-50_Chapter 074.mp3
+75,779.762,788.340,8.578,Chapter 075,075_13-00_Chapter 075.mp3
+76,788.340,797.712,9.372,Chapter 076,076_13-08_Chapter 076.mp3
+77,797.712,814.858,17.146,Chapter 077,077_13-18_Chapter 077.mp3
+78,814.858,824.128,9.270,Chapter 078,078_13-35_Chapter 078.mp3
+79,824.128,832.528,8.400,Chapter 079,079_13-44_Chapter 079.mp3
+80,832.528,841.025,8.497,Chapter 080,080_13-53_Chapter 080.mp3
+81,841.025,848.999,7.974,Chapter 081,081_14-01_Chapter 081.mp3
+82,848.999,859.550,10.551,Chapter 082,082_14-09_Chapter 082.mp3
+83,859.550,886.924,27.374,Chapter 083,083_14-20_Chapter 083.mp3

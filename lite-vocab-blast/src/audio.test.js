@@ -25,7 +25,7 @@ describe("audio controls", () => {
   it("exposes mastered reward clips and chooses one randomly", () => {
     const audio = createGameAudio({ AudioContextClass: null, random: () => 0 });
 
-    assert.ok(audio.assets.mastered.length > 0);
-    assert.equal(audio.pickMasteredAsset(), audio.assets.mastered[0]);
+    assert.equal(audio.assets.mastered.length, 83);
+    assert.equal(audio.pickMasteredAsset(), "./assets/audio/mastered/001_00-00_Darude%20-%20Moments%20CSGO.mp3");
   });
 });
