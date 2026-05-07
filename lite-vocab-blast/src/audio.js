@@ -17,8 +17,8 @@ export function toggleAudio(state) {
 }
 
 export function soundForAnswer({ isCorrect, allMastered }) {
-  if (allMastered) return "mastered";
-  return isCorrect ? "correct" : "wrong";
+  if (isCorrect) return "correct";
+  return allMastered ? "mastered" : "wrong";
 }
 
 export function createGameAudio({ AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext } = {}) {

@@ -12,7 +12,8 @@ describe("audio controls", () => {
   it("uses modest original game events for answers", () => {
     assert.equal(soundForAnswer({ isCorrect: true, allMastered: false }), "correct");
     assert.equal(soundForAnswer({ isCorrect: false, allMastered: false }), "wrong");
-    assert.equal(soundForAnswer({ isCorrect: true, allMastered: true }), "mastered");
+    assert.equal(soundForAnswer({ isCorrect: true, allMastered: true }), "correct");
+    assert.equal(soundForAnswer({ isCorrect: false, allMastered: true }), "mastered");
   });
 
   it("uses the provided headshot asset for correct blasts", () => {
