@@ -46,7 +46,7 @@ describe("audio controls", () => {
     audio.roll();
 
     assert.deepEqual(created.map((player) => player.path), [
-      "./assets/audio/menu.mp3?v=trim-02",
+      "./assets/audio/menu.mp3",
       "./assets/audio/roll.mp3",
     ]);
     assert.deepEqual(created.map((player) => player.volume), [0.32, 0.4]);
