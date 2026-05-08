@@ -87,7 +87,7 @@ const MASTERED_CLIPS = [
 export const AUDIO_ASSETS = {
   background: "./assets/audio/lobby-background.mp3",
   correct: "./assets/audio/ak-headshot.mp3",
-  menu: "./assets/audio/menu.mp3?v=trim-02",
+  menu: "./assets/audio/menu.mp3?v=trim-05",
   mastered: MASTERED_CLIPS,
   roll: "./assets/audio/roll.mp3",
 };
