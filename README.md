@@ -10,7 +10,8 @@ let's roll!
 # screenshots
 <img width="2880" height="1616" alt="QQ_1778200219166" src="https://github.com/user-attachments/assets/39609189-5a87-4db3-8f70-cc0675b170f7" />
 <img width="2880" height="1616" alt="QQ_1778200276205" src="https://github.com/user-attachments/assets/a45a66d0-5732-4282-8263-c6fc2339b2f7" />
+
 # feature
-night mode supported
-Chinese supported
+ night mode supported
+ Chinese supported
  
