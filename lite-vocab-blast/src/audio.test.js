@@ -124,4 +124,79 @@ describe("audio controls", () => {
     assert.equal(created[0].playCount, 1);
     assert.equal(created[0].pauseCount, 1);
   });
+
+  it("pauses background music when the start roll clip ends", () => {
+    const created = [];
+    class FakeAudio {
+      constructor(path) {
+        this.path = path;
+        this.volume = 1;
+        this.loop = false;
+        this.playCount = 0;
+        this.pauseCount = 0;
+        this.onended = null;
+        created.push(this);
+      }
+      load() {}
+      play() {
+        this.playCount += 1;
+        return Promise.resolve();
+      }
+      pause() {
+        this.pauseCount += 1;
+      }
+      end() {
+        this.onended?.();
+      }
+    }
+
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio });
+    audio.startBackgroundMusic();
+    audio.roll();
+
+    const background = created.find((player) => player.path === "./assets/audio/lobby-background.mp3");
+    const roll = created.find((player) => player.path === "./assets/audio/roll.mp3");
+    roll.end();
+
+    assert.equal(background.playCount, 1);
+    assert.equal(background.pauseCount, 1);
+  });
+
+  it("resumes background music after the mastered clip ends", () => {
+    const created = [];
+    class FakeAudio {
+      constructor(path) {
+        this.path = path;
+        this.volume = 1;
+        this.loop = false;
+        this.playCount = 0;
+        this.pauseCount = 0;
+        this.onended = null;
+        created.push(this);
+      }
+      load() {}
+      play() {
+        this.playCount += 1;
+        return Promise.resolve();
+      }
+      pause() {
+        this.pauseCount += 1;
+      }
+      end() {
+        this.onended?.();
+      }
+    }
+
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio, random: () => 0 });
+    audio.startBackgroundMusic();
+    audio.prepareMastered();
+    audio.mastered();
+
+    const background = created.find((player) => player.path === "./assets/audio/lobby-background.mp3");
+    const mastered = created.find((player) => player.path === "./assets/audio/mastered/001_00-00_Darude%20-%20Moments%20CSGO.mp3");
+    mastered.end();
+
+    assert.equal(background.pauseCount, 1);
+    assert.equal(background.playCount, 2);
+  });
 });

@@ -1,5 +1,5 @@
 import { parseVocabulary } from "./parser.js";
-import { createGameAudio, soundForAnswer } from "./audio.js";
+import { createGameAudio, soundForAnswer } from "./audio.js?v=audio-lifecycle";
 import { answerCurrent, createSession, nextRound } from "./game.js";
 import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js";
 import { recordAnswer, summarizeProgress } from "./progress.js";

@@ -161,11 +161,7 @@ export function createGameAudio({
       }
     },
     startBackgroundMusic() {
-      if (state.musicMuted) return;
-      const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, 0.22);
-      if (!player) return;
-      player.loop = true;
-      playPreparedPlayer(player);
+      startBackgroundMusic(state, AudioClass);
     },
     menu() {
       if (!state.enabled) return;
@@ -173,7 +169,10 @@ export function createGameAudio({
     },
     roll() {
       if (!state.enabled) return;
-      playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, 0.4);
+      const player = playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, 0.4);
+      if (player) {
+        player.onended = () => stopBackground(state);
+      }
     },
     shoot() {
       if (!canPlay(state)) return;
@@ -195,7 +194,13 @@ export function createGameAudio({
       stopBackground(state);
       const path = state.preparedMasteredPath || pickMasteredAsset(random);
       state.preparedMasteredPath = null;
-      if (state.enabled && playAssetPath(state, AudioClass, path, 0.55)) return;
+      if (state.enabled) {
+        const player = playAssetPath(state, AudioClass, path, 0.55);
+        if (player) {
+          player.onended = () => startBackgroundMusic(state, AudioClass);
+          return;
+        }
+      }
       if (!canPlay(state)) return;
       [523, 659, 784, 1046, 1318].forEach((frequency, index) => {
         playTone(state, frequency, 0.22, "triangle", 0.1, index * 0.11);
@@ -236,7 +241,7 @@ function pickMasteredAsset(random) {
 }
 
 function playAsset(state, AudioClass, name) {
-  return playAssetPath(state, AudioClass, AUDIO_ASSETS[name], 0.38);
+  return Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS[name], 0.38));
 }
 
 function preloadAssetPath(state, AudioClass, path, volume) {
@@ -252,7 +257,7 @@ function preloadAssetPath(state, AudioClass, path, volume) {
 
 function playAssetPath(state, AudioClass, path, volume) {
   const player = preloadAssetPath(state, AudioClass, path, volume);
-  if (!player) return false;
+  if (!player) return null;
   player.muted = false;
   try {
     player.currentTime = 0;
@@ -260,7 +265,15 @@ function playAssetPath(state, AudioClass, path, volume) {
     // Some browsers reject seeking before metadata is ready; playback can still start.
   }
   playPreparedPlayer(player);
-  return true;
+  return player;
+}
+
+function startBackgroundMusic(state, AudioClass) {
+  if (state.musicMuted) return;
+  const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, 0.22);
+  if (!player) return;
+  player.loop = true;
+  playPreparedPlayer(player);
 }
 
 function playPreparedPlayer(player) {
@@ -293,9 +306,12 @@ function startBackground(state) {
 }
 
 function stopBackground(state) {
-  if (!state.musicTimer) return;
-  window.clearInterval(state.musicTimer);
-  state.musicTimer = null;
+  const player = state.players[AUDIO_ASSETS.background];
+  player?.pause?.();
+  if (state.musicTimer) {
+    window.clearInterval(state.musicTimer);
+    state.musicTimer = null;
+  }
 }
 
 function playTone(state, frequency, duration, type = "sine", volume = 0.08, delay = 0) {
