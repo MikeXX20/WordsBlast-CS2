@@ -125,7 +125,6 @@ async function startGame() {
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
   audio.start();
-  audio.startBackgroundMusic();
   audio.prepareMastered();
   session = createSession(state.cards, direction);
   masteredAudioPlayed = false;
@@ -317,7 +316,6 @@ function renderLanguage() {
 }
 
 function onBlastSoundChange() {
-  audio.menu();
   state = { ...state, correctSound: els.blastSoundSelect.value };
   audio.setCorrectSound(state.correctSound, { playDraw: true });
   persistState();
