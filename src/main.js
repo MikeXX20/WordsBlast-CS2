@@ -21,6 +21,7 @@ const els = {
   startButton: document.querySelector("#startButton"),
   soundButton: document.querySelector("#soundButton"),
   soundGameButton: document.querySelector("#soundGameButton"),
+  blastSoundSelect: document.querySelector("#blastSoundSelect"),
   nightButton: document.querySelector("#nightButton"),
   nightGameButton: document.querySelector("#nightGameButton"),
   pauseButton: document.querySelector("#pauseButton"),
@@ -33,17 +34,22 @@ const els = {
   arena: document.querySelector("#arena"),
 };
 
+const DEFAULT_IMPORT_TEXT = "apple - 苹果\nbanana - 香蕉";
+
 let state = loadState();
 state = { ...state, language: normalizeLanguage(state.language) };
 let session = null;
 let currentRound = null;
 let isPaused = false;
+let blastLocked = false;
 let frameId = null;
 let masteredAudioPlayed = false;
 const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
 audio.setMusicMuted(state.musicMuted);
+audio.setCorrectSound(state.correctSound || "ak");
 
+fillDefaultImportText();
 renderLanguage();
 renderProgress();
 renderIdleGame();
@@ -84,7 +90,7 @@ els.clearButton.addEventListener("click", () => {
   session = null;
   currentRound = null;
   persistState();
-  els.importText.value = "";
+  els.importText.value = DEFAULT_IMPORT_TEXT;
   els.importSummary.textContent = t("deckCleared");
   renderImportErrors([]);
   renderProgress();
@@ -99,6 +105,7 @@ els.soundGameButton.addEventListener("click", toggleSound);
 els.musicButton.addEventListener("click", toggleMusic);
 els.nightButton.addEventListener("click", toggleNightMode);
 els.nightGameButton.addEventListener("click", toggleNightMode);
+els.blastSoundSelect.addEventListener("change", onBlastSoundChange);
 for (const directionInput of document.querySelectorAll("input[name='direction']")) {
   directionInput.addEventListener("change", () => audio.menu());
 }
@@ -109,7 +116,7 @@ els.pauseButton.addEventListener("click", () => {
   renderPauseButton();
 });
 
-function startGame() {
+async function startGame() {
   if (state.cards.length === 0) {
     els.importSummary.textContent = t("pasteFirst");
     return;
@@ -117,17 +124,21 @@ function startGame() {
 
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
-  audio.roll();
   audio.start();
   audio.startBackgroundMusic();
   audio.prepareMastered();
   session = createSession(state.cards, direction);
   masteredAudioPlayed = false;
   isPaused = false;
+  blastLocked = true;
   renderPauseButton();
   els.app.classList.add("is-playing");
-  showNextRound();
+  els.prompt.textContent = t("chooseMode");
+  els.arena.innerHTML = `<div class="empty-arena"></div>`;
   startAnimation();
+  await audio.playRollThenWeaponDraw();
+  blastLocked = false;
+  showNextRound();
 }
 
 function showNextRound() {
@@ -158,12 +169,13 @@ function renderRound() {
   currentRound.choices.forEach((choice, index) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "answer-bubble";
+    button.className = "answer-bubble bubble-enter";
     button.textContent = choice;
     button.dataset.choice = choice;
     button.dataset.x = String(12 + (index * 23) % 68);
     button.dataset.y = String(14 + (index * 21) % 64);
     button.dataset.phase = String(index * 0.8);
+    button.style.animationDelay = `${index * 90}ms`;
     button.style.left = `${button.dataset.x}%`;
     button.style.top = `${button.dataset.y}%`;
     button.addEventListener("click", () => chooseAnswer(choice, button));
@@ -172,7 +184,7 @@ function renderRound() {
 }
 
 function chooseAnswer(choice, button) {
-  if (!session || !currentRound || isPaused) return;
+  if (!session || !currentRound || isPaused || blastLocked) return;
 
   const cardId = currentRound.card.id;
   const isCorrect = choice.trim().toLocaleLowerCase() === currentRound.correctText.trim().toLocaleLowerCase();
@@ -256,6 +268,11 @@ function persistState() {
   }
 }
 
+function fillDefaultImportText() {
+  if (els.importText.value.trim()) return;
+  els.importText.value = DEFAULT_IMPORT_TEXT;
+}
+
 function t(key) {
   return getText(state.language, key);
 }
@@ -275,6 +292,11 @@ function renderLanguage() {
   document.documentElement.lang = state.language === "zh" ? "zh-Hans" : "en";
   document.title = t("appTitle");
   for (const element of document.querySelectorAll("[data-i18n]")) {
+    if (element.tagName === "OPTION") {
+      element.label = t(element.dataset.i18n);
+      element.textContent = t(element.dataset.i18n);
+      continue;
+    }
     element.textContent = t(element.dataset.i18n);
   }
   for (const element of document.querySelectorAll("[data-i18n-placeholder]")) {
@@ -288,9 +310,21 @@ function renderLanguage() {
   renderSoundButtons();
   renderTheme();
   renderPauseButton();
+  renderBlastSound();
   if (!currentRound) {
     renderIdleGame();
   }
+}
+
+function onBlastSoundChange() {
+  audio.menu();
+  state = { ...state, correctSound: els.blastSoundSelect.value };
+  audio.setCorrectSound(state.correctSound, { playDraw: true });
+  persistState();
+}
+
+function renderBlastSound() {
+  els.blastSoundSelect.value = state.correctSound || "ak";
 }
 
 function toggleSound() {

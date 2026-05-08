@@ -96,4 +96,16 @@ describe("game session", () => {
     assert.ok(getDifficulty({ level: 9, recentAccuracy: 1 }).speed <= 0.72);
     assert.equal(getDifficulty({ level: 14, recentAccuracy: 1 }).speed, 0.72);
   });
+
+  it("does not show duplicate choice text in the same round", () => {
+    const duplicateMeaningCards = [
+      { id: "one", term: "big", meaning: "large" },
+      { id: "two", term: "huge", meaning: "large" },
+      { id: "three", term: "tiny", meaning: "small" },
+    ];
+    const session = createSession(duplicateMeaningCards, "term-to-meaning", () => 0);
+    const round = nextRound(session);
+
+    assert.equal(new Set(round.choices).size, round.choices.length);
+  });
 });

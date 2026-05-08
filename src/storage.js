@@ -8,6 +8,7 @@ export function createDefaultState() {
     audioEnabled: true,
     nightMode: false,
     musicMuted: false,
+    correctSound: 'ak',
     language: 'en',
   };
 }

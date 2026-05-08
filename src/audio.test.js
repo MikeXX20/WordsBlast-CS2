@@ -25,7 +25,34 @@ describe("audio controls", () => {
     assert.equal(audio.assets.roll, "./assets/audio/roll.mp3");
   });
 
-  it("plays menu and start roll clips as modest UI sounds", () => {
+  it("plays draw on weapon change and layers weapon shot with headshot", () => {
+    const created = [];
+    class FakeAudio {
+      constructor(path) {
+        this.path = path;
+        this.volume = 1;
+        this.playCount = 0;
+        created.push(this);
+      }
+      load() {}
+      play() {
+        this.playCount += 1;
+        return Promise.resolve();
+      }
+    }
+
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio });
+    audio.setCorrectSound("deagle", { playDraw: true });
+    audio.correct();
+
+    assert.deepEqual(created.map((player) => player.path), [
+      "./assets/audio/weapon-deagle-draw.wav",
+      "./assets/audio/weapon-deagle-shot.wav",
+      "./assets/audio/ak-headshot.mp3",
+    ]);
+  });
+
+  it("plays menu and start roll clips at their immediate configured volume", () => {
     const created = [];
     class FakeAudio {
       constructor(path) {
@@ -49,8 +76,41 @@ describe("audio controls", () => {
       "./assets/audio/menu.mp3?v=trim-05",
       "./assets/audio/roll.mp3",
     ]);
-    assert.deepEqual(created.map((player) => player.volume), [0.32, 0.4]);
+    assert.equal(created[0].volume, 0.55);
+    assert.equal(created[1].volume, 0.4);
     assert.deepEqual(created.map((player) => player.playCount), [1, 1]);
+  });
+
+  it("starts both roll and background music at full configured volume", () => {
+    const created = [];
+    const timers = createFakeTimers();
+    class FakeAudio {
+      constructor(path) {
+        this.path = path;
+        this.volume = 1;
+        this.loop = false;
+        this.playCount = 0;
+        this.onended = null;
+        created.push(this);
+      }
+      load() {}
+      play() {
+        this.playCount += 1;
+        return Promise.resolve();
+      }
+      pause() {}
+    }
+
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio, timers });
+    audio.roll();
+    audio.startBackgroundMusic();
+
+    const roll = created.find((player) => player.path === "./assets/audio/roll.mp3");
+    const background = created.find((player) => player.path === "./assets/audio/lobby-background.mp3");
+
+    assert.equal(roll.volume, 0.4);
+    assert.equal(roll.volume, 0.4);
+    assert.equal(background.volume, 0.4);
   });
 
   it("exposes mastered reward clips and chooses one randomly", () => {
@@ -161,8 +221,8 @@ describe("audio controls", () => {
 
     assert.equal(background.playCount, 1);
     assert.equal(background.pauseCount, 0);
-    assert.ok(background.volume < 0.22);
-    timers.tick(5);
+    assert.ok(background.volume < 0.4);
+    timers.tick(18);
     assert.equal(background.pauseCount, 1);
     assert.equal(background.volume, 0);
   });
@@ -197,7 +257,7 @@ describe("audio controls", () => {
     audio.startBackgroundMusic();
     audio.prepareMastered();
     audio.mastered();
-    timers.tick(5);
+    timers.tick(18);
 
     const background = created.find((player) => player.path === "./assets/audio/lobby-background.mp3");
     const mastered = created.find((player) => player.path === "./assets/audio/mastered/001_00-00_Darude%20-%20Moments%20CSGO.mp3");
@@ -206,24 +266,26 @@ describe("audio controls", () => {
     assert.equal(background.pauseCount, 1);
     assert.equal(background.playCount, 2);
     assert.ok(background.volume < 0.22);
-    timers.tick(5);
-    assert.equal(background.volume, 0.22);
+    timers.tick(18);
+    assert.equal(background.volume, 0.4);
   });
 });
 
 function createFakeTimers() {
-  const intervals = new Set();
+  let timerId = 0;
+  const intervals = new Map();
   return {
     setInterval(callback) {
-      intervals.add(callback);
-      return callback;
+      timerId += 1;
+      intervals.set(timerId, callback);
+      return timerId;
     },
-    clearInterval(callback) {
-      intervals.delete(callback);
+    clearInterval(id) {
+      intervals.delete(id);
     },
     tick(count = 1) {
       for (let index = 0; index < count; index += 1) {
-        for (const callback of [...intervals]) {
+        for (const callback of [...intervals.values()]) {
           callback();
         }
       }

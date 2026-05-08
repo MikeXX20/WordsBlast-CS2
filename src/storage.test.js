@@ -24,6 +24,7 @@ describe('storage', () => {
       audioEnabled: true,
       nightMode: false,
       musicMuted: false,
+      correctSound: "ak",
       language: "en",
     });
   });
@@ -41,6 +42,7 @@ describe('storage', () => {
       audioEnabled: false,
       nightMode: true,
       musicMuted: true,
+      correctSound: "ak",
       language: "zh",
     };
 
@@ -64,6 +66,7 @@ describe('storage', () => {
       audioEnabled: true,
       nightMode: false,
       musicMuted: false,
+      correctSound: "ak",
       language: "en",
     });
   });

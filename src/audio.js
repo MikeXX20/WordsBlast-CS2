@@ -84,13 +84,21 @@ const MASTERED_CLIPS = [
   "./assets/audio/mastered/083_14-20_Chapter%20083.mp3",
 ];
 
-const BACKGROUND_VOLUME = 0.22;
-const FADE_STEPS = 5;
-const FADE_INTERVAL_MS = 80;
+const BACKGROUND_VOLUME = 0.4;
+const ROLL_VOLUME = 0.4;
+const HEADSHOT_VOLUME = 0.28;
+const MASTERED_VOLUME = 0.55;
+const MASTERED_FADE_SECONDS = 1.8;
+const FADE_STEPS = 18;
+const FADE_INTERVAL_MS = 140;
 
 export const AUDIO_ASSETS = {
   background: "./assets/audio/lobby-background.mp3",
   correct: "./assets/audio/ak-headshot.mp3",
+  weaponShotAk: "./assets/audio/weapon-ak-shot.wav",
+  weaponDrawAk: "./assets/audio/weapon-ak-draw.wav",
+  weaponShotDeagle: "./assets/audio/weapon-deagle-shot.wav",
+  weaponDrawDeagle: "./assets/audio/weapon-deagle-draw.wav",
   menu: "./assets/audio/menu.mp3?v=trim-05",
   mastered: MASTERED_CLIPS,
   roll: "./assets/audio/roll.mp3",
@@ -104,8 +112,9 @@ export function createAudioState({ enabled = true } = {}) {
     musicTimer: null,
     players: {},
     preparedMasteredPath: null,
-    fadeTimer: null,
+    fadeTimers: new Map(),
     musicMuted: false,
+    correctSound: "ak",
   };
 }
 
@@ -134,7 +143,7 @@ export function createGameAudio({
     prepareMastered() {
       const path = state.preparedMasteredPath || pickMasteredAsset(random);
       state.preparedMasteredPath = path;
-      const player = preloadAssetPath(state, AudioClass, path, 0.55);
+      const player = preloadAssetPath(state, AudioClass, path, MASTERED_VOLUME);
       primePlayer(player);
       return path;
     },
@@ -159,6 +168,27 @@ export function createGameAudio({
         stopBackground(state, timers);
       }
     },
+    setCorrectSound(kind, { playDraw = false } = {}) {
+      const previous = state.correctSound;
+      state.correctSound = kind;
+      if (playDraw && previous !== kind) {
+        if (kind === "ak") {
+          playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponDrawAk, 0.55);
+        } else if (kind === "deagle") {
+          playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponDrawDeagle, 0.55);
+        }
+      }
+    },
+    playCurrentWeaponDraw() {
+      if (!state.enabled) return Promise.resolve(false);
+      if (state.correctSound === "ak") {
+        return playAssetPathWithEnd(state, AudioClass, AUDIO_ASSETS.weaponDrawAk, 0.55);
+      }
+      if (state.correctSound === "deagle") {
+        return playAssetPathWithEnd(state, AudioClass, AUDIO_ASSETS.weaponDrawDeagle, 0.55);
+      }
+      return Promise.resolve(false);
+    },
     async start() {
       if (!state.enabled || !AudioContextClass) return;
       ensureContext(state, AudioContextClass);
@@ -171,14 +201,36 @@ export function createGameAudio({
     },
     menu() {
       if (!state.enabled) return;
-      playAssetPath(state, AudioClass, AUDIO_ASSETS.menu, 0.32);
+      playAssetPath(state, AudioClass, AUDIO_ASSETS.menu, 0.55);
     },
     roll() {
       if (!state.enabled) return;
-      const player = playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, 0.4);
+      const player = playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, ROLL_VOLUME);
       if (player) {
         player.onended = () => stopBackground(state, timers, { fade: true });
       }
+    },
+    playRollThenWeaponDraw() {
+      if (!state.enabled) return Promise.resolve(false);
+      const rollPlayer = playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, ROLL_VOLUME);
+      if (!rollPlayer) return this.playCurrentWeaponDraw();
+      return new Promise((resolve) => {
+        let finished = false;
+        const finish = async () => {
+          if (finished) return;
+          finished = true;
+          const playedDraw = await this.playCurrentWeaponDraw();
+          resolve(Boolean(playedDraw));
+        };
+        rollPlayer.onended = () => {
+          stopBackground(state, timers, { fade: true });
+          finish();
+        };
+        window.setTimeout(() => {
+          stopBackground(state, timers, { fade: true });
+          finish();
+        }, 7000);
+      });
     },
     shoot() {
       if (!canPlay(state)) return;
@@ -187,10 +239,24 @@ export function createGameAudio({
     },
     correct() {
       if (!state.enabled) return;
-      if (playAsset(state, AudioClass, "correct")) return;
+      if (state.correctSound === "ak") {
+        const playedShot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponShotAk, 0.6));
+        const playedHeadshot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.correct, HEADSHOT_VOLUME));
+        if (playedShot || playedHeadshot) return;
+      }
+      if (state.correctSound === "deagle") {
+        const playedShot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponShotDeagle, 0.5));
+        const playedHeadshot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.correct, HEADSHOT_VOLUME));
+        if (playedShot || playedHeadshot) return;
+      }
       if (!canPlay(state)) return;
-      playTone(state, 740, 0.05, "square", 0.11);
-      playTone(state, 1180, 0.08, "triangle", 0.08, 0.05);
+      if (state.correctSound === "laser") {
+        playTone(state, 1020, 0.05, "square", 0.09);
+        playTone(state, 1480, 0.08, "triangle", 0.07, 0.04);
+        return;
+      }
+      playTone(state, 820, 0.04, "triangle", 0.08);
+      playTone(state, 980, 0.07, "sine", 0.06, 0.03);
     },
     wrong() {
       if (!canPlay(state)) return;
@@ -201,8 +267,9 @@ export function createGameAudio({
       const path = state.preparedMasteredPath || pickMasteredAsset(random);
       state.preparedMasteredPath = null;
       if (state.enabled) {
-        const player = playAssetPath(state, AudioClass, path, 0.55);
+        const player = playAssetPath(state, AudioClass, path, MASTERED_VOLUME);
         if (player) {
+          attachFadeOutNearEnd(player, MASTERED_VOLUME, MASTERED_FADE_SECONDS);
           player.onended = () => startBackgroundMusic(state, AudioClass, timers, { fade: true });
           return;
         }
@@ -274,11 +341,20 @@ function playAssetPath(state, AudioClass, path, volume) {
   return player;
 }
 
+function playAssetPathWithEnd(state, AudioClass, path, volume) {
+  const player = playAssetPath(state, AudioClass, path, volume);
+  if (!player) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    player.onended = () => resolve(true);
+    window.setTimeout(() => resolve(true), 4000);
+  });
+}
+
 function startBackgroundMusic(state, AudioClass, timers, { fade = false } = {}) {
   if (state.musicMuted) return;
   const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, fade ? 0 : BACKGROUND_VOLUME);
   if (!player) return;
-  stopFade(state, timers);
+  stopFade(state, timers, player);
   player.loop = true;
   playPreparedPlayer(player);
   if (fade) {
@@ -321,7 +397,7 @@ function stopBackground(state, timers, { fade = false } = {}) {
     if (fade) {
       fadePlayerVolume(state, timers, player, 0, () => player.pause?.());
     } else {
-      stopFade(state, timers);
+      stopFade(state, timers, player);
       player.pause?.();
     }
   }
@@ -332,30 +408,53 @@ function stopBackground(state, timers, { fade = false } = {}) {
 }
 
 function fadePlayerVolume(state, timers, player, targetVolume, onComplete) {
-  stopFade(state, timers);
+  stopFade(state, timers, player);
   const startVolume = Number(player.volume) || 0;
   let step = 0;
-  state.fadeTimer = timers.setInterval(() => {
+  const timer = timers.setInterval(() => {
     step += 1;
     const progress = Math.min(1, step / FADE_STEPS);
     player.volume = roundVolume(startVolume + (targetVolume - startVolume) * progress);
     if (progress >= 1) {
-      stopFade(state, timers);
+      stopFade(state, timers, player);
       onComplete?.();
     }
   }, FADE_INTERVAL_MS);
-  state.fadeTimer?.unref?.();
+  state.fadeTimers.set(player, timer);
+  timer?.unref?.();
   player.volume = roundVolume(startVolume + (targetVolume - startVolume) / FADE_STEPS);
 }
 
-function stopFade(state, timers) {
-  if (!state.fadeTimer) return;
-  timers.clearInterval(state.fadeTimer);
-  state.fadeTimer = null;
+function stopFade(state, timers, player) {
+  const timer = state.fadeTimers.get(player);
+  if (!timer) return;
+  timers.clearInterval(timer);
+  state.fadeTimers.delete(player);
 }
 
 function roundVolume(volume) {
   return Math.round(volume * 1000) / 1000;
+}
+
+function attachFadeOutNearEnd(player, startVolume, fadeSeconds) {
+  if (!player) return;
+  let fading = false;
+  player.volume = startVolume;
+  player.ontimeupdate = () => {
+    if (fading) return;
+    const duration = Number(player.duration);
+    const currentTime = Number(player.currentTime);
+    if (!Number.isFinite(duration) || duration <= 0 || !Number.isFinite(currentTime)) return;
+    const remaining = duration - currentTime;
+    if (remaining > fadeSeconds) return;
+    fading = true;
+    const startedAt = currentTime;
+    player.ontimeupdate = () => {
+      const elapsed = Number(player.currentTime) - startedAt;
+      const progress = Math.min(1, Math.max(0, elapsed / fadeSeconds));
+      player.volume = roundVolume(startVolume * (1 - progress));
+    };
+  };
 }
 
 function playTone(state, frequency, duration, type = "sine", volume = 0.08, delay = 0) {

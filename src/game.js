@@ -128,11 +128,23 @@ function isMastered(card) {
 
 function buildChoices(cards, currentCard, direction, random) {
   const correctText = getCorrectText(currentCard, direction);
-  const distractors = cards
+  const normalizeChoice = (text) => String(text).trim().toLocaleLowerCase();
+  const correctKey = normalizeChoice(correctText);
+  const uniqueDistractors = cards
     .filter((card) => card.id !== currentCard.id)
     .map((card) => getCorrectText(card, direction))
-    .filter((choice) => choice !== correctText);
-  const choices = [correctText, ...distractors].slice(0, Math.min(MAX_CHOICES, cards.length));
+    .filter((choice) => normalizeChoice(choice) !== correctKey)
+    .filter((choice, index, all) => {
+      const key = normalizeChoice(choice);
+      return all.findIndex((item) => normalizeChoice(item) === key) === index;
+    });
+  const maxChoices = Math.min(MAX_CHOICES, cards.length);
+  const choices = [correctText, ...uniqueDistractors]
+    .filter((choice, index, all) => {
+      const key = normalizeChoice(choice);
+      return all.findIndex((item) => normalizeChoice(item) === key) === index;
+    })
+    .slice(0, maxChoices);
 
   return shuffle(choices, random);
 }
