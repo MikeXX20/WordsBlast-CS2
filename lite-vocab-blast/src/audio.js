@@ -84,6 +84,10 @@ const MASTERED_CLIPS = [
   "./assets/audio/mastered/083_14-20_Chapter%20083.mp3",
 ];
 
+const BACKGROUND_VOLUME = 0.22;
+const FADE_STEPS = 5;
+const FADE_INTERVAL_MS = 80;
+
 export const AUDIO_ASSETS = {
   background: "./assets/audio/lobby-background.mp3",
   correct: "./assets/audio/ak-headshot.mp3",
@@ -100,6 +104,7 @@ export function createAudioState({ enabled = true } = {}) {
     musicTimer: null,
     players: {},
     preparedMasteredPath: null,
+    fadeTimer: null,
     musicMuted: false,
   };
 }
@@ -117,6 +122,7 @@ export function createGameAudio({
   AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext,
   AudioClass = globalThis.Audio,
   random = Math.random,
+  timers = globalThis,
 } = {}) {
   const state = createAudioState();
 
@@ -139,7 +145,7 @@ export function createGameAudio({
       state.musicMuted = Boolean(muted);
       const player = state.players[AUDIO_ASSETS.background];
       if (state.musicMuted) {
-        player?.pause?.();
+        stopBackground(state, timers);
       } else if (player) {
         playPreparedPlayer(player);
       }
@@ -150,7 +156,7 @@ export function createGameAudio({
         state.masterGain.gain.value = state.enabled ? 0.22 : 0;
       }
       if (!state.enabled) {
-        stopBackground(state);
+        stopBackground(state, timers);
       }
     },
     async start() {
@@ -161,7 +167,7 @@ export function createGameAudio({
       }
     },
     startBackgroundMusic() {
-      startBackgroundMusic(state, AudioClass);
+      startBackgroundMusic(state, AudioClass, timers);
     },
     menu() {
       if (!state.enabled) return;
@@ -171,7 +177,7 @@ export function createGameAudio({
       if (!state.enabled) return;
       const player = playAssetPath(state, AudioClass, AUDIO_ASSETS.roll, 0.4);
       if (player) {
-        player.onended = () => stopBackground(state);
+        player.onended = () => stopBackground(state, timers, { fade: true });
       }
     },
     shoot() {
@@ -191,13 +197,13 @@ export function createGameAudio({
       playTone(state, 180, 0.12, "sawtooth", 0.08);
     },
     mastered() {
-      stopBackground(state);
+      stopBackground(state, timers, { fade: true });
       const path = state.preparedMasteredPath || pickMasteredAsset(random);
       state.preparedMasteredPath = null;
       if (state.enabled) {
         const player = playAssetPath(state, AudioClass, path, 0.55);
         if (player) {
-          player.onended = () => startBackgroundMusic(state, AudioClass);
+          player.onended = () => startBackgroundMusic(state, AudioClass, timers, { fade: true });
           return;
         }
       }
@@ -268,12 +274,16 @@ function playAssetPath(state, AudioClass, path, volume) {
   return player;
 }
 
-function startBackgroundMusic(state, AudioClass) {
+function startBackgroundMusic(state, AudioClass, timers, { fade = false } = {}) {
   if (state.musicMuted) return;
-  const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, 0.22);
+  const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, fade ? 0 : BACKGROUND_VOLUME);
   if (!player) return;
+  stopFade(state, timers);
   player.loop = true;
   playPreparedPlayer(player);
+  if (fade) {
+    fadePlayerVolume(state, timers, player, BACKGROUND_VOLUME);
+  }
 }
 
 function playPreparedPlayer(player) {
@@ -305,13 +315,47 @@ function startBackground(state) {
   }, 520);
 }
 
-function stopBackground(state) {
+function stopBackground(state, timers, { fade = false } = {}) {
   const player = state.players[AUDIO_ASSETS.background];
-  player?.pause?.();
+  if (player) {
+    if (fade) {
+      fadePlayerVolume(state, timers, player, 0, () => player.pause?.());
+    } else {
+      stopFade(state, timers);
+      player.pause?.();
+    }
+  }
   if (state.musicTimer) {
     window.clearInterval(state.musicTimer);
     state.musicTimer = null;
   }
+}
+
+function fadePlayerVolume(state, timers, player, targetVolume, onComplete) {
+  stopFade(state, timers);
+  const startVolume = Number(player.volume) || 0;
+  let step = 0;
+  state.fadeTimer = timers.setInterval(() => {
+    step += 1;
+    const progress = Math.min(1, step / FADE_STEPS);
+    player.volume = roundVolume(startVolume + (targetVolume - startVolume) * progress);
+    if (progress >= 1) {
+      stopFade(state, timers);
+      onComplete?.();
+    }
+  }, FADE_INTERVAL_MS);
+  state.fadeTimer?.unref?.();
+  player.volume = roundVolume(startVolume + (targetVolume - startVolume) / FADE_STEPS);
+}
+
+function stopFade(state, timers) {
+  if (!state.fadeTimer) return;
+  timers.clearInterval(state.fadeTimer);
+  state.fadeTimer = null;
+}
+
+function roundVolume(volume) {
+  return Math.round(volume * 1000) / 1000;
 }
 
 function playTone(state, frequency, duration, type = "sine", volume = 0.08, delay = 0) {

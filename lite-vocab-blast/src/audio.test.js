@@ -125,8 +125,9 @@ describe("audio controls", () => {
     assert.equal(created[0].pauseCount, 1);
   });
 
-  it("pauses background music when the start roll clip ends", () => {
+  it("fades out background music when the start roll clip ends", () => {
     const created = [];
+    const timers = createFakeTimers();
     class FakeAudio {
       constructor(path) {
         this.path = path;
@@ -150,7 +151,7 @@ describe("audio controls", () => {
       }
     }
 
-    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio });
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio, timers });
     audio.startBackgroundMusic();
     audio.roll();
 
@@ -159,11 +160,16 @@ describe("audio controls", () => {
     roll.end();
 
     assert.equal(background.playCount, 1);
+    assert.equal(background.pauseCount, 0);
+    assert.ok(background.volume < 0.22);
+    timers.tick(5);
     assert.equal(background.pauseCount, 1);
+    assert.equal(background.volume, 0);
   });
 
-  it("resumes background music after the mastered clip ends", () => {
+  it("fades background music back in after the mastered clip ends", () => {
     const created = [];
+    const timers = createFakeTimers();
     class FakeAudio {
       constructor(path) {
         this.path = path;
@@ -187,10 +193,11 @@ describe("audio controls", () => {
       }
     }
 
-    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio, random: () => 0 });
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio, random: () => 0, timers });
     audio.startBackgroundMusic();
     audio.prepareMastered();
     audio.mastered();
+    timers.tick(5);
 
     const background = created.find((player) => player.path === "./assets/audio/lobby-background.mp3");
     const mastered = created.find((player) => player.path === "./assets/audio/mastered/001_00-00_Darude%20-%20Moments%20CSGO.mp3");
@@ -198,5 +205,28 @@ describe("audio controls", () => {
 
     assert.equal(background.pauseCount, 1);
     assert.equal(background.playCount, 2);
+    assert.ok(background.volume < 0.22);
+    timers.tick(5);
+    assert.equal(background.volume, 0.22);
   });
 });
+
+function createFakeTimers() {
+  const intervals = new Set();
+  return {
+    setInterval(callback) {
+      intervals.add(callback);
+      return callback;
+    },
+    clearInterval(callback) {
+      intervals.delete(callback);
+    },
+    tick(count = 1) {
+      for (let index = 0; index < count; index += 1) {
+        for (const callback of [...intervals]) {
+          callback();
+        }
+      }
+    },
+  };
+}
