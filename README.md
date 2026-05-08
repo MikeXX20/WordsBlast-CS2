@@ -1,4 +1,4 @@
-# WordsBlast-CS2-
+# WordsBlast-CS2
 Which make memorizing words funny
 memorize words that can be created customizely, play the quizlet-like blast game, with cs2 audio!
 let's roll!
