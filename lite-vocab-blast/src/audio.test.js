@@ -21,7 +21,7 @@ describe("audio controls", () => {
 
     assert.equal(audio.assets.correct, "./assets/audio/ak-headshot.mp3");
     assert.equal(audio.assets.background, "./assets/audio/lobby-background.mp3");
-    assert.equal(audio.assets.menu, "./assets/audio/menu.mp3?v=trim-05");
+    assert.equal(audio.assets.menu, "./assets/audio/menu.mp3?v=trim-02");
     assert.equal(audio.assets.roll, "./assets/audio/roll.mp3");
   });
 
@@ -46,7 +46,7 @@ describe("audio controls", () => {
     audio.roll();
 
     assert.deepEqual(created.map((player) => player.path), [
-      "./assets/audio/menu.mp3?v=trim-05",
+      "./assets/audio/menu.mp3?v=trim-02",
       "./assets/audio/roll.mp3",
     ]);
     assert.deepEqual(created.map((player) => player.volume), [0.32, 0.4]);
