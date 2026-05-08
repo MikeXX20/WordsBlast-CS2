@@ -24,6 +24,7 @@ describe('storage', () => {
       audioEnabled: true,
       nightMode: false,
       musicMuted: false,
+      language: "en",
     });
   });
 
@@ -40,6 +41,7 @@ describe('storage', () => {
       audioEnabled: false,
       nightMode: true,
       musicMuted: true,
+      language: "zh",
     };
 
     assert.deepEqual(saveState(state, storage), { ok: true });
@@ -62,6 +64,7 @@ describe('storage', () => {
       audioEnabled: true,
       nightMode: false,
       musicMuted: false,
+      language: "en",
     });
   });
 

@@ -4,68 +4,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lite Vocabulary Blast</title>
-    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./src/styles.css?v=zh-ui" />
   </head>
   <body>
-    <button id="musicButton" type="button" class="floating-mute" aria-pressed="false">Music On</button>
+    <div class="floating-controls">
+      <button id="languageButton" type="button" class="floating-button">中文</button>
+      <button id="musicButton" type="button" class="floating-button" aria-pressed="false">Music On</button>
+    </div>
     <main id="app" class="app">
-      <section class="setup-panel" aria-label="Vocabulary setup">
+      <section class="setup-panel" aria-label="Vocabulary setup" data-i18n-aria="setupLabel">
         <header class="brand">
-          <h1>Vocab Blast</h1>
-          <p>Import words, choose a direction, and practice at a gentle pace.</p>
+          <h1 data-i18n="brandTitle">Vocab Blast</h1>
+          <p data-i18n="brandSubtitle">Import words, choose a direction, and practice at a gentle pace.</p>
         </header>
 
         <section class="panel-section">
-          <label for="importText">Import vocabulary</label>
-          <textarea id="importText" rows="8" placeholder="apple - 苹果&#10;accelerate - speed up"></textarea>
+          <label for="importText" data-i18n="importLabel">Import vocabulary</label>
+          <textarea id="importText" rows="8" placeholder="apple - 苹果&#10;accelerate - speed up" data-i18n-placeholder="importPlaceholder"></textarea>
           <div class="button-row">
-            <button id="importButton" type="button">Import</button>
-            <button id="clearButton" type="button" class="secondary">Clear</button>
+            <button id="importButton" type="button" data-i18n="importButton">Import</button>
+            <button id="clearButton" type="button" class="secondary" data-i18n="clearButton">Clear</button>
           </div>
           <p id="importSummary" class="status" role="status"></p>
           <ul id="importErrors" class="error-list" aria-live="polite"></ul>
         </section>
 
         <section class="panel-section">
-          <h2>Deck</h2>
+          <h2 data-i18n="deckHeading">Deck</h2>
           <dl class="stats">
-            <div><dt>Cards</dt><dd id="cardCount">0</dd></div>
-            <div><dt>Accuracy</dt><dd id="accuracy">0%</dd></div>
-            <div><dt>Weak words</dt><dd id="weakCount">0</dd></div>
-            <div><dt>Best score</dt><dd id="bestScore">0</dd></div>
+            <div><dt data-i18n="cardsStat">Cards</dt><dd id="cardCount">0</dd></div>
+            <div><dt data-i18n="accuracyStat">Accuracy</dt><dd id="accuracy">0%</dd></div>
+            <div><dt data-i18n="weakWordsStat">Weak words</dt><dd id="weakCount">0</dd></div>
+            <div><dt data-i18n="bestScoreStat">Best score</dt><dd id="bestScore">0</dd></div>
           </dl>
         </section>
 
         <section class="panel-section">
-          <h2>Mode</h2>
+          <h2 data-i18n="modeHeading">Mode</h2>
           <fieldset class="mode-field">
-            <legend>Practice direction</legend>
-            <label><input type="radio" name="direction" value="term-to-meaning" checked /> Word to Meaning</label>
-            <label><input type="radio" name="direction" value="meaning-to-term" /> Meaning to Word</label>
+            <legend data-i18n="directionLegend">Practice direction</legend>
+            <label><input type="radio" name="direction" value="term-to-meaning" checked /> <span data-i18n="wordToMeaning">Word to Meaning</span></label>
+            <label><input type="radio" name="direction" value="meaning-to-term" /> <span data-i18n="meaningToWord">Meaning to Word</span></label>
           </fieldset>
-          <button id="startButton" type="button" class="primary">Start Blast</button>
+          <button id="startButton" type="button" class="primary" data-i18n="startButton">Start Blast</button>
           <button id="soundButton" type="button" class="secondary sound-toggle" aria-pressed="true">Sound On</button>
           <button id="nightButton" type="button" class="secondary theme-toggle" aria-pressed="false">Night Off</button>
         </section>
       </section>
 
-      <section class="game-panel" aria-label="Blast game">
+      <section class="game-panel" aria-label="Blast game" data-i18n-aria="gameLabel">
         <div class="hud">
-          <span>Score <strong id="score">0</strong></span>
-          <span>Level <strong id="level">1</strong></span>
-          <span>Lives <strong id="lives">3</strong></span>
-          <span>Combo <strong id="combo">0</strong></span>
+          <span><span data-i18n="scoreHud">Score</span> <strong id="score">0</strong></span>
+          <span><span data-i18n="levelHud">Level</span> <strong id="level">1</strong></span>
+          <span><span data-i18n="livesHud">Lives</span> <strong id="lives">3</strong></span>
+          <span><span data-i18n="comboHud">Combo</span> <strong id="combo">0</strong></span>
         </div>
         <div id="prompt" class="prompt">Import at least one card to begin.</div>
         <div id="arena" class="arena" aria-live="polite"></div>
         <div class="game-actions">
           <button id="pauseButton" type="button" class="secondary">Pause</button>
-          <button id="restartButton" type="button" class="secondary">Restart</button>
+          <button id="restartButton" type="button" class="secondary" data-i18n="restartButton">Restart</button>
           <button id="soundGameButton" type="button" class="secondary sound-toggle" aria-pressed="true">Sound On</button>
           <button id="nightGameButton" type="button" class="secondary theme-toggle" aria-pressed="false">Night Off</button>
         </div>
       </section>
     </main>
-    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/main.js?v=zh-ui"></script>
   </body>
 </html>

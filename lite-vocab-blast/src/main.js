@@ -1,11 +1,13 @@
 import { parseVocabulary } from "./parser.js";
 import { createGameAudio, soundForAnswer } from "./audio.js";
 import { answerCurrent, createSession, nextRound } from "./game.js";
+import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js";
 import { recordAnswer, summarizeProgress } from "./progress.js";
 import { createDefaultState, loadState, saveState } from "./storage.js";
 
 const els = {
   app: document.querySelector("#app"),
+  languageButton: document.querySelector("#languageButton"),
   musicButton: document.querySelector("#musicButton"),
   importText: document.querySelector("#importText"),
   importButton: document.querySelector("#importButton"),
@@ -32,6 +34,7 @@ const els = {
 };
 
 let state = loadState();
+state = { ...state, language: normalizeLanguage(state.language) };
 let session = null;
 let currentRound = null;
 let isPaused = false;
@@ -41,6 +44,7 @@ const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
 audio.setMusicMuted(state.musicMuted);
 
+renderLanguage();
 renderProgress();
 renderIdleGame();
 renderSoundButtons();
@@ -51,14 +55,18 @@ els.importButton.addEventListener("click", () => {
   audio.menu();
   const result = parseVocabulary(els.importText.value);
   if (result.cards.length === 0) {
-    els.importSummary.textContent = "Paste vocabulary first.";
+    els.importSummary.textContent = t("pasteFirst");
     renderImportErrors(result.errors);
     return;
   }
 
   state = { ...state, cards: result.cards };
   persistState();
-  els.importSummary.textContent = `Imported ${result.summary.cardCount} cards. Skipped ${result.summary.blankLineCount} empty lines. Found ${result.summary.duplicateCount} duplicates.`;
+  els.importSummary.textContent = tv("importedSummary", {
+    cards: result.summary.cardCount,
+    blanks: result.summary.blankLineCount,
+    duplicates: result.summary.duplicateCount,
+  });
   renderImportErrors(result.errors);
   renderProgress();
   renderIdleGame();
@@ -66,12 +74,18 @@ els.importButton.addEventListener("click", () => {
 
 els.clearButton.addEventListener("click", () => {
   audio.menu();
-  state = createDefaultState();
+  state = {
+    ...createDefaultState(),
+    audioEnabled: state.audioEnabled,
+    language: state.language,
+    musicMuted: state.musicMuted,
+    nightMode: state.nightMode,
+  };
   session = null;
   currentRound = null;
   persistState();
   els.importText.value = "";
-  els.importSummary.textContent = "Deck cleared.";
+  els.importSummary.textContent = t("deckCleared");
   renderImportErrors([]);
   renderProgress();
   renderIdleGame();
@@ -79,6 +93,7 @@ els.clearButton.addEventListener("click", () => {
 
 els.startButton.addEventListener("click", startGame);
 els.restartButton.addEventListener("click", startGame);
+els.languageButton.addEventListener("click", toggleLanguage);
 els.soundButton.addEventListener("click", toggleSound);
 els.soundGameButton.addEventListener("click", toggleSound);
 els.musicButton.addEventListener("click", toggleMusic);
@@ -91,12 +106,12 @@ document.addEventListener("pointerdown", startPageMusicOnce, { once: true });
 els.pauseButton.addEventListener("click", () => {
   if (!session) return;
   isPaused = !isPaused;
-  els.pauseButton.textContent = isPaused ? "Resume" : "Pause";
+  renderPauseButton();
 });
 
 function startGame() {
   if (state.cards.length === 0) {
-    els.importSummary.textContent = "Paste vocabulary first.";
+    els.importSummary.textContent = t("pasteFirst");
     return;
   }
 
@@ -109,7 +124,7 @@ function startGame() {
   session = createSession(state.cards, direction);
   masteredAudioPlayed = false;
   isPaused = false;
-  els.pauseButton.textContent = "Pause";
+  renderPauseButton();
   els.app.classList.add("is-playing");
   showNextRound();
   startAnimation();
@@ -194,16 +209,16 @@ function endGame() {
     audio.mastered();
     masteredAudioPlayed = true;
   }
-  els.prompt.textContent = allMastered ? "All words mastered." : session ? `Session complete. Score: ${session.score}` : "Choose a mode and start Blast.";
-  els.arena.innerHTML = '<div class="empty-arena">Press Start Blast to practice again.</div>';
+  els.prompt.textContent = allMastered ? t("allMastered") : session ? tv("sessionComplete", { score: session.score }) : t("chooseMode");
+  els.arena.innerHTML = `<div class="empty-arena">${t("practiceAgain")}</div>`;
   renderHud();
   stopAnimation();
 }
 
 function renderIdleGame() {
   renderHud();
-  els.prompt.textContent = state.cards.length ? "Choose a mode and start Blast." : "Import at least one card to begin.";
-  els.arena.innerHTML = '<div class="empty-arena">Answer bubbles will appear here.</div>';
+  els.prompt.textContent = state.cards.length ? t("chooseMode") : t("importToBegin");
+  els.arena.innerHTML = `<div class="empty-arena">${t("answerBubbles")}</div>`;
 }
 
 function renderHud() {
@@ -225,7 +240,11 @@ function renderImportErrors(errors) {
   els.importErrors.innerHTML = "";
   for (const error of errors) {
     const item = document.createElement("li");
-    item.textContent = `Line ${error.line}: ${error.reason} (${error.text})`;
+    item.textContent = tv("errorLine", {
+      line: error.line,
+      reason: error.reason,
+      text: error.text,
+    });
     els.importErrors.append(item);
   }
 }
@@ -233,7 +252,44 @@ function renderImportErrors(errors) {
 function persistState() {
   const result = saveState(state);
   if (!result.ok) {
-    els.importSummary.textContent = `Progress may not save: ${result.reason}`;
+    els.importSummary.textContent = tv("saveWarning", { reason: result.reason });
+  }
+}
+
+function t(key) {
+  return getText(state.language, key);
+}
+
+function tv(key, values) {
+  return getTextWithVars(state.language, key, values);
+}
+
+function toggleLanguage() {
+  audio.menu();
+  state = { ...state, language: nextLanguage(state.language) };
+  persistState();
+  renderLanguage();
+}
+
+function renderLanguage() {
+  document.documentElement.lang = state.language === "zh" ? "zh-Hans" : "en";
+  document.title = t("appTitle");
+  for (const element of document.querySelectorAll("[data-i18n]")) {
+    element.textContent = t(element.dataset.i18n);
+  }
+  for (const element of document.querySelectorAll("[data-i18n-placeholder]")) {
+    element.placeholder = t(element.dataset.i18nPlaceholder);
+  }
+  for (const element of document.querySelectorAll("[data-i18n-aria]")) {
+    element.setAttribute("aria-label", t(element.dataset.i18nAria));
+  }
+  els.languageButton.textContent = t("languageButton");
+  renderMusicButton();
+  renderSoundButtons();
+  renderTheme();
+  renderPauseButton();
+  if (!currentRound) {
+    renderIdleGame();
   }
 }
 
@@ -266,13 +322,13 @@ function startPageMusicOnce() {
 }
 
 function renderMusicButton() {
-  els.musicButton.textContent = state.musicMuted ? "Music Off" : "Music On";
+  els.musicButton.textContent = state.musicMuted ? t("musicOff") : t("musicOn");
   els.musicButton.setAttribute("aria-pressed", String(!state.musicMuted));
 }
 
 function renderSoundButtons() {
   for (const button of [els.soundButton, els.soundGameButton]) {
-    button.textContent = state.audioEnabled ? "Sound On" : "Sound Off";
+    button.textContent = state.audioEnabled ? t("soundOn") : t("soundOff");
     button.setAttribute("aria-pressed", String(state.audioEnabled));
   }
 }
@@ -287,9 +343,13 @@ function toggleNightMode() {
 function renderTheme() {
   document.body.classList.toggle("night-mode", state.nightMode);
   for (const button of [els.nightButton, els.nightGameButton]) {
-    button.textContent = state.nightMode ? "Night On" : "Night Off";
+    button.textContent = state.nightMode ? t("nightOn") : t("nightOff");
     button.setAttribute("aria-pressed", String(state.nightMode));
   }
+}
+
+function renderPauseButton() {
+  els.pauseButton.textContent = isPaused ? t("resumeButton") : t("pauseButton");
 }
 
 function playAnswerSound(isCorrect) {
