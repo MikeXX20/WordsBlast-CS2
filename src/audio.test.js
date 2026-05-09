@@ -41,7 +41,14 @@ describe("audio controls", () => {
       }
     }
 
-    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio });
+    const timers = {
+      setTimeout(callback) {
+        callback();
+        return 1;
+      },
+      clearTimeout() {},
+    };
+    const audio = createGameAudio({ AudioContextClass: null, AudioClass: FakeAudio, timers });
     audio.setCorrectSound("deagle", { playDraw: true });
     audio.correct();
 

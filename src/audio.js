@@ -99,6 +99,8 @@ export const AUDIO_ASSETS = {
   weaponDrawAk: "./assets/audio/weapon-ak-draw.wav",
   weaponShotDeagle: "./assets/audio/weapon-deagle-shot.wav",
   weaponDrawDeagle: "./assets/audio/weapon-deagle-draw.wav",
+  taserShoot: "./assets/audio/taser-shoot.wav",
+  taserDeath: "./assets/audio/death-taser.wav",
   menu: "./assets/audio/menu.mp3?v=trim-05",
   mastered: MASTERED_CLIPS,
   roll: "./assets/audio/roll.mp3",
@@ -241,12 +243,12 @@ export function createGameAudio({
       if (!state.enabled) return;
       if (state.correctSound === "ak") {
         const playedShot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponShotAk, 0.6));
-        const playedHeadshot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.correct, HEADSHOT_VOLUME));
+        const playedHeadshot = playAssetPathDelayed(state, AudioClass, timers, AUDIO_ASSETS.correct, HEADSHOT_VOLUME, 50);
         if (playedShot || playedHeadshot) return;
       }
       if (state.correctSound === "deagle") {
         const playedShot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponShotDeagle, 0.5));
-        const playedHeadshot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.correct, HEADSHOT_VOLUME));
+        const playedHeadshot = playAssetPathDelayed(state, AudioClass, timers, AUDIO_ASSETS.correct, HEADSHOT_VOLUME, 100);
         if (playedShot || playedHeadshot) return;
       }
       if (!canPlay(state)) return;
@@ -259,6 +261,10 @@ export function createGameAudio({
       playTone(state, 980, 0.07, "sine", 0.06, 0.03);
     },
     wrong() {
+      if (!state.enabled) return;
+      const playedShoot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.taserShoot, 0.5));
+      const playedDeath = playAssetPathDelayed(state, AudioClass, timers, AUDIO_ASSETS.taserDeath, 0.42, 100);
+      if (playedShoot || playedDeath) return;
       if (!canPlay(state)) return;
       playTone(state, 180, 0.12, "sawtooth", 0.08);
     },
@@ -348,6 +354,14 @@ function playAssetPathWithEnd(state, AudioClass, path, volume) {
     player.onended = () => resolve(true);
     window.setTimeout(() => resolve(true), 4000);
   });
+}
+
+function playAssetPathDelayed(state, AudioClass, timers, path, volume, delayMs) {
+  if (!AudioClass || !path) return false;
+  timers.setTimeout(() => {
+    playAssetPath(state, AudioClass, path, volume);
+  }, delayMs);
+  return true;
 }
 
 function startBackgroundMusic(state, AudioClass, timers, { fade = false } = {}) {
