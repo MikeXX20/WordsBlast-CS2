@@ -44,6 +44,7 @@ let isPaused = false;
 let blastLocked = false;
 let frameId = null;
 let masteredAudioPlayed = false;
+let pageReady = false;
 const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
 audio.setMusicMuted(state.musicMuted);
@@ -56,6 +57,8 @@ renderIdleGame();
 renderSoundButtons();
 renderTheme();
 renderMusicButton();
+setUiReady(false);
+bootstrapAudio();
 
 els.importButton.addEventListener("click", () => {
   audio.menu();
@@ -117,6 +120,7 @@ els.pauseButton.addEventListener("click", () => {
 });
 
 async function startGame() {
+  if (!pageReady) return;
   if (state.cards.length === 0) {
     els.importSummary.textContent = t("pasteFirst");
     return;
@@ -287,6 +291,20 @@ function toggleLanguage() {
   renderLanguage();
 }
 
+async function bootstrapAudio() {
+  els.importSummary.textContent = t("loadingAudio");
+  try {
+    await audio.preloadAllAssets();
+    const autoplayed = await audio.tryAutoPlayBackground();
+    els.importSummary.textContent = autoplayed ? t("audioReady") : t("audioTapToEnable");
+  } catch {
+    els.importSummary.textContent = t("audioTapToEnable");
+  } finally {
+    pageReady = true;
+    setUiReady(true);
+  }
+}
+
 function renderLanguage() {
   document.documentElement.lang = state.language === "zh" ? "zh-Hans" : "en";
   document.title = t("appTitle");
@@ -351,6 +369,27 @@ function startPageMusicOnce() {
   if (!state.musicMuted) {
     audio.startBackgroundMusic();
   }
+}
+
+function setUiReady(ready) {
+  const controls = [
+    els.importButton,
+    els.clearButton,
+    els.startButton,
+    els.restartButton,
+    els.soundButton,
+    els.soundGameButton,
+    els.musicButton,
+    els.nightButton,
+    els.nightGameButton,
+    els.blastSoundSelect,
+    els.pauseButton,
+    els.languageButton,
+  ];
+  controls.forEach((el) => {
+    if (!el) return;
+    el.disabled = !ready;
+  });
 }
 
 function renderMusicButton() {

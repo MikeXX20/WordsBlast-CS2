@@ -198,6 +198,35 @@ export function createGameAudio({
         await state.context.resume();
       }
     },
+    async preloadAllAssets() {
+      const preloadPaths = [
+        AUDIO_ASSETS.background,
+        AUDIO_ASSETS.correct,
+        AUDIO_ASSETS.menu,
+        AUDIO_ASSETS.roll,
+        AUDIO_ASSETS.weaponShotAk,
+        AUDIO_ASSETS.weaponDrawAk,
+        AUDIO_ASSETS.weaponShotDeagle,
+        AUDIO_ASSETS.weaponDrawDeagle,
+        AUDIO_ASSETS.taserShoot,
+        AUDIO_ASSETS.taserDeath,
+        AUDIO_ASSETS.mastered[0],
+      ];
+      const tasks = preloadPaths
+        .filter(Boolean)
+        .map((path) => {
+          const player = preloadAssetPath(state, AudioClass, path, 0.2);
+          return waitForCanPlay(player, timers);
+        });
+      await Promise.all(tasks);
+    },
+    async tryAutoPlayBackground() {
+      if (state.musicMuted || !state.enabled) return false;
+      const player = preloadAssetPath(state, AudioClass, AUDIO_ASSETS.background, BACKGROUND_VOLUME);
+      if (!player) return false;
+      player.loop = true;
+      return playPreparedPlayer(player);
+    },
     startBackgroundMusic() {
       startBackgroundMusic(state, AudioClass, timers);
     },
@@ -378,9 +407,10 @@ function startBackgroundMusic(state, AudioClass, timers, { fade = false } = {}) 
 
 function playPreparedPlayer(player) {
   const playPromise = player.play();
-  if (playPromise?.catch) {
-    playPromise.catch(() => {});
+  if (playPromise?.then) {
+    return playPromise.then(() => true).catch(() => false);
   }
+  return true;
 }
 
 function ensureContext(state, AudioContextClass) {
@@ -469,6 +499,23 @@ function attachFadeOutNearEnd(player, startVolume, fadeSeconds) {
       player.volume = roundVolume(startVolume * (1 - progress));
     };
   };
+}
+
+function waitForCanPlay(player, timers, timeoutMs = 10000) {
+  if (!player) return Promise.resolve();
+  return new Promise((resolve) => {
+    let finished = false;
+    const done = () => {
+      if (finished) return;
+      finished = true;
+      player.removeEventListener?.("canplaythrough", done);
+      player.removeEventListener?.("loadeddata", done);
+      resolve();
+    };
+    player.addEventListener?.("canplaythrough", done, { once: true });
+    player.addEventListener?.("loadeddata", done, { once: true });
+    timers.setTimeout(done, timeoutMs);
+  });
 }
 
 function playTone(state, frequency, duration, type = "sine", volume = 0.08, delay = 0) {
