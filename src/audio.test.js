@@ -54,8 +54,7 @@ describe("audio controls", () => {
 
     assert.deepEqual(created.map((player) => player.path), [
       "./assets/audio/weapon-deagle-draw.wav",
-      "./assets/audio/weapon-deagle-shot.wav",
-      "./assets/audio/ak-headshot.mp3",
+      "./assets/audio/weapon-deagle-shot-headshot.wav",
     ]);
   });
 

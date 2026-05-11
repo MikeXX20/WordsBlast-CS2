@@ -74,6 +74,18 @@ describe("parseVocabulary", () => {
     ]);
   });
 
+  test("prioritizes tab split when row contains hyphens", () => {
+    const result = parseVocabulary(
+      ["post-test\tfollow-up review - level-2", "x-ray\twell-known test-case"].join("\n"),
+    );
+
+    assert.deepEqual(result.errors, []);
+    assert.deepEqual(result.cards.map(({ term, meaning }) => ({ term, meaning })), [
+      { term: "post-test", meaning: "follow-up review - level-2" },
+      { term: "x-ray", meaning: "well-known test-case" },
+    ]);
+  });
+
   test("parses Quizlet-style repeated term and definition line pairs", () => {
     const result = parseVocabulary(
       ["gregarious", "fond of company", "hapless", "unlucky"].join("\n"),

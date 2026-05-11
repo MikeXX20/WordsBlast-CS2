@@ -1,4 +1,4 @@
-const OTHER_SEPARATORS = [":", ",", "\t"];
+const OTHER_SEPARATORS = [":", ","];
 
 export function parseVocabulary(text) {
   const cards = [];
@@ -96,6 +96,15 @@ export function parseVocabulary(text) {
 }
 
 function splitSeparatedRow(line) {
+  // Prefer tab-separated import rows first; many vocab exports use TSV format.
+  const tabIndex = line.indexOf("\t");
+  if (tabIndex !== -1) {
+    return {
+      term: line.slice(0, tabIndex).trim(),
+      meaning: line.slice(tabIndex + 1).trim(),
+    };
+  }
+
   const dashMatch = line.match(/^(.*?)\s[-–—]\s?(.*)$/);
   if (dashMatch) {
     return {

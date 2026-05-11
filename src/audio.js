@@ -86,7 +86,6 @@ const MASTERED_CLIPS = [
 
 const BACKGROUND_VOLUME = 0.4;
 const ROLL_VOLUME = 0.4;
-const HEADSHOT_VOLUME = 0.28;
 const MASTERED_VOLUME = 0.55;
 const MASTERED_FADE_SECONDS = 1.8;
 const FADE_STEPS = 18;
@@ -95,12 +94,11 @@ const FADE_INTERVAL_MS = 140;
 export const AUDIO_ASSETS = {
   background: "./assets/audio/lobby-background.mp3",
   correct: "./assets/audio/ak-headshot.mp3",
-  weaponShotAk: "./assets/audio/weapon-ak-shot.wav",
+  weaponShotAk: "./assets/audio/weapon-ak-shot-headshot.wav",
   weaponDrawAk: "./assets/audio/weapon-ak-draw.wav",
-  weaponShotDeagle: "./assets/audio/weapon-deagle-shot.wav",
+  weaponShotDeagle: "./assets/audio/weapon-deagle-shot-headshot.wav",
   weaponDrawDeagle: "./assets/audio/weapon-deagle-draw.wav",
-  taserShoot: "./assets/audio/taser-shoot.wav",
-  taserDeath: "./assets/audio/death-taser.wav",
+  taserCombo: "./assets/audio/taser-shot-death.wav",
   menu: "./assets/audio/menu.mp3?v=trim-05",
   mastered: MASTERED_CLIPS,
   roll: "./assets/audio/roll.mp3",
@@ -208,8 +206,7 @@ export function createGameAudio({
         AUDIO_ASSETS.weaponDrawAk,
         AUDIO_ASSETS.weaponShotDeagle,
         AUDIO_ASSETS.weaponDrawDeagle,
-        AUDIO_ASSETS.taserShoot,
-        AUDIO_ASSETS.taserDeath,
+        AUDIO_ASSETS.taserCombo,
         AUDIO_ASSETS.mastered[0],
       ];
       const tasks = preloadPaths
@@ -272,13 +269,11 @@ export function createGameAudio({
       if (!state.enabled) return;
       if (state.correctSound === "ak") {
         const playedShot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponShotAk, 0.6));
-        const playedHeadshot = playAssetPathDelayed(state, AudioClass, timers, AUDIO_ASSETS.correct, HEADSHOT_VOLUME, 50);
-        if (playedShot || playedHeadshot) return;
+        if (playedShot) return;
       }
       if (state.correctSound === "deagle") {
         const playedShot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.weaponShotDeagle, 0.5));
-        const playedHeadshot = playAssetPathDelayed(state, AudioClass, timers, AUDIO_ASSETS.correct, HEADSHOT_VOLUME, 100);
-        if (playedShot || playedHeadshot) return;
+        if (playedShot) return;
       }
       if (!canPlay(state)) return;
       if (state.correctSound === "laser") {
@@ -291,9 +286,8 @@ export function createGameAudio({
     },
     wrong() {
       if (!state.enabled) return;
-      const playedShoot = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.taserShoot, 0.5));
-      const playedDeath = playAssetPathDelayed(state, AudioClass, timers, AUDIO_ASSETS.taserDeath, 0.42, 100);
-      if (playedShoot || playedDeath) return;
+      const playedCombo = Boolean(playAssetPath(state, AudioClass, AUDIO_ASSETS.taserCombo, 0.62));
+      if (playedCombo) return;
       if (!canPlay(state)) return;
       playTone(state, 180, 0.12, "sawtooth", 0.08);
     },
