@@ -14,4 +14,10 @@ let's roll!
 # feature
  night mode supported
  Chinese supported
- 
+
+# contact me
+ Gmail: a2363996571@gmail.com
+
+# donate me
+ <img width="1708" height="2560" alt="IMG_1231" src="https://github.com/user-attachments/assets/025f201b-fec2-451b-a09f-b0673fbcbf2b" />
+
