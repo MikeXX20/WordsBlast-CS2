@@ -56,6 +56,9 @@ describe('progress', () => {
       cardCount: 3,
       accuracy: 80,
       weakCount: 1,
+      masteredCount: 0,
+      masteryPercent: 0,
+      reviewCount: 3,
       bestScore: 12,
     });
   });
@@ -65,7 +68,29 @@ describe('progress', () => {
       cardCount: 1,
       accuracy: 0,
       weakCount: 1,
+      masteredCount: 0,
+      masteryPercent: 0,
+      reviewCount: 1,
       bestScore: 0,
+    });
+  });
+
+  it("tracks mastered and review totals", () => {
+    const cards = [
+      { correctCount: 3, missCount: 0 },
+      { correctCount: 3, missCount: 2 },
+      { correctCount: 1, missCount: 0 },
+      { correctCount: 0, missCount: 0 },
+    ];
+
+    assert.deepEqual(summarizeProgress(cards, 900), {
+      cardCount: 4,
+      accuracy: 0,
+      weakCount: 1,
+      masteredCount: 2,
+      masteryPercent: 50,
+      reviewCount: 3,
+      bestScore: 900,
     });
   });
 });

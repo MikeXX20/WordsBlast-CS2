@@ -26,6 +26,11 @@ describe('storage', () => {
       musicMuted: false,
       correctSound: "ak",
       language: "en",
+      dailyGoal: 12,
+      streakCount: 0,
+      lastPracticeDate: null,
+      todayPracticeDate: null,
+      todayAnswerCount: 0,
     });
   });
 
@@ -44,6 +49,11 @@ describe('storage', () => {
       musicMuted: true,
       correctSound: "ak",
       language: "zh",
+      dailyGoal: 12,
+      streakCount: 2,
+      lastPracticeDate: "2026-06-15",
+      todayPracticeDate: "2026-06-15",
+      todayAnswerCount: 7,
     };
 
     assert.deepEqual(saveState(state, storage), { ok: true });
@@ -68,6 +78,11 @@ describe('storage', () => {
       musicMuted: false,
       correctSound: "ak",
       language: "en",
+      dailyGoal: 12,
+      streakCount: 0,
+      lastPracticeDate: null,
+      todayPracticeDate: null,
+      todayAnswerCount: 0,
     });
   });
 
