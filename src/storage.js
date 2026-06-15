@@ -10,6 +10,11 @@ export function createDefaultState() {
     musicMuted: false,
     correctSound: 'ak',
     language: 'en',
+    dailyGoal: 12,
+    streakCount: 0,
+    lastPracticeDate: null,
+    todayPracticeDate: null,
+    todayAnswerCount: 0,
   };
 }
 

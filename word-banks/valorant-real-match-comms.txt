@@ -1,0 +1,162 @@
+Valorant pistol: five man rush B - All five attackers should quickly hit B site.
+Valorant pistol: play default for orb - Spread out and try to take ultimate orb control.
+Valorant eco: stack A with shorties - Put many defenders on A using cheap close range weapons.
+Valorant eco: save credits for rifles - Spend little now so the next round has rifles.
+Valorant bonus: keep spectres and trade - Use saved SMGs and fight together.
+Valorant buy: full shield full utility - Buy full armor and all important abilities.
+Valorant attack: drone first then swing - Use recon ability before peeking.
+Valorant attack: smoke heaven and CT - Block heaven and defender spawn vision.
+Valorant attack: wait for my flash - Do not peek until my flash goes out.
+Valorant attack: hit site after dart - Execute when recon dart scans the site.
+Valorant attack: rotate off contact - Rotate when defenders make strong first contact.
+Valorant attack: leave one lurk mid - One player should stay mid to catch rotations.
+Valorant defense: play retake A - Give A site and fight back together later.
+Valorant defense: anchor B alone - One defender stays B and delays the push.
+Valorant defense: fight for main control - Contest the main entrance early.
+Valorant defense: give site stay alive - Do not die; wait for retake.
+Valorant defense: hold flank from spawn - Watch behind teammates from spawn area.
+Valorant Ascent: smoke tree and heaven - Block A tree and heaven before hitting A.
+Valorant Ascent: one wine - One enemy is hiding in wine.
+Valorant Ascent: break market door - Destroy the market door.
+Valorant Ascent: close switch - Enemy may be near the switch door.
+Valorant Ascent: B main rush - Enemies are quickly pushing B main.
+Valorant Ascent: catwalk pressure - Enemies are pressuring catwalk.
+Valorant Ascent: market smoked - Market vision is blocked by smoke.
+Valorant Ascent: play post from main - After plant stay in main to watch spike.
+Valorant Ascent: heaven one tagged - One enemy in heaven took damage.
+Valorant Ascent: rotate through spawn - Move to the other site through defender spawn.
+Valorant Bind: hookah one - One enemy is in hookah.
+Valorant Bind: shower control - Team has or needs control of showers.
+Valorant Bind: lamps clear - Lamps has been checked.
+Valorant Bind: TP fake - Use teleporter sound to fake a rotation.
+Valorant Bind: one elbow - One enemy is in B elbow.
+Valorant Bind: B long operator - Enemy Operator is holding B long.
+Valorant Bind: plant for long - Plant spike where B long can watch it.
+Valorant Bind: smoke heaven - Smoke A heaven before entering site.
+Valorant Bind: clear close showers - Check the close showers corner first.
+Valorant Bind: rotate through teleporter - Move to the other side using teleporter.
+Valorant Haven: C long pressure - Enemies are pressuring C long.
+Valorant Haven: garage one - One enemy is in garage.
+Valorant Haven: A short clear - A short has been checked.
+Valorant Haven: B hit possible - Enemies may be attacking B site.
+Valorant Haven: spike down C - Spike is dropped near C.
+Valorant Haven: play retake C - Give C site and retake together.
+Valorant Haven: hold garage push - Watch for enemies pushing garage.
+Valorant Haven: one heaven A - One enemy is in A heaven.
+Valorant Haven: split A through short - Attack A from long and short.
+Valorant Haven: flank from C lobby - Enemy may flank from C lobby.
+Valorant Split: take mid control - Prioritize middle control.
+Valorant Split: vent one - One enemy is in vents.
+Valorant Split: mail smoked - Mail room is blocked by smoke.
+Valorant Split: B heaven lost - Defenders lost B heaven control.
+Valorant Split: A ramp fight - Enemies are fighting at A ramp.
+Valorant Split: screens one - One enemy is at screens.
+Valorant Split: plant for heaven - Plant spike where heaven can watch it.
+Valorant Split: rope sound - Enemy made sound on rope.
+Valorant Split: slow walk B main - Walk silently through B main.
+Valorant Split: retake from tower - Retake from B tower.
+Valorant Icebox: yellow one - One enemy is behind yellow container.
+Valorant Icebox: kitchen lurk - Enemy or teammate is lurking through kitchen.
+Valorant Icebox: tube control - Team has or needs tube control.
+Valorant Icebox: plant default B - Plant spike at common B default.
+Valorant Icebox: play lineups from green - Use post plant utility from green.
+Valorant Icebox: rafters clear - A rafters has been checked.
+Valorant Icebox: belt operator - Enemy Operator is holding belt.
+Valorant Icebox: snowman last - Last enemy is at snowman.
+Valorant Icebox: maze one - One enemy is in maze.
+Valorant Icebox: rotate through mid - Move to the other site through mid.
+Valorant Breeze: halls lurk - One player is lurking halls.
+Valorant Breeze: elbow one - One enemy is in B elbow.
+Valorant Breeze: A pyramids clear - A pyramids area has been checked.
+Valorant Breeze: mid doors smoked - Mid doors is blocked by smoke.
+Valorant Breeze: nest operator - Enemy Operator is in nest.
+Valorant Breeze: plant for cave - Plant spike so cave can watch it.
+Valorant Breeze: B tunnel push - Enemies are pushing B tunnel.
+Valorant Breeze: chute drop - Enemy dropped through chute.
+Valorant Breeze: back site one - One enemy is back site.
+Valorant Breeze: play long range - Fight from far away on the open map.
+Valorant Fracture: arcade pressure - Enemies are pressuring arcade.
+Valorant Fracture: dish control - Team has or needs dish control.
+Valorant Fracture: drop one - One enemy is at A drop.
+Valorant Fracture: tower smoked - B tower is blocked by smoke.
+Valorant Fracture: canteen one - One enemy is in canteen.
+Valorant Fracture: split site from both spawns - Attack from both sides of the map.
+Valorant Fracture: rope clear - Rope area has been checked.
+Valorant Fracture: generator plant - Spike is planted near generator.
+Valorant Fracture: hold arcade flank - Watch for flank from arcade.
+Valorant Fracture: retake with stun - Use stun ability before retake.
+Valorant Pearl: B long operator - Enemy Operator is holding B long.
+Valorant Pearl: art control - Team has or needs A art control.
+Valorant Pearl: mid doors one - One enemy is at mid doors.
+Valorant Pearl: dugout clear - A dugout has been checked.
+Valorant Pearl: plant for B long - Plant spike where B long can watch it.
+Valorant Pearl: tower one - One enemy is in B tower.
+Valorant Pearl: A link smoked - A link is blocked by smoke.
+Valorant Pearl: flowers last - Last enemy is near flowers.
+Valorant Pearl: split B through mid - Attack B through mid and B main.
+Valorant Pearl: save operator long - Save the Operator near long.
+Valorant Lotus: break rotating door - Destroy or open the rotating door.
+Valorant Lotus: A tree one - One enemy is in A tree.
+Valorant Lotus: C mound pressure - Enemies are pressuring C mound.
+Valorant Lotus: B pillar one - One enemy is around B pillar.
+Valorant Lotus: waterfall clear - Waterfall area has been checked.
+Valorant Lotus: fake A rotate C - Pretend to attack A then rotate to C.
+Valorant Lotus: three site map spread - Spread to control the three site map.
+Valorant Lotus: plant for C main - Plant spike so C main can watch it.
+Valorant Lotus: door sound - Enemy used the rotating door.
+Valorant Lotus: retake through link - Retake through the link path.
+Valorant Sunset: B main pressure - Enemies are pressuring B main.
+Valorant Sunset: mid tiles control - Team has or needs mid tiles control.
+Valorant Sunset: market one - One enemy is in market.
+Valorant Sunset: elbow clear - Elbow has been checked.
+Valorant Sunset: A link smoked - A link is blocked by smoke.
+Valorant Sunset: boba one - One enemy is near boba.
+Valorant Sunset: plant for main - Plant spike so main can watch it.
+Valorant Sunset: hold mid flank - Watch for flank through mid.
+Valorant Sunset: courtyard fight - Enemies are fighting in courtyard.
+Valorant Sunset: rotate off B pressure - Leave B pressure and rotate.
+Valorant Abyss: do not fall - Be careful near map edges.
+Valorant Abyss: A bridge one - One enemy is on A bridge.
+Valorant Abyss: B danger one - One enemy is near B danger.
+Valorant Abyss: mid library clear - Mid library has been checked.
+Valorant Abyss: tower smoked - Tower vision is blocked by smoke.
+Valorant Abyss: vent door broken - The vent door is broken.
+Valorant Abyss: push them off angle - Use utility to force enemy away from edge angle.
+Valorant Abyss: play post from bridge - Watch spike from bridge after plant.
+Valorant Abyss: under one - One enemy is under the site or bridge.
+Valorant Abyss: rotate through mid - Move to the other site through middle.
+Valorant Corrode: A crane one - One enemy is near A crane.
+Valorant Corrode: mid window control - Team has or needs mid window control.
+Valorant Corrode: B tower smoked - B tower vision is blocked by smoke.
+Valorant Corrode: A elbow clear - A elbow has been checked.
+Valorant Corrode: B arch pressure - Enemies are pressuring B arch.
+Valorant Corrode: mid stairs one - One enemy is on mid stairs.
+Valorant Corrode: plant for B main - Plant spike so B main can watch it.
+Valorant Corrode: A pocket one - One enemy is in A pocket.
+Valorant Corrode: rotate through link - Move through link toward the other site.
+Valorant Corrode: hold lobby push - Watch for enemies pushing lobby.
+Valorant clutch: play your life - Stay alive because the timer or spike helps you.
+Valorant clutch: tap spike once - Tap the spike to force the enemy to peek.
+Valorant clutch: half the defuse - Defuse halfway before stopping or fighting.
+Valorant clutch: stick with smoke - Keep defusing while smoke protects you.
+Valorant clutch: isolate one duel - Take one fight at a time.
+Valorant post plant: do not peek main - Stay hidden and avoid giving defenders a kill.
+Valorant post plant: play lineups - Use ability lineups to delay defuse.
+Valorant post plant: one hold flank - One player watches the flank.
+Valorant post plant: swing off contact - Peek when teammate first makes contact.
+Valorant post plant: wait for tap - Wait until enemy taps spike before peeking.
+Valorant retake: wait for drone - Wait for recon ability before entering site.
+Valorant retake: flash out heaven - Flash from heaven before retake.
+Valorant retake: smoke spike - Smoke the spike before defusing.
+Valorant retake: clear close left - Check the close left corner first.
+Valorant retake: trade the entry - Kill the enemy who kills your first player.
+Valorant damage call: Jett 80 - Enemy Jett took about 80 damage.
+Valorant damage call: Reyna one shot - Enemy Reyna is very low health.
+Valorant info call: spike seen A - Spike carrier was seen near A.
+Valorant info call: spike dropped mid - Spike is dropped in middle.
+Valorant info call: last was B main - Last known enemy position was B main.
+Valorant economy call: buy for next - Save enough credits for next round.
+Valorant economy call: drop me Vandal - Buy or give me a Vandal.
+Valorant economy call: save Operator - Keep the Operator for next round.
+Valorant economy call: light shield only - Buy only light shields this round.
+Valorant economy call: full buy next - Team will have enough credits next round.

@@ -1,0 +1,107 @@
+CS2 pistol: rush B no stop - Team should run quickly into B site during pistol round.
+CS2 pistol: play slow default - Spread out and wait for information in pistol round.
+CS2 eco: stack B and save armor - Put many players on B and avoid wasting money.
+CS2 eco: rush long with pistols - Attack A long quickly using pistols.
+CS2 force: flash me into mid - Throw a flash so I can peek middle.
+CS2 force: play close with pistols - Hold close angles because pistols are strong nearby.
+CS2 full buy: default for picks - Spread out and look for the first kill.
+CS2 full buy: execute A on my smoke - Attack A when my smoke lands.
+CS2 full buy: split B from short - Attack B through both short and apartments or tunnels.
+CS2 anti eco: do not chase kills - Do not give rifles away against weak weapons.
+CS2 anti eco: hold long range - Fight from far away against pistols.
+CS2 anti eco: clear every close corner - Check all near corners because enemies may hide.
+CS2 Mirage: smoke jungle and stairs - Block defender vision from jungle and stairs on A.
+CS2 Mirage: one palace late - One enemy is delayed in palace.
+CS2 Mirage: two ramp one palace - Two enemies at A ramp and one in palace.
+CS2 Mirage: connector smoked - Vision through connector is blocked by smoke.
+CS2 Mirage: window smoke fading - Mid window smoke is about to disappear.
+CS2 Mirage: boost me window - Help me jump into window.
+CS2 Mirage: catwalk control - Team has or needs control of catwalk.
+CS2 Mirage: B apps clear - B apartments has been checked and no enemy was found.
+CS2 Mirage: market last - Last enemy is in market.
+CS2 Mirage: plant default - Plant bomb at the common safe A site position.
+CS2 Dust2: cross smoke now - Throw smoke so teammates can cross safely.
+CS2 Dust2: one pit with AWP - Enemy sniper is holding from pit.
+CS2 Dust2: long control taken - Team has control of A long.
+CS2 Dust2: short clear - A short has been checked.
+CS2 Dust2: mid to B smoke - Smoke CT mid so attackers can split B.
+CS2 Dust2: lower tunnel lurk - One player is lurking through lower tunnels.
+CS2 Dust2: B doors one - One enemy is near B doors.
+CS2 Dust2: goose clear - Goose corner has been checked.
+CS2 Dust2: car tagged - Enemy at A car took damage.
+CS2 Dust2: save AWP in pit - Keep the AWP and hide in pit.
+CS2 Inferno: take banana control - Use utility to control banana.
+CS2 Inferno: molly sandbags - Throw fire at sandbags.
+CS2 Inferno: smoke CT and coffins - Block defender vision from CT and coffins on B.
+CS2 Inferno: two top banana - Two enemies are at top banana.
+CS2 Inferno: fall back from banana - Leave banana safely.
+CS2 Inferno: apps pop - Attack from apartments quickly.
+CS2 Inferno: short one pit one site - One enemy short and one enemy pit or site.
+CS2 Inferno: library last - Last enemy is in library.
+CS2 Inferno: rotate through CT - Move through CT spawn to the other site.
+CS2 Inferno: play retake B - Give up B site and fight back together later.
+CS2 Nuke: outside smoke wall - Smoke outside to cross safely toward secret.
+CS2 Nuke: one secret - One enemy moved down secret.
+CS2 Nuke: ramp lost - Defenders lost control of ramp.
+CS2 Nuke: vents down - Enemy dropped through vents.
+CS2 Nuke: hut hit - Attackers are coming through hut.
+CS2 Nuke: squeaky open - Squeaky door has been opened.
+CS2 Nuke: heaven clear - Heaven has been checked.
+CS2 Nuke: lower plant - Bomb is planted on lower B site.
+CS2 Nuke: decon one - One enemy is in decontamination room.
+CS2 Nuke: save upper - Save weapons near upper site.
+CS2 Ancient: take mid first - Prioritize middle control before hitting a site.
+CS2 Ancient: donut smoke - Smoke donut to block A rotation.
+CS2 Ancient: cave control - Team has or needs control of cave.
+CS2 Ancient: B ramp pressure - Enemies are pressuring B ramp.
+CS2 Ancient: pillar one - One enemy is playing around B pillar.
+CS2 Ancient: temple last - Last enemy is in temple.
+CS2 Ancient: split A through donut - Attack A from both main and donut.
+CS2 Ancient: hold house push - Watch for enemies pushing house.
+CS2 Ancient: back site clear - Back site has been checked.
+CS2 Ancient: play time from main - Stay in main and delay because bomb timer helps you.
+CS2 Anubis: take water control - Prioritize water area control.
+CS2 Anubis: one bridge - One enemy is on bridge.
+CS2 Anubis: mid split B - Attack B through mid and B main.
+CS2 Anubis: smoke heaven A - Block A heaven vision with smoke.
+CS2 Anubis: B long clear - B long has been checked.
+CS2 Anubis: canal lurk - One player is lurking through canal.
+CS2 Anubis: temple one - One enemy is in temple.
+CS2 Anubis: plant for main - Plant bomb so B or A main can watch it.
+CS2 Anubis: save in water - Save the weapon in water area.
+CS2 Anubis: retake from connector - Retake the site through connector.
+CS2 Overpass: take bathrooms - Gain control of bathrooms near A.
+CS2 Overpass: fountain fight - Enemies are fighting near fountain.
+CS2 Overpass: monster rush - Enemies are rushing through monster.
+CS2 Overpass: water clear - Water area has been checked.
+CS2 Overpass: short B one - One enemy is near short B.
+CS2 Overpass: heaven smoked - B heaven is blocked by smoke.
+CS2 Overpass: graffiti one - One enemy is at graffiti.
+CS2 Overpass: truck plant - Bomb is planted near truck on A.
+CS2 Overpass: bank last - Last enemy is near bank.
+CS2 Overpass: fall back connector - Leave through connector safely.
+CS2 clutch: isolate the first fight - Fight one enemy at a time.
+CS2 clutch: tap bomb and hold - Tap defuse then hold for the peek.
+CS2 clutch: fake defuse twice - Fake the defuse two times to force a reaction.
+CS2 clutch: no kit play kill - Without defuse kit you may need to kill first.
+CS2 clutch: hide and play time - Hide because the bomb timer favors you.
+CS2 post plant: do not peek CT - Stay hidden and avoid giving defenders a kill.
+CS2 post plant: double swing default - Two teammates peek the default plant together.
+CS2 post plant: one watch flank - One teammate should watch the flank.
+CS2 post plant: molly bomb now - Throw fire on the bomb to delay defuse.
+CS2 post plant: hold crossfire - Hold positions that help each other.
+CS2 retake: wait for teammates - Do not enter the site alone.
+CS2 retake: flash over site - Throw a flash over the site before entering.
+CS2 retake: clear close first - Check the near corners first.
+CS2 retake: trade me - Be ready to kill the enemy who kills me.
+CS2 retake: stick if smoke covers - Keep defusing if smoke blocks enemy vision.
+CS2 damage call: one lit 80 - One enemy has taken about 80 damage.
+CS2 damage call: AWP tagged - Enemy sniper took damage.
+CS2 info call: bomb seen B - Bomb carrier was seen near B.
+CS2 info call: bomb dropped mid - Bomb is dropped in middle.
+CS2 info call: last unknown - Last enemy location is unknown.
+CS2 economy call: drop me AK - Buy or give me an AK-47.
+CS2 economy call: need AWP drop - I need someone to buy me an AWP.
+CS2 economy call: save this round - Do not spend much money this round.
+CS2 economy call: buy utility first - Prioritize grenades before extra weapons.
+CS2 economy call: we can full buy - Team has enough money for rifles and utility.

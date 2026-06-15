@@ -1,0 +1,137 @@
+CS2 Mirage A site - Bomb site A on Mirage.
+CS2 Mirage A ramp - Main attacker path into A site from T side.
+CS2 Mirage Palace - Indoor upper path that exits onto A site balcony.
+CS2 Mirage Tetris - Stack of boxes near A ramp on A site.
+CS2 Mirage Triple - Triple box area on A site.
+CS2 Mirage Default - Common bomb plant spot on A site.
+CS2 Mirage Firebox - Hideable box area near default on A site.
+CS2 Mirage Sandwich - Tight space between stairs and triple.
+CS2 Mirage Stairs - Stairs from jungle side up to A site.
+CS2 Mirage Jungle - Connector area between window room and A site.
+CS2 Mirage Connector - Path between mid and A site.
+CS2 Mirage CT spawn - Defender spawn path into A site.
+CS2 Mirage Ticket - Ticket booth near CT entrance to A site.
+CS2 Mirage Window - Sniper room overlooking mid.
+CS2 Mirage Top mid - Attacker side top of middle.
+CS2 Mirage Catwalk - Mid path toward B short.
+CS2 Mirage Underpass - Lower tunnel from T side to mid.
+CS2 Mirage B apartments - Attacker apartment path into B site.
+CS2 Mirage B short - Catwalk entrance into B site.
+CS2 Mirage Van - Van near B apartments exit.
+CS2 Mirage Bench - Bench corner near back of B site.
+CS2 Mirage Market - Room behind B site used by defenders.
+CS2 Dust2 A long - Long outside path toward A site.
+CS2 Dust2 Long doors - Double doors at the start of A long.
+CS2 Dust2 Pit - Low corner at long for holding A long.
+CS2 Dust2 A car - Car beside A long near site.
+CS2 Dust2 A cross - Open crossing from long to A site.
+CS2 Dust2 A site - Bomb site A on Dust2.
+CS2 Dust2 A ramp - Sloped entrance up to A site.
+CS2 Dust2 A short - Short path from catwalk to A site.
+CS2 Dust2 Catwalk - Mid path that leads to A short.
+CS2 Dust2 Goose - Corner behind A site with goose mark.
+CS2 Dust2 Elevator - CT boost area below A site.
+CS2 Dust2 CT mid - Defender side middle near CT spawn.
+CS2 Dust2 Mid doors - Double doors in middle.
+CS2 Dust2 Xbox - Box used to cross or smoke mid to short.
+CS2 Dust2 Lower tunnels - Lower tunnel path between mid and B tunnels.
+CS2 Dust2 Upper tunnels - Upper tunnel path toward B site.
+CS2 Dust2 B site - Bomb site B on Dust2.
+CS2 Dust2 B doors - Defender door entrance into B site.
+CS2 Dust2 B window - Window entrance into B site from CT side.
+CS2 Dust2 B car - Car area at back of B site.
+CS2 Dust2 Back plat - Back platform area in B site.
+CS2 Inferno Banana - Long curved path toward B site.
+CS2 Inferno Top banana - Upper banana near B site.
+CS2 Inferno Car - Car position on banana.
+CS2 Inferno Sandbags - Sandbags corner near top banana.
+CS2 Inferno Logs - Wood logs at lower banana.
+CS2 Inferno B site - Bomb site B on Inferno.
+CS2 Inferno Coffins - Coffins position at back of B site.
+CS2 Inferno Dark - Dark corner inside B site.
+CS2 Inferno New box - Box position inside B site.
+CS2 Inferno First oranges - First orange stack on B site.
+CS2 Inferno Second oranges - Second orange stack on B site.
+CS2 Inferno CT spawn - Defender spawn route into B or A.
+CS2 Inferno Construction - Area between CT spawn and B site.
+CS2 Inferno A short - Shorter lane from mid to A site.
+CS2 Inferno A long - Long lane from mid to A site.
+CS2 Inferno Arch - Archway near long and CT rotation.
+CS2 Inferno Library - Room near A long and CT.
+CS2 Inferno Balcony - Apartment balcony over A site.
+CS2 Inferno Apartments - Indoor attacker path toward A site.
+CS2 Inferno Pit - Low defensive area on A site.
+CS2 Inferno Graveyard - Small raised area near A pit.
+CS2 Inferno Moto - Corner near A site entrance from long.
+CS2 Nuke Outside - Outdoor yard area between garage secret and mini.
+CS2 Nuke Yard - Another name for outside area.
+CS2 Nuke Silo - Tall structure near T side outside.
+CS2 Nuke Secret - Stairs and path down from outside to B lower.
+CS2 Nuke Garage - Garage building outside.
+CS2 Nuke Hell - Low area under heaven.
+CS2 Nuke Heaven - High rafters area overlooking A site.
+CS2 Nuke Rafters - Upper walkways around A site.
+CS2 Nuke A site - Upper bomb site on Nuke.
+CS2 Nuke Hut - Small attacker entrance into A site.
+CS2 Nuke Squeaky - Door entrance from lobby into A site.
+CS2 Nuke Mini - Defender room entrance from outside to A.
+CS2 Nuke Ramp - Ramp room path down to lower site.
+CS2 Nuke Trophy - Room between lobby and ramp.
+CS2 Nuke Lobby - Attacker indoor staging area.
+CS2 Nuke B site - Lower bomb site on Nuke.
+CS2 Nuke Decon - Decontamination room beside B site.
+CS2 Nuke Double doors - Doors leading into B site.
+CS2 Nuke Window - Window room near lower site.
+CS2 Nuke Vents - Vertical vents connecting A and lower.
+CS2 Ancient A main - Main attacker entrance toward A site.
+CS2 Ancient A cave - Cave path near A main.
+CS2 Ancient Donut - Round room connecting mid to A.
+CS2 Ancient Temple - Defender side position behind A site.
+CS2 Ancient A site - Orange colored bomb site A.
+CS2 Ancient CT - Defender spawn area.
+CS2 Ancient Mid - Middle control area.
+CS2 Ancient Top mid - Attacker side top of middle.
+CS2 Ancient Bottom mid - Lower middle area closer to defenders.
+CS2 Ancient Cubby - Small hiding corner near mid.
+CS2 Ancient B ramp - Attacker ramp path toward B.
+CS2 Ancient B lane - Path beside B site from ramp.
+CS2 Ancient B site - Blue colored bomb site B.
+CS2 Ancient Pillar - Large pillar on B site.
+CS2 Ancient Back site - Back defensive area on B site.
+CS2 Ancient Cave - Side route near B ramp.
+CS2 Ancient House - Indoor attacker route near B.
+CS2 Anubis A main - Main attacker path to A site.
+CS2 Anubis A connector - Connector path into A side.
+CS2 Anubis A site - Bomb site A on Anubis.
+CS2 Anubis Heaven - High position overlooking A site.
+CS2 Anubis Fountain - Area near attacker side A approach.
+CS2 Anubis Bridge - Raised path near middle and water.
+CS2 Anubis Mid - Middle area of the map.
+CS2 Anubis Water - Lower water canal area.
+CS2 Anubis Canal - Canal route that helps mid control.
+CS2 Anubis B main - Main attacker entrance to B site.
+CS2 Anubis B long - Long route toward B site.
+CS2 Anubis B connector - Connector path from mid to B.
+CS2 Anubis B site - Bomb site B on Anubis.
+CS2 Anubis Palace - Indoor route near B side.
+CS2 Anubis Temple - Defender side area near B.
+CS2 Anubis Street - Outer route near attacker side.
+CS2 Overpass A long - Long route through park toward A.
+CS2 Overpass Bathrooms - Toilets area near A long.
+CS2 Overpass Party - Party area near balloons and fountain.
+CS2 Overpass Fountain - Park fountain area.
+CS2 Overpass Playground - Far park area near T side.
+CS2 Overpass Connector - Stairs and tunnel between mid and lower.
+CS2 Overpass Short - Short path into B from water.
+CS2 Overpass Monster - Large tunnel entrance into B site.
+CS2 Overpass Water - Lower water area near B short.
+CS2 Overpass B site - Bomb site B on Overpass.
+CS2 Overpass Barrels - Barrels near monster on B site.
+CS2 Overpass Graffiti - Wall position at back of B site.
+CS2 Overpass Pillar - Pillar in the middle of B site.
+CS2 Overpass Heaven - High defender position above B site.
+CS2 Overpass Sandbags - Sandbag corner near short B.
+CS2 Overpass Bank - Bank area near A site.
+CS2 Overpass Truck - Truck on A site.
+CS2 Overpass Dumpster - Dumpster corner near A site.
+CS2 Overpass Optimus - Truck position near A default.

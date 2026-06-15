@@ -1,0 +1,129 @@
+Anchor - A defender who stays near one site and delays the enemy push.
+Entry - The first attacker who goes into a dangerous area.
+Second entry - The teammate who follows the entry and trades the kill.
+Support - A player who helps with flashes smokes healing or utility.
+IGL - In game leader who calls the plan for the round.
+AWPer - Counter Strike sniper player who uses the AWP.
+Operator player - Valorant sniper player who uses the Operator.
+Rifler - Player whose main job is fighting with rifles.
+Lurker - Player who stays away from the team to catch rotations.
+Flanker - Enemy or teammate coming from behind.
+Rotator - Defender moving from one site to another site.
+Stack - Put many defenders on one site.
+Default - Spread out to take map control and collect information.
+Execute - Use utility together and hit a site.
+Split - Attack the same site from two different paths.
+Fake - Pretend to attack one site to force rotations.
+Contact play - Walk silently until first enemy contact.
+Retake - Defenders give up the site and fight back together later.
+Post plant - After the bomb or spike is planted.
+Save - Keep your weapon for the next round instead of fighting.
+Eco - A low money round with cheap or no weapons.
+Full eco - Spend almost no money this round.
+Force buy - Buy weapons even with weak money.
+Half buy - Spend some money but keep enough for next round.
+Full buy - Buy rifles armor and full utility.
+Bonus round - Play with cheaper saved weapons after winning pistol.
+Anti eco - Play safely against enemies with weak weapons.
+Buy time - Delay the enemy instead of fighting immediately.
+Play time - Do not peek because the planted bomb or spike timer helps you.
+Stick the defuse - Keep defusing even if enemies are near.
+Tap the bomb - Start defusing briefly to bait a peek.
+Fake defuse - Pretend to defuse so the enemy peeks.
+Plant default - Plant in the safest common spot.
+Plant open - Plant where teammates can see the bomb from far away.
+Plant for main - Plant so teammates in main can watch it.
+Spike down - The spike is dropped on the ground.
+Bomb down - The bomb is dropped on the ground.
+Bomb carrier - The player holding the bomb.
+Spike carrier - The player holding the spike.
+Clear site - Check and remove every enemy from the site.
+Clear close - Check the close corner first.
+Close left - Enemy may be in the near left corner.
+Close right - Enemy may be in the near right corner.
+Back site - Enemy may be behind the site.
+Heaven - High area above a bomb site.
+Hell - Low area under heaven.
+Rafters - High platform above or near site.
+Main - Main attacker entrance to a site.
+Short - Shorter path to a site.
+Long - Longer path to a site.
+Connector - Path connecting two important areas.
+Link - Valorant path connecting site to mid or another route.
+Cubby - Small corner where a player can hide.
+Elbow - Bent corridor shaped like an elbow.
+Window - Room or opening with vision into another area.
+Market - Room near a site often used for rotations.
+Vents - Narrow vent path or vertical connector.
+Rope - Climbable rope path in Valorant.
+Drop - Area where players jump down from high ground.
+Tower - High defensive room or platform.
+Screens - Defensive wall area near site.
+Spawn - Team starting area.
+CT spawn - Counter Terrorist or defender spawn.
+T spawn - Terrorist or attacker spawn.
+Defender spawn - Valorant defender starting area.
+Attacker spawn - Valorant attacker starting area.
+One way smoke - Smoke that lets one side see legs while the other side cannot see.
+Smoke off - Block enemy vision with smoke.
+Flash me in - Throw a flash so I can peek.
+Pop flash - Flash that explodes quickly around a corner.
+Anti flash - Look away or hide to avoid being blinded.
+Molly - Fire grenade or fire ability that blocks an area.
+Lineup - Practiced utility throw from a specific position.
+Wallbang - Shoot through a wall or object.
+Spam - Shoot many bullets through smoke or a wall.
+Jiggle peek - Small quick peek to gather information.
+Shoulder peek - Show only a small part of your body to bait a shot.
+Wide swing - Peek far from the corner to surprise the enemy.
+Dry peek - Peek without flash or supporting utility.
+Double swing - Two players peek at the same time.
+Trade - Kill the enemy who just killed your teammate.
+Refrag - Another word for trade kill.
+Crossfire - Two teammates hold angles that help each other.
+Off angle - Uncommon position that enemies may not pre aim.
+Headshot angle - Position where only the head is visible.
+Pixel angle - Very tiny angle where only a small part is visible.
+Timing - Moment when a player moves at the right or wrong time.
+Info - Information about enemy location or plan.
+Sound cue - Useful sound such as steps reload plant or defuse.
+Footsteps - Enemy movement sounds.
+Contact - Enemy seen heard or fighting now.
+Tagged - Enemy took damage.
+Lit - Enemy is low health.
+Dinked - Enemy was hit in the head but survived.
+One shot - Enemy is very low health.
+Low HP - Enemy has little health left.
+Full HP - Enemy has full health.
+Armor - Protection that reduces damage.
+Utility - Grenades abilities smokes flashes mollies or other tools.
+No utility - Player has no useful grenades or abilities left.
+Out of bullets - Player needs to reload or switch weapons.
+Reloading - Player is reloading and cannot shoot for a moment.
+Holding flank - Watching behind the team for a flank.
+Holding cross - Watching the path where enemies must cross.
+Hold this angle - Keep aiming at this exact path.
+Peek with me - Fight at the same time as me.
+Do not peek - Stay hidden and avoid giving a kill.
+Wait for me - Delay until teammate is ready.
+Group up - Come together before fighting.
+Fall back - Leave the area safely.
+Reset - Stop the current plan and slow down.
+Commit - Continue the attack and do not rotate.
+Rotate - Move to another site.
+Fast rotate - Move quickly to another site.
+Late rotate - Move to another site after waiting.
+Cut noise - Stop making sound.
+Walk - Move silently.
+Run boost - Counter Strike movement trick where one player boosts another forward.
+Boost me - Help me stand on a higher object.
+Drop weapon - Give a gun to a teammate.
+Need drop - I need a teammate to buy me a weapon.
+Play together - Stay close enough to trade kills.
+Isolate fight - Take one enemy fight without letting others trade.
+Clutch - Win the round as the last alive player.
+Ace - One player kills all five enemies.
+Flawless - Team wins the round with no deaths.
+Thrifty - Valorant round won with cheaper weapons.
+Ninja defuse - Secret defuse while enemies do not notice.
+Ninja plant - Secret plant while enemies do not notice.

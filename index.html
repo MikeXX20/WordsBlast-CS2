@@ -3,45 +3,90 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A fast, bilingual vocabulary trainer with CS2-inspired audio, streaks, progress tracking, and review exports."
+    />
     <title>Lite Vocabulary Blast</title>
-    <link rel="stylesheet" href="./src/styles.css?v=fixed-panels" />
+    <link rel="stylesheet" href="./src/styles.css?v=product-upgrades" />
   </head>
   <body>
-    <div class="floating-controls">
+    <div class="floating-controls" aria-label="Global controls" data-i18n-aria="globalControlsLabel">
       <button id="languageButton" type="button" class="floating-button">中文</button>
       <button id="musicButton" type="button" class="floating-button" aria-pressed="false">Music On</button>
     </div>
+
     <main id="app" class="app">
       <section class="setup-panel" aria-label="Vocabulary setup" data-i18n-aria="setupLabel">
         <header class="brand">
+          <p class="eyebrow" data-i18n="brandEyebrow">CS2 word trainer</p>
           <h1 data-i18n="brandTitle">Vocab Blast</h1>
-          <p data-i18n="brandSubtitle">Import words, choose a direction, and practice at a gentle pace.</p>
+          <p data-i18n="brandSubtitle">Import words, choose a direction, and practice at a sharp but comfortable pace.</p>
         </header>
 
         <section class="panel-section">
-          <label for="importText" data-i18n="importLabel">Import vocabulary</label>
+          <div class="section-heading">
+            <span class="section-kicker">01</span>
+            <h2 data-i18n="importLabel">Import vocabulary</h2>
+          </div>
+          <label class="sr-only" for="importText" data-i18n="importLabel">Import vocabulary</label>
           <textarea id="importText" rows="8" placeholder="apple - 苹果&#10;accelerate - speed up" data-i18n-placeholder="importPlaceholder">apple - 苹果
 banana - 香蕉</textarea>
           <div class="button-row">
             <button id="importButton" type="button" data-i18n="importButton">Import</button>
+            <button id="demoDeckButton" type="button" class="secondary" data-i18n="demoDeckButton">Demo deck</button>
             <button id="clearButton" type="button" class="secondary" data-i18n="clearButton">Clear</button>
+          </div>
+          <div class="preset-grid" aria-label="Preset word banks" data-i18n-aria="presetBanksLabel">
+            <button id="fpsBankButton" type="button" class="secondary" data-i18n="fpsBankButton">FPS terms</button>
+            <button id="cs2BankButton" type="button" class="secondary" data-i18n="cs2BankButton">CS2 callouts</button>
+            <button id="valorantBankButton" type="button" class="secondary" data-i18n="valorantBankButton">Valorant callouts</button>
+            <button id="cs2MatchBankButton" type="button" class="secondary" data-i18n="cs2MatchBankButton">CS2 match comms</button>
+            <button id="valorantMatchBankButton" type="button" class="secondary" data-i18n="valorantMatchBankButton">Valorant match comms</button>
           </div>
           <p id="importSummary" class="status" role="status"></p>
           <ul id="importErrors" class="error-list" aria-live="polite"></ul>
         </section>
 
         <section class="panel-section">
-          <h2 data-i18n="deckHeading">Deck</h2>
+          <div class="section-heading">
+            <span class="section-kicker">02</span>
+            <h2 data-i18n="deckHeading">Deck</h2>
+          </div>
           <dl class="stats">
             <div><dt data-i18n="cardsStat">Cards</dt><dd id="cardCount">0</dd></div>
+            <div><dt data-i18n="masteredStat">Mastered</dt><dd id="masteredCount">0</dd></div>
             <div><dt data-i18n="accuracyStat">Accuracy</dt><dd id="accuracy">0%</dd></div>
+            <div><dt data-i18n="streakStat">Streak</dt><dd id="streakCount">0</dd></div>
             <div><dt data-i18n="weakWordsStat">Weak words</dt><dd id="weakCount">0</dd></div>
             <div><dt data-i18n="bestScoreStat">Best score</dt><dd id="bestScore">0</dd></div>
           </dl>
         </section>
 
         <section class="panel-section">
-          <h2 data-i18n="modeHeading">Mode</h2>
+          <div class="section-heading">
+            <span class="section-kicker">03</span>
+            <h2 data-i18n="focusHeading">Daily focus</h2>
+          </div>
+          <div class="goal-card">
+            <div class="goal-card-top">
+              <div>
+                <span data-i18n="todayGoalLabel">Today goal</span>
+                <strong><span id="todayCount">0</span>/<span id="dailyGoal">12</span></strong>
+              </div>
+              <span id="masteryPercent" class="goal-pill">0%</span>
+            </div>
+            <div class="progress-track" aria-hidden="true"><span id="goalProgress"></span></div>
+            <p id="goalHint" class="goal-hint">Answer 12 cards today to keep momentum.</p>
+          </div>
+          <button id="reviewButton" type="button" class="secondary full-button" data-i18n="reviewButton">Copy review list</button>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading">
+            <span class="section-kicker">04</span>
+            <h2 data-i18n="modeHeading">Mode</h2>
+          </div>
           <label for="blastSoundSelect" data-i18n="blastSoundLabel">Blast sound</label>
           <select id="blastSoundSelect" class="sound-select">
             <option value="ak" data-i18n="blastSoundAk">AK-47</option>
@@ -49,25 +94,67 @@ banana - 香蕉</textarea>
           </select>
           <fieldset class="mode-field">
             <legend data-i18n="directionLegend">Practice direction</legend>
-            <label><input type="radio" name="direction" value="term-to-meaning" checked /> <span data-i18n="wordToMeaning">Word to Meaning</span></label>
-            <label><input type="radio" name="direction" value="meaning-to-term" /> <span data-i18n="meaningToWord">Meaning to Word</span></label>
+            <label class="mode-option">
+              <input type="radio" name="direction" value="term-to-meaning" checked />
+              <span data-i18n="wordToMeaning">Word to Meaning</span>
+              <small data-i18n="wordToMeaningHint">See the word, blast the meaning.</small>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="direction" value="meaning-to-term" />
+              <span data-i18n="meaningToWord">Meaning to Word</span>
+              <small data-i18n="meaningToWordHint">See the meaning, blast the word.</small>
+            </label>
           </fieldset>
-          <button id="startButton" type="button" class="primary" data-i18n="startButton">Start Blast</button>
-          <button id="soundButton" type="button" class="secondary sound-toggle" aria-pressed="true">Sound On</button>
-          <button id="nightButton" type="button" class="secondary theme-toggle" aria-pressed="false">Night Off</button>
+          <div class="settings-grid">
+            <button id="soundButton" type="button" class="secondary sound-toggle" aria-pressed="true">Sound On</button>
+            <button id="nightButton" type="button" class="secondary theme-toggle" aria-pressed="false">Night Off</button>
+          </div>
+        </section>
+
+        <section class="panel-section revenue-section">
+          <div class="section-heading">
+            <span class="section-kicker">05</span>
+            <h2 data-i18n="proHeading">Make it sustainable</h2>
+          </div>
+          <div class="pro-card">
+            <div>
+              <span class="pro-label" data-i18n="founderPlanLabel">Founder Pro</span>
+              <strong data-i18n="founderPrice">$4/mo</strong>
+            </div>
+            <p data-i18n="proPitch">Paid packs can add class decks, custom sound kits, streak analytics, and cloud sync while the core trainer stays free.</p>
+            <a class="button-link premium-cta" href="mailto:a2363996571@gmail.com?subject=WordsBlast%20Pro%20interest" data-i18n="joinProButton">Join Pro waitlist</a>
+          </div>
+          <ul class="product-points">
+            <li data-i18n="proPointOne">Free game builds trust first.</li>
+            <li data-i18n="proPointTwo">Exports make progress feel valuable.</li>
+            <li data-i18n="proPointThree">Premium packs create a clear paid path.</li>
+          </ul>
         </section>
       </section>
 
       <section class="game-panel" aria-label="Blast game" data-i18n-aria="gameLabel">
-        <div class="hud">
-          <span><span data-i18n="scoreHud">Score</span> <strong id="score">0</strong></span>
-          <span><span data-i18n="levelHud">Level</span> <strong id="level">1</strong></span>
-          <span><span data-i18n="livesHud">Lives</span> <strong id="lives">3</strong></span>
-          <span><span data-i18n="comboHud">Combo</span> <strong id="combo">0</strong></span>
+        <header class="game-header">
+          <div>
+            <p class="eyebrow" data-i18n="arenaEyebrow">Live arena</p>
+            <h2 data-i18n="gameHeading">Blast Practice</h2>
+          </div>
+          <div class="hud">
+            <span><span data-i18n="scoreHud">Score</span> <strong id="score">0</strong></span>
+            <span><span data-i18n="levelHud">Level</span> <strong id="level">1</strong></span>
+            <span><span data-i18n="livesHud">Lives</span> <strong id="lives">3</strong></span>
+            <span><span data-i18n="comboHud">Combo</span> <strong id="combo">0</strong></span>
+          </div>
+        </header>
+
+        <div class="prompt-wrap">
+          <p class="prompt-label" data-i18n="promptLabel">Current prompt</p>
+          <div id="prompt" class="prompt">Import at least one card to begin.</div>
         </div>
-        <div id="prompt" class="prompt">Import at least one card to begin.</div>
+
         <div id="arena" class="arena" aria-live="polite"></div>
+
         <div class="game-actions">
+          <button id="startButton" type="button" class="primary action-button" data-i18n="startButton">Start Blast</button>
           <button id="pauseButton" type="button" class="secondary">Pause</button>
           <button id="restartButton" type="button" class="secondary" data-i18n="restartButton">Restart</button>
           <button id="soundGameButton" type="button" class="secondary sound-toggle" aria-pressed="true">Sound On</button>
@@ -75,6 +162,6 @@ banana - 香蕉</textarea>
         </div>
       </section>
     </main>
-    <script type="module" src="./src/main.js?v=audio-lifecycle"></script>
+    <script type="module" src="./src/main.js?v=real-match-comms"></script>
   </body>
 </html>

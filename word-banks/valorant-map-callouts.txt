@@ -1,0 +1,176 @@
+Valorant Ascent A main - Main attacker path to A site.
+Valorant Ascent A lobby - Attacker staging area before A main.
+Valorant Ascent A tree - Room connecting mid catwalk to A site.
+Valorant Ascent A garden - Small connector near A tree.
+Valorant Ascent A heaven - High defender area above A site.
+Valorant Ascent A generator - Large generator box on A site.
+Valorant Ascent A wine - Small corner near A main entrance.
+Valorant Ascent A hell - Low space below A heaven.
+Valorant Ascent Mid catwalk - Path from mid toward A tree.
+Valorant Ascent Mid market - Room connecting mid to B.
+Valorant Ascent Mid pizza - Corner near market and mid.
+Valorant Ascent B main - Main attacker path to B site.
+Valorant Ascent B lobby - Attacker staging area before B main.
+Valorant Ascent B boat house - Back room behind B site.
+Valorant Ascent B lane - Narrow lane on B site.
+Valorant Bind A short - Short attacker path toward A site.
+Valorant Bind A lobby - Attacker staging area before A.
+Valorant Bind A bath - Showers path into A site.
+Valorant Bind A showers - Another name for A bath.
+Valorant Bind A lamps - U shaped room beside A site.
+Valorant Bind U hall - Another name for A lamps.
+Valorant Bind A truck - Truck in the middle of A site.
+Valorant Bind A heaven - High defender area over A site.
+Valorant Bind A teleporter - Teleporter near A that sends players toward B.
+Valorant Bind B long - Long attacker path toward B site.
+Valorant Bind B garden - Area between B long and B site.
+Valorant Bind B hookah - Window room above B site entrance.
+Valorant Bind B window - Drop from hookah into B site.
+Valorant Bind B elbow - Bent corridor beside B site.
+Valorant Bind B site - Spike site B on Bind.
+Valorant Haven A long - Long attacker path to A site.
+Valorant Haven A lobby - Attacker staging area before A.
+Valorant Haven A short - Short path through sewer to A site.
+Valorant Haven Sewer - Low short path toward A.
+Valorant Haven A heaven - High defender area above A site.
+Valorant Haven A site - Spike site A on Haven.
+Valorant Haven B site - Middle spike site on Haven.
+Valorant Haven B window - Window room overlooking mid.
+Valorant Haven Mid courtyard - Open middle area.
+Valorant Haven Mid doors - Doors connecting mid to B and C areas.
+Valorant Haven C long - Long attacker path to C site.
+Valorant Haven C cubby - Small corner on C long.
+Valorant Haven Garage - Room connecting C and middle.
+Valorant Haven C link - Defender link between C and B.
+Valorant Haven C platform - Raised back area on C site.
+Valorant Split A main - Main attacker path to A site.
+Valorant Split A ramp - Ramp path to A heaven.
+Valorant Split A heaven - High defender area above A site.
+Valorant Split A rafters - Upper walkway on A site.
+Valorant Split A screens - Defender screen wall near A site.
+Valorant Split A site - Spike site A on Split.
+Valorant Split Mid mail - Mail room from mid to B heaven.
+Valorant Split Mid vent - Vent path from mid to A heaven.
+Valorant Split Mid top - Upper middle area.
+Valorant Split B main - Main attacker path to B site.
+Valorant Split B heaven - High defender area above B site.
+Valorant Split B tower - Another name for B heaven.
+Valorant Split B back - Back defensive area of B site.
+Valorant Split B site - Spike site B on Split.
+Valorant Icebox A belt - High attacker belt path near A.
+Valorant Icebox A pipes - Pipe platform near A site.
+Valorant Icebox A nest - High nest platform near A.
+Valorant Icebox A rafters - High defender area around A.
+Valorant Icebox A screens - Defender screen area near A.
+Valorant Icebox A maze - Maze of cover on A site.
+Valorant Icebox A site - Spike site A on Icebox.
+Valorant Icebox Mid boiler - High mid boiler position.
+Valorant Icebox Mid tube - Tube path through middle.
+Valorant Icebox Kitchen - Room connecting mid to B side.
+Valorant Icebox B green - Green container path to B.
+Valorant Icebox B yellow - Yellow container near B site.
+Valorant Icebox B snowman - Back area behind B site.
+Valorant Icebox B site - Spike site B on Icebox.
+Valorant Breeze A cave - Main attacker cave path to A.
+Valorant Breeze A hall - Indoor hall path near A side.
+Valorant Breeze A pyramids - Pyramid cover on A site.
+Valorant Breeze A switch - Switch area near A doors.
+Valorant Breeze A bridge - Raised bridge near A site.
+Valorant Breeze Mid nest - Raised nest in middle.
+Valorant Breeze Mid doors - Doors connecting mid to A side.
+Valorant Breeze Mid chute - Drop path from hall toward mid.
+Valorant Breeze B main - Main attacker path to B.
+Valorant Breeze B elbow - Bent path near B.
+Valorant Breeze B tunnel - Tunnel path near B and mid.
+Valorant Breeze B back - Back defensive area of B site.
+Valorant Breeze B site - Spike site B on Breeze.
+Valorant Fracture A dish - Satellite dish area near A.
+Valorant Fracture A drop - Drop area into A site.
+Valorant Fracture A hall - Hallway near A site.
+Valorant Fracture A rope - Rope path on A side.
+Valorant Fracture A main - Main attacker path to A.
+Valorant Fracture A link - Defender link into A.
+Valorant Fracture A site - Spike site A on Fracture.
+Valorant Fracture B arcade - Arcade path toward B.
+Valorant Fracture B bench - Bench position near arcade.
+Valorant Fracture B tower - High defender area above B.
+Valorant Fracture B canteen - Room near defender spawn and B.
+Valorant Fracture B generator - Generator cover near B site.
+Valorant Fracture B main - Main attacker path to B.
+Valorant Fracture B site - Spike site B on Fracture.
+Valorant Pearl A main - Main attacker path to A site.
+Valorant Pearl A art - Mid room route toward A.
+Valorant Pearl A link - Link from mid to A.
+Valorant Pearl A flowers - Small area near A link.
+Valorant Pearl A secret - Hidden corner near A site.
+Valorant Pearl A dugout - Low defensive area on A site.
+Valorant Pearl A site - Spike site A on Pearl.
+Valorant Pearl Mid plaza - Main open middle area.
+Valorant Pearl Mid doors - Double doors in middle.
+Valorant Pearl Mid connector - Connector path through mid.
+Valorant Pearl B main - Main attacker path to B site.
+Valorant Pearl B ramp - Ramp leading into B.
+Valorant Pearl B hall - Long hall near B.
+Valorant Pearl B tower - High defender area above B.
+Valorant Pearl B site - Spike site B on Pearl.
+Valorant Lotus A main - Main attacker path to A site.
+Valorant Lotus A tree - Tree room near A.
+Valorant Lotus A door - Rotating door route near A.
+Valorant Lotus A rubble - Rubble area near A main.
+Valorant Lotus A stairs - Stairs near A site.
+Valorant Lotus A site - Spike site A on Lotus.
+Valorant Lotus B main - Main attacker path to B.
+Valorant Lotus B pillar - Pillar cover on B site.
+Valorant Lotus B upper - Upper area around B.
+Valorant Lotus B site - Spike site B on Lotus.
+Valorant Lotus C main - Main attacker path to C.
+Valorant Lotus C mound - Mound area near C main.
+Valorant Lotus C bend - Curved path toward C.
+Valorant Lotus C waterfall - Waterfall area near C.
+Valorant Lotus C site - Spike site C on Lotus.
+Valorant Sunset A main - Main attacker path to A.
+Valorant Sunset A elbow - Bent path near A.
+Valorant Sunset A link - Link between A and mid.
+Valorant Sunset A alley - Alley path near A.
+Valorant Sunset A site - Spike site A on Sunset.
+Valorant Sunset Mid tiles - Tile area in middle.
+Valorant Sunset Mid top - Upper middle area.
+Valorant Sunset Mid courtyard - Open middle courtyard.
+Valorant Sunset B main - Main attacker path to B.
+Valorant Sunset B market - Market room near B.
+Valorant Sunset B boba - Boba shop area near B.
+Valorant Sunset B site - Spike site B on Sunset.
+Valorant Sunset B back - Back defensive area on B site.
+Valorant Abyss A main - Main attacker path to A site.
+Valorant Abyss A tower - High area above A site.
+Valorant Abyss A bridge - Bridge path near A site.
+Valorant Abyss A back site - Back area behind A site.
+Valorant Abyss A link - Link from A side toward mid.
+Valorant Abyss A vent - Breakable door route from A side to mid.
+Valorant Abyss Mid library - Mid room with library cover.
+Valorant Abyss Mid catwalk - Elevated middle path.
+Valorant Abyss Mid top - Upper middle control area.
+Valorant Abyss B main - Main attacker path to B.
+Valorant Abyss B tower - High area above B site.
+Valorant Abyss B link - Link from B side toward mid.
+Valorant Abyss B under - Lower area under B bridge.
+Valorant Abyss B danger - Risky ledge behind B site.
+Valorant Corrode A main - Main attacker lane toward A site.
+Valorant Corrode A lobby - Attacker staging area before A main.
+Valorant Corrode A crane - Crane area near A site.
+Valorant Corrode A elbow - Bent route near A site.
+Valorant Corrode A site - Spike site A on Corrode.
+Valorant Corrode A link - Link route from A toward mid or defender side.
+Valorant Corrode A yard - Yard area on A side.
+Valorant Corrode A pocket - Small pocket position on A side.
+Valorant Corrode Mid window - Window area in middle.
+Valorant Corrode Mid top - Upper middle control area.
+Valorant Corrode Mid stairs - Stairs in middle.
+Valorant Corrode Mid bottom - Lower middle control area.
+Valorant Corrode B arch - Arch route near B site.
+Valorant Corrode B tower - High area around B site.
+Valorant Corrode B elbow - Bent route near B site.
+Valorant Corrode B site - Spike site B on Corrode.
+Valorant Corrode B link - Link route from B toward mid or defender side.
+Valorant Corrode B main - Main attacker lane toward B site.
+Valorant Corrode B lobby - Attacker staging area before B main.
