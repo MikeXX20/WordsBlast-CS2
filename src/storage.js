@@ -1,3 +1,5 @@
+import { isMastered, normalizeMasteryTarget } from "./progress.js";
+
 const STORAGE_KEY = 'lite-vocab-blast:state:v1';
 
 export function createDefaultState() {
@@ -15,6 +17,7 @@ export function createDefaultState() {
     lastPracticeDate: null,
     todayPracticeDate: null,
     todayAnswerCount: 0,
+    masteryTarget: 3,
   };
 }
 
@@ -26,7 +29,13 @@ export function loadState(storage = window.localStorage) {
       return createDefaultState();
     }
 
-    return { ...createDefaultState(), ...JSON.parse(rawState) };
+    const state = { ...createDefaultState(), ...JSON.parse(rawState) };
+    state.masteryTarget = normalizeMasteryTarget(state.masteryTarget);
+    state.cards = Array.isArray(state.cards)
+      ? state.cards.map((card) => isMastered(card, state.masteryTarget) ? { ...card, mastered: true } : card)
+      : [];
+
+    return state;
   } catch {
     return createDefaultState();
   }

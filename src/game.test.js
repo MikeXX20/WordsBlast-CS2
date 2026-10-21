@@ -108,4 +108,50 @@ describe("game session", () => {
 
     assert.equal(new Set(round.choices).size, round.choices.length);
   });
+
+  it("uses a target of one for prompts and distractors", () => {
+    const session = createSession([
+      { ...cards[0], correctCount: 1 },
+      { ...cards[1], correctCount: 0 },
+    ], "term-to-meaning", () => 0, 1);
+    const round = nextRound(session);
+
+    assert.equal(round.card.id, "two");
+    assert.deepEqual(round.choices, ["bright and clear"]);
+  });
+
+  it("keeps words below a target of five available", () => {
+    const session = createSession([
+      { ...cards[0], correctCount: 4 },
+      { ...cards[1], correctCount: 5 },
+    ], "term-to-meaning", () => 0, 5);
+    const round = nextRound(session);
+
+    assert.ok(round);
+    assert.equal(round.card.id, "one");
+    assert.deepEqual(round.choices, ["calm and peaceful"]);
+  });
+
+  it("excludes permanently retired words from prompts and distractors after a target increase", () => {
+    const session = createSession([
+      { ...cards[0], correctCount: 1, mastered: true },
+      { ...cards[1], correctCount: 0 },
+    ], "term-to-meaning", () => 0, 5);
+    const round = nextRound(session);
+
+    assert.equal(round.card.id, "two");
+    assert.deepEqual(round.choices, ["bright and clear"]);
+  });
+
+  it("skips a retry for a word that has since retired", () => {
+    const session = createSession(cards.slice(0, 2), "term-to-meaning", () => 0, 5);
+    nextRound(session);
+    answerCurrent(session, "wrong");
+    session.cards[0] = { ...session.cards[0], correctCount: 1, mastered: true };
+
+    const round = nextRound(session);
+
+    assert.equal(round.card.id, "two");
+    assert.deepEqual(round.choices, ["bright and clear"]);
+  });
 });

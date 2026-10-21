@@ -1,9 +1,11 @@
 import { parseVocabulary } from "./parser.js";
 import { createGameAudio, soundForAnswer } from "./audio.js?v=audio-lifecycle";
-import { answerCurrent, createSession, nextRound } from "./game.js";
-import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js?v=real-match-comms";
-import { MASTERY_CORRECT_COUNT, recordAnswer, summarizeProgress } from "./progress.js?v=real-match-comms";
-import { createDefaultState, loadState, saveState } from "./storage.js?v=real-match-comms";
+import { answerCurrent, createSession, nextRound } from "./game.js?v=mastery-alipay";
+import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js?v=mastery-alipay";
+import { getReviewCards, isMastered, normalizeMasteryTarget, recordAnswer, summarizeProgress } from "./progress.js?v=mastery-alipay";
+import { createDefaultState, loadState, saveState } from "./storage.js?v=mastery-alipay";
+import { getAlipayPayment } from "./alipay.js?v=mastery-alipay";
+import { ALIPAY_CONFIG } from "../payment-config.js?v=mastery-alipay";
 
 const els = {
   app: document.querySelector("#app"),
@@ -36,6 +38,17 @@ const els = {
   soundButton: document.querySelector("#soundButton"),
   soundGameButton: document.querySelector("#soundGameButton"),
   blastSoundSelect: document.querySelector("#blastSoundSelect"),
+  masteryTarget: document.querySelector("#masteryTarget"),
+  masteryStatus: document.querySelector("#masteryStatus"),
+  alipayButton: document.querySelector("#alipayButton"),
+  alipayDialog: document.querySelector("#alipayDialog"),
+  alipayRecipient: document.querySelector("#alipayRecipient"),
+  alipayAccountSection: document.querySelector("#alipayAccountSection"),
+  alipayAccount: document.querySelector("#alipayAccount"),
+  copyAlipayAccount: document.querySelector("#copyAlipayAccount"),
+  alipayQr: document.querySelector("#alipayQr"),
+  alipayStatus: document.querySelector("#alipayStatus"),
+  alipayLink: document.querySelector("#alipayLink"),
   nightButton: document.querySelector("#nightButton"),
   nightGameButton: document.querySelector("#nightGameButton"),
   pauseButton: document.querySelector("#pauseButton"),
@@ -80,6 +93,8 @@ let blastLocked = false;
 let frameId = null;
 let masteredAudioPlayed = false;
 let pageReady = false;
+let paymentPause = null;
+const alipay = getAlipayPayment(ALIPAY_CONFIG);
 const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
 audio.setMusicMuted(state.musicMuted);
@@ -120,6 +135,7 @@ els.clearButton.addEventListener("click", () => {
     musicMuted: state.musicMuted,
     nightMode: state.nightMode,
     dailyGoal: state.dailyGoal,
+    masteryTarget: state.masteryTarget,
     streakCount: state.streakCount,
     lastPracticeDate: state.lastPracticeDate,
     todayPracticeDate: state.todayPracticeDate,
@@ -127,6 +143,8 @@ els.clearButton.addEventListener("click", () => {
   };
   session = null;
   currentRound = null;
+  stopAnimation();
+  els.app.classList.remove("is-playing");
   persistState();
   els.importText.value = DEFAULT_IMPORT_TEXT;
   els.importSummary.textContent = t("deckCleared");
@@ -145,6 +163,38 @@ els.musicButton.addEventListener("click", toggleMusic);
 els.nightButton.addEventListener("click", toggleNightMode);
 els.nightGameButton.addEventListener("click", toggleNightMode);
 els.blastSoundSelect.addEventListener("change", onBlastSoundChange);
+els.masteryTarget.addEventListener("change", onMasteryTargetChange);
+els.alipayButton.addEventListener("click", () => {
+  renderAlipay();
+  paymentPause = { session, isPaused };
+  if (session) {
+    isPaused = true;
+    renderPauseButton();
+  }
+  els.alipayDialog.showModal();
+});
+els.alipayDialog.addEventListener("close", () => {
+  if (paymentPause?.session === session) {
+    isPaused = paymentPause.isPaused;
+    renderPauseButton();
+  }
+  paymentPause = null;
+});
+els.alipayQr.addEventListener("error", () => {
+  els.alipayQr.hidden = true;
+  els.alipayStatus.textContent = t("alipayQrFailed");
+});
+els.copyAlipayAccount.addEventListener("click", async () => {
+  if (!alipay.account) return;
+  try {
+    await navigator.clipboard.writeText(alipay.account);
+    els.alipayStatus.textContent = t("alipayAccountCopied");
+  } catch {
+    els.alipayAccount.focus();
+    els.alipayAccount.select();
+    els.alipayStatus.textContent = t("alipayAccountCopyFallback");
+  }
+});
 for (const directionInput of document.querySelectorAll("input[name='direction']")) {
   directionInput.addEventListener("change", () => audio.menu());
 }
@@ -164,9 +214,16 @@ async function startGame() {
 
   const direction = document.querySelector("input[name='direction']:checked").value;
   state.lastDirection = direction;
+  persistState();
+  session = createSession(state.cards, direction, Math.random, state.masteryTarget);
+  const startingSession = session;
+  currentRound = null;
+  if (allWordsMastered()) {
+    endGame();
+    return;
+  }
   audio.start();
   audio.prepareMastered();
-  session = createSession(state.cards, direction);
   masteredAudioPlayed = false;
   isPaused = false;
   blastLocked = true;
@@ -176,6 +233,7 @@ async function startGame() {
   els.arena.innerHTML = `<div class="empty-arena"></div>`;
   startAnimation();
   await audio.playRollThenWeaponDraw();
+  if (session !== startingSession) return;
   blastLocked = false;
   showNextRound();
 }
@@ -225,11 +283,13 @@ function renderRound() {
 function chooseAnswer(choice, button) {
   if (!session || !currentRound || isPaused || blastLocked) return;
 
+  blastLocked = true;
+  const answeringSession = session;
   const cardId = currentRound.card.id;
   const isCorrect = choice.trim().toLocaleLowerCase() === currentRound.correctText.trim().toLocaleLowerCase();
   button.classList.add(isCorrect ? "correct-hit" : "wrong-hit");
 
-  const updatedCards = state.cards.map((card) => card.id === cardId ? recordAnswer(card, isCorrect) : card);
+  const updatedCards = state.cards.map((card) => card.id === cardId ? recordAnswer(card, isCorrect, state.masteryTarget) : card);
   state = {
     ...state,
     cards: updatedCards,
@@ -238,6 +298,7 @@ function chooseAnswer(choice, button) {
   session.cards = updatedCards;
 
   const result = answerCurrent(session, choice);
+  currentRound = null;
   state.bestScore = Math.max(state.bestScore, result.score);
   persistState();
   renderProgress();
@@ -246,6 +307,8 @@ function chooseAnswer(choice, button) {
   playMasteredSoundIfComplete();
 
   window.setTimeout(() => {
+    if (session !== answeringSession) return;
+    blastLocked = false;
     if (session.lives <= 0) {
       endGame();
       return;
@@ -256,21 +319,22 @@ function chooseAnswer(choice, button) {
 
 function endGame() {
   els.app.classList.remove("is-playing");
-  const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  const allMastered = allWordsMastered();
   if (allMastered && !masteredAudioPlayed) {
     audio.mastered();
     masteredAudioPlayed = true;
   }
   els.prompt.textContent = allMastered ? t("allMastered") : session ? tv("sessionComplete", { score: session.score }) : t("chooseMode");
-  els.arena.innerHTML = `<div class="empty-arena">${t("practiceAgain")}</div>`;
+  els.arena.innerHTML = `<div class="empty-arena">${t(allMastered ? "allMasteredHint" : "practiceAgain")}</div>`;
   renderHud();
   stopAnimation();
 }
 
 function renderIdleGame() {
   renderHud();
-  els.prompt.textContent = state.cards.length ? t("chooseMode") : t("importToBegin");
-  els.arena.innerHTML = `<div class="empty-arena">${t("answerBubbles")}</div>`;
+  const allMastered = allWordsMastered();
+  els.prompt.textContent = allMastered ? t("allMastered") : state.cards.length ? t("chooseMode") : t("importToBegin");
+  els.arena.innerHTML = `<div class="empty-arena">${t(allMastered ? "allMasteredHint" : "answerBubbles")}</div>`;
 }
 
 function renderHud() {
@@ -281,7 +345,7 @@ function renderHud() {
 }
 
 function renderProgress() {
-  const summary = summarizeProgress(state.cards, state.bestScore);
+  const summary = summarizeProgress(state.cards, state.bestScore, state.masteryTarget);
   const dailyGoal = Math.max(1, Number(state.dailyGoal) || 12);
   const today = getLocalDateKey();
   const todayCount = state.todayPracticeDate === today ? Number(state.todayAnswerCount) || 0 : 0;
@@ -332,6 +396,10 @@ function importVocabulary(text, options = {}) {
   }
 
   state = { ...state, cards: result.cards };
+  session = null;
+  currentRound = null;
+  stopAnimation();
+  els.app.classList.remove("is-playing");
   persistState();
   els.importSummary.textContent = options.demo
     ? tv("demoDeckLoaded", { cards: result.summary.cardCount })
@@ -416,12 +484,18 @@ function renderLanguage() {
   for (const element of document.querySelectorAll("[data-i18n-aria]")) {
     element.setAttribute("aria-label", t(element.dataset.i18nAria));
   }
+  for (const element of document.querySelectorAll("[data-i18n-alt]")) {
+    element.alt = t(element.dataset.i18nAlt);
+  }
   els.languageButton.textContent = t("languageButton");
   renderMusicButton();
   renderSoundButtons();
   renderTheme();
   renderPauseButton();
   renderBlastSound();
+  els.masteryTarget.value = state.masteryTarget;
+  els.masteryStatus.textContent = "";
+  renderAlipay();
   renderProgress();
   if (!currentRound) {
     renderIdleGame();
@@ -432,6 +506,46 @@ function onBlastSoundChange() {
   state = { ...state, correctSound: els.blastSoundSelect.value };
   audio.setCorrectSound(state.correctSound, { playDraw: true });
   persistState();
+}
+
+function onMasteryTargetChange() {
+  const requested = Number(els.masteryTarget.value);
+  if (!Number.isInteger(requested) || requested < 1 || requested > 20) {
+    els.masteryTarget.value = state.masteryTarget;
+    els.masteryStatus.textContent = t("masteryInvalid");
+    return;
+  }
+  const target = normalizeMasteryTarget(requested);
+  if (target === state.masteryTarget) return;
+  const cards = state.cards.map((card) => isMastered(card, state.masteryTarget) || isMastered(card, target)
+    ? { ...card, mastered: true }
+    : card);
+  state = { ...state, cards, masteryTarget: target };
+  session = null;
+  currentRound = null;
+  blastLocked = false;
+  stopAnimation();
+  els.app.classList.remove("is-playing");
+  persistState();
+  els.masteryStatus.textContent = tv("masterySaved", { count: target });
+  renderProgress();
+  renderIdleGame();
+}
+
+function allWordsMastered() {
+  return state.cards.length > 0 && state.cards.every((card) => isMastered(card, state.masteryTarget));
+}
+
+function renderAlipay() {
+  els.alipayAccountSection.hidden = !alipay.account;
+  els.alipayAccount.value = alipay.account;
+  els.alipayRecipient.hidden = !alipay.recipient;
+  els.alipayRecipient.textContent = alipay.recipient ? tv("alipayRecipient", { name: alipay.recipient }) : "";
+  els.alipayQr.hidden = !alipay.qrImageUrl;
+  if (alipay.qrImageUrl) els.alipayQr.src = alipay.qrImageUrl;
+  els.alipayLink.hidden = !alipay.paymentUrl;
+  if (alipay.paymentUrl) els.alipayLink.href = alipay.paymentUrl;
+  els.alipayStatus.textContent = t(alipay.account ? "alipayAccountReady" : alipay.configured ? "alipayReady" : "alipayUnconfigured");
 }
 
 function renderBlastSound() {
@@ -485,6 +599,7 @@ function setUiReady(ready) {
     els.nightButton,
     els.nightGameButton,
     els.blastSoundSelect,
+    els.masteryTarget,
     els.pauseButton,
     els.languageButton,
   ];
@@ -527,7 +642,7 @@ function renderPauseButton() {
 
 function playAnswerSound(isCorrect) {
   audio.shoot();
-  const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  const allMastered = allWordsMastered();
   const event = soundForAnswer({ isCorrect, allMastered });
   if (event === "mastered") return;
   if (event === "correct") audio.correct();
@@ -535,7 +650,7 @@ function playAnswerSound(isCorrect) {
 }
 
 function playMasteredSoundIfComplete() {
-  const allMastered = state.cards.length > 0 && state.cards.every((card) => Number(card.correctCount) >= 3);
+  const allMastered = allWordsMastered();
   if (!allMastered || masteredAudioPlayed) return;
   audio.mastered();
   masteredAudioPlayed = true;
@@ -543,7 +658,10 @@ function playMasteredSoundIfComplete() {
 
 async function copyReviewList() {
   audio.menu();
-  const reviewCards = getReviewCards(state.cards);
+  const reviewCards = getReviewCards(state.cards, state.masteryTarget).sort((first, second) =>
+    (Number(second.missCount) || 0) - (Number(first.missCount) || 0)
+    || (Number(first.correctCount) || 0) - (Number(second.correctCount) || 0)
+    || first.term.localeCompare(second.term));
   if (reviewCards.length === 0) {
     els.importSummary.textContent = state.cards.length === 0 ? t("pasteFirst") : t("reviewListEmpty");
     return;
@@ -563,18 +681,6 @@ async function copyReviewList() {
     downloadTextFile("wordsblast-review-list.txt", text);
     els.importSummary.textContent = tv("reviewListDownloaded", { count: reviewCards.length });
   }
-}
-
-function getReviewCards(cards) {
-  return cards
-    .filter((card) => Number(card.correctCount) < MASTERY_CORRECT_COUNT || Number(card.missCount) > 0)
-    .sort((first, second) => {
-      const missDifference = Number(second.missCount) - Number(first.missCount);
-      if (missDifference) return missDifference;
-      const correctDifference = Number(first.correctCount) - Number(second.correctCount);
-      if (correctDifference) return correctDifference;
-      return first.term.localeCompare(second.term);
-    });
 }
 
 function downloadTextFile(filename, text) {
