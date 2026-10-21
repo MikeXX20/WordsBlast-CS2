@@ -31,6 +31,7 @@ describe('storage', () => {
       lastPracticeDate: null,
       todayPracticeDate: null,
       todayAnswerCount: 0,
+      masteryTarget: 3,
     });
   });
 
@@ -54,6 +55,7 @@ describe('storage', () => {
       lastPracticeDate: "2026-06-15",
       todayPracticeDate: "2026-06-15",
       todayAnswerCount: 7,
+      masteryTarget: 5,
     };
 
     assert.deepEqual(saveState(state, storage), { ok: true });
@@ -83,6 +85,7 @@ describe('storage', () => {
       lastPracticeDate: null,
       todayPracticeDate: null,
       todayAnswerCount: 0,
+      masteryTarget: 3,
     });
   });
 
@@ -105,5 +108,67 @@ describe('storage', () => {
       ok: false,
       reason: 'quota exceeded',
     });
+  });
+
+  it("falls back to three for invalid saved mastery targets", () => {
+    for (const masteryTarget of [0, 21, 1.5, "5", null]) {
+      const storage = createMemoryStorage({
+        "lite-vocab-blast:state:v1": JSON.stringify({ masteryTarget }),
+      });
+
+      assert.equal(loadState(storage).masteryTarget, 3);
+    }
+  });
+
+  it("migrates legacy cards at the previous default threshold to permanent retirement", () => {
+    const storage = createMemoryStorage({
+      "lite-vocab-blast:state:v1": JSON.stringify({
+        cards: [
+          { id: "retired", correctCount: 3, missCount: 2 },
+          { id: "learning", correctCount: 2 },
+        ],
+      }),
+    });
+
+    const state = loadState(storage);
+    assert.equal(state.masteryTarget, 3);
+    assert.equal(state.cards[0].mastered, true);
+    assert.notEqual(state.cards[1].mastered, true);
+
+    saveState({ ...state, masteryTarget: 5 }, storage);
+    assert.equal(loadState(storage).cards[0].mastered, true);
+  });
+
+  it("migrates legacy retirement against its saved target", () => {
+    const storage = createMemoryStorage({
+      "lite-vocab-blast:state:v1": JSON.stringify({
+        masteryTarget: 5,
+        cards: [
+          { id: "retired", correctCount: 5 },
+          { id: "learning", correctCount: 3 },
+          { id: "already-retired", correctCount: 1, mastered: true },
+        ],
+      }),
+    });
+
+    const state = loadState(storage);
+
+    assert.equal(state.cards[0].mastered, true);
+    assert.notEqual(state.cards[1].mastered, true);
+    assert.equal(state.cards[2].mastered, true);
+  });
+
+  it("preserves a one-answer retirement across visits and target increases", () => {
+    const storage = createMemoryStorage();
+    saveState({
+      ...createDefaultState(),
+      masteryTarget: 1,
+      cards: [{ id: "retired", correctCount: 1 }],
+    }, storage);
+    const state = loadState(storage);
+
+    assert.equal(state.cards[0].mastered, true);
+    saveState({ ...state, masteryTarget: 20 }, storage);
+    assert.equal(loadState(storage).cards[0].mastered, true);
   });
 });

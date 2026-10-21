@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { recordAnswer, summarizeProgress } from "./progress.js";
+import { getReviewCards, isMastered, normalizeMasteryTarget, recordAnswer, summarizeProgress } from "./progress.js";
 
 describe('progress', () => {
   it('records a correct answer', () => {
@@ -22,6 +22,7 @@ describe('progress', () => {
       seenCount: 4,
       correctCount: 3,
       missCount: 0,
+      mastered: true,
     });
   });
 
@@ -89,8 +90,89 @@ describe('progress', () => {
       weakCount: 1,
       masteredCount: 2,
       masteryPercent: 50,
-      reviewCount: 3,
+      reviewCount: 2,
       bestScore: 900,
+    });
+  });
+
+  it("uses only whole-number mastery targets from 1 through 20", () => {
+    for (const target of [1, 5, 20]) {
+      assert.equal(normalizeMasteryTarget(target), target);
+    }
+    for (const target of [undefined, null, "5", 0, 21, 1.5, Infinity, NaN]) {
+      assert.equal(normalizeMasteryTarget(target), 3);
+    }
+  });
+
+  it("retires a word after one correct answer when the target is one", () => {
+    const result = recordAnswer({ id: "one" }, true, 1);
+
+    assert.equal(result.correctCount, 1);
+    assert.equal(result.mastered, true);
+  });
+
+  it("counts cumulative correct answers toward a target of five", () => {
+    let card = { id: "one" };
+    for (const correct of [true, false, true, true, false, true]) {
+      card = recordAnswer(card, correct, 5);
+      assert.notEqual(card.mastered, true);
+    }
+    card = recordAnswer(card, true, 5);
+
+    assert.equal(card.correctCount, 5);
+    assert.equal(card.seenCount, 7);
+    assert.equal(card.missCount, 2);
+    assert.equal(card.mastered, true);
+    assert.equal(recordAnswer(card, true, 5).correctCount, 5);
+  });
+
+  it("does not retire a word after a wrong answer at a target of one", () => {
+    const result = recordAnswer({ id: "one" }, false, 1);
+
+    assert.equal(result.correctCount, 0);
+    assert.notEqual(result.mastered, true);
+  });
+
+  it("keeps a retired word mastered when the target later increases", () => {
+    const retired = recordAnswer({ id: "one" }, true, 1);
+    const result = recordAnswer(retired, false, 5);
+
+    assert.equal(result.mastered, true);
+    assert.equal(isMastered(result, 5), true);
+  });
+
+  it("recognizes saved retirement and legacy counts at the selected target", () => {
+    assert.equal(isMastered({ mastered: true, correctCount: 1 }, 5), true);
+    assert.equal(isMastered({ correctCount: 3 }), true);
+    assert.equal(isMastered({ correctCount: 4 }, 5), false);
+    assert.equal(isMastered({ correctCount: 5 }, 5), true);
+  });
+
+  it("excludes retired words with historical misses from review", () => {
+    const cards = [
+      { id: "retired", correctCount: 1, missCount: 2, mastered: true },
+      { id: "legacy", correctCount: 5, missCount: 1 },
+      { id: "learning", correctCount: 4, missCount: 0 },
+    ];
+
+    assert.deepEqual(getReviewCards(cards, 5).map((card) => card.id), ["learning"]);
+  });
+
+  it("summarizes permanent retirement and the current mastery target", () => {
+    const cards = [
+      { mastered: true, seenCount: 3, correctCount: 1, missCount: 2 },
+      { seenCount: 6, correctCount: 5, missCount: 1 },
+      { seenCount: 4, correctCount: 4, missCount: 0 },
+    ];
+
+    assert.deepEqual(summarizeProgress(cards, 120, 5), {
+      cardCount: 3,
+      accuracy: 77,
+      weakCount: 2,
+      masteredCount: 2,
+      masteryPercent: 67,
+      reviewCount: 1,
+      bestScore: 120,
     });
   });
 });

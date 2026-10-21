@@ -15,6 +15,26 @@ let's roll!
  night mode supported
  Chinese supported
 
+## Word retirement
+
+Set **Correct answers before a word vanishes** to an integer from 1 to 20 (default: 3).
+Correct answers accumulate across sessions; wrong answers do not reset them. Once a
+word reaches the target, it stays retired from prompts, choices, and the review
+list, even if you increase the target later. The target and progress are saved in
+this browser. Importing or clearing a deck resets that deck's progress.
+
+## Alipay support
+
+The **Support with Alipay** button opens a bilingual dialog with the owner's
+Alipay account and a copy button for manual transfers. An optional collection
+link or QR image can be configured in `payment-config.js`. See
+[Alipay setup](docs/alipay.md). This is voluntary support; automatic checkout
+and payment verification require a backend.
+
+## Development
+
+Run `npm test` for the test suite, or `npm run dev` to preview locally.
+
 # contact me
  Gmail: a2363996571@gmail.com
 

@@ -1,10 +1,11 @@
+import { getReviewCards, isMastered, normalizeMasteryTarget } from "./progress.js";
+
 const DIRECTIONS = new Set(["term-to-meaning", "meaning-to-term"]);
 const STARTING_LIVES = 3;
 const MAX_CHOICES = 4;
 const RECENT_WINDOW = 10;
-const MASTERY_CORRECT_COUNT = 3;
 
-export function createSession(cards, direction, random = Math.random) {
+export function createSession(cards, direction, random = Math.random, masteryTarget = 3) {
   if (!Array.isArray(cards) || cards.length === 0) {
     throw new Error("createSession requires at least one card.");
   }
@@ -17,6 +18,7 @@ export function createSession(cards, direction, random = Math.random) {
     cards: cards.slice(),
     direction,
     random,
+    masteryTarget: normalizeMasteryTarget(masteryTarget),
     score: 0,
     combo: 0,
     lives: STARTING_LIVES,
@@ -29,7 +31,7 @@ export function createSession(cards, direction, random = Math.random) {
 }
 
 export function nextRound(session) {
-  const activeCards = getActiveCards(session.cards);
+  const activeCards = getReviewCards(session.cards, session.masteryTarget);
   if (activeCards.length === 0) {
     session.currentRound = null;
     return null;
@@ -109,21 +111,13 @@ function pickCard(session) {
     ? session.cards.find((card) => card.id === weakCardId)
     : null;
 
-  if (weakCard && !isMastered(weakCard)) {
+  if (weakCard && !isMastered(weakCard, session.masteryTarget)) {
     return weakCard;
   }
 
-  const activeCards = getActiveCards(session.cards);
+  const activeCards = getReviewCards(session.cards, session.masteryTarget);
   const index = Math.floor(clamp(session.random(), 0, 0.999999) * activeCards.length);
   return activeCards[index];
-}
-
-function getActiveCards(cards) {
-  return cards.filter((card) => !isMastered(card));
-}
-
-function isMastered(card) {
-  return Number(card.correctCount) >= MASTERY_CORRECT_COUNT;
 }
 
 function buildChoices(cards, currentCard, direction, random) {
