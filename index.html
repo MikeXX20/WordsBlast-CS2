@@ -8,7 +8,7 @@
       content="A fast, bilingual vocabulary trainer with CS2-inspired audio, streaks, progress tracking, and review exports."
     />
     <title>Lite Vocabulary Blast</title>
-    <link rel="stylesheet" href="./src/styles.css?v=product-upgrades" />
+    <link rel="stylesheet" href="./src/styles.css?v=mastery-alipay" />
   </head>
   <body>
     <div class="floating-controls" aria-label="Global controls" data-i18n-aria="globalControlsLabel">
@@ -92,6 +92,10 @@ banana - 香蕉</textarea>
             <option value="ak" data-i18n="blastSoundAk">AK-47</option>
             <option value="deagle" data-i18n="blastSoundDeagle">Desert Eagle</option>
           </select>
+          <label for="masteryTarget" data-i18n="masteryTargetLabel">Correct answers before a word vanishes</label>
+          <input id="masteryTarget" class="mastery-input" type="number" min="1" max="20" step="1" value="3" aria-describedby="masteryHint masteryStatus" />
+          <p id="masteryHint" class="setting-hint" data-i18n="masteryHint">Choose 1–20 cumulative correct answers. Retired words stay hidden, even if you raise this number. Importing or clearing a deck resets its progress.</p>
+          <p id="masteryStatus" class="status" role="status"></p>
           <fieldset class="mode-field">
             <legend data-i18n="directionLegend">Practice direction</legend>
             <label class="mode-option">
@@ -123,6 +127,10 @@ banana - 香蕉</textarea>
             </div>
             <p data-i18n="proPitch">Paid packs can add class decks, custom sound kits, streak analytics, and cloud sync while the core trainer stays free.</p>
             <a class="button-link premium-cta" href="mailto:a2363996571@gmail.com?subject=WordsBlast%20Pro%20interest" data-i18n="joinProButton">Join Pro waitlist</a>
+          </div>
+          <div class="support-card">
+            <button id="alipayButton" type="button" class="secondary full-button alipay-button" aria-haspopup="dialog" aria-controls="alipayDialog" data-i18n="alipayButton">Support with Alipay</button>
+            <p class="setting-hint" data-i18n="alipaySupportHint">Optional support for WordsBlast. The core game stays free.</p>
           </div>
           <ul class="product-points">
             <li data-i18n="proPointOne">Free game builds trust first.</li>
@@ -162,6 +170,23 @@ banana - 香蕉</textarea>
         </div>
       </section>
     </main>
-    <script type="module" src="./src/main.js?v=real-match-comms"></script>
+    <dialog id="alipayDialog" class="payment-dialog" aria-labelledby="alipayTitle" aria-describedby="alipayDescription alipayStatus">
+      <form method="dialog" class="payment-dialog-header">
+        <h2 id="alipayTitle" data-i18n="alipayTitle">Support WordsBlast</h2>
+        <button type="submit" class="secondary" data-i18n="closeButton" autofocus>Close</button>
+      </form>
+      <p id="alipayDescription" data-i18n="alipayDescription">Voluntary support via Alipay. This does not purchase Founder Pro or unlock features.</p>
+      <p id="alipayRecipient" class="payment-recipient" hidden></p>
+      <div id="alipayAccountSection" hidden>
+        <label for="alipayAccount" data-i18n="alipayAccountLabel">Alipay account</label>
+        <input id="alipayAccount" class="mastery-input" type="text" readonly spellcheck="false" autocomplete="off" />
+        <button id="copyAlipayAccount" class="secondary full-button" type="button" data-i18n="alipayCopyAccount">Copy account</button>
+      </div>
+      <img id="alipayQr" class="payment-qr" alt="Alipay collection QR code" data-i18n-alt="alipayQrAlt" referrerpolicy="no-referrer" hidden />
+      <p id="alipayStatus" class="status" role="status"></p>
+      <a id="alipayLink" class="button-link alipay-button" target="_blank" rel="noopener noreferrer" data-i18n="alipayOpen" hidden>Open Alipay payment</a>
+      <p class="setting-hint" data-i18n="alipayPaymentHint">Check the recipient and amount in Alipay before paying. Confirm the result in Alipay; this page cannot verify payments.</p>
+    </dialog>
+    <script type="module" src="./src/main.js?v=mastery-alipay"></script>
   </body>
 </html>
