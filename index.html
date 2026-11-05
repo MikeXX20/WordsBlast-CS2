@@ -8,7 +8,7 @@
       content="A fast, bilingual vocabulary trainer with CS2-inspired audio, streaks, progress tracking, and review exports."
     />
     <title>Lite Vocabulary Blast</title>
-    <link rel="stylesheet" href="./src/styles.css?v=mastery-alipay" />
+    <link rel="stylesheet" href="./src/styles.css?v=baicizhan-pdf" />
   </head>
   <body>
     <div class="floating-controls" aria-label="Global controls" data-i18n-aria="globalControlsLabel">
@@ -37,7 +37,31 @@ banana - 香蕉</textarea>
             <button id="demoDeckButton" type="button" class="secondary" data-i18n="demoDeckButton">Demo deck</button>
             <button id="clearButton" type="button" class="secondary" data-i18n="clearButton">Clear</button>
           </div>
+          <details class="pdf-import">
+            <summary data-i18n="pdfHeading">Import Baicizhan vocabulary PDF</summary>
+            <p class="setting-hint" data-i18n="pdfHint">Paste a Baicizhan PDF link or choose a PDF file. Review the words before importing. Files are processed in your browser.</p>
+            <label for="pdfUrl" data-i18n="pdfUrlLabel">Baicizhan PDF link</label>
+            <input id="pdfUrl" class="mastery-input" type="url" placeholder="https://vol-v6.bczcdn.com/…/book.pdf" autocomplete="off" />
+            <button id="pdfLoadButton" type="button" class="secondary full-button" data-i18n="pdfLoadButton">Read PDF link</button>
+            <label for="pdfFile" data-i18n="pdfFileLabel">Or upload a PDF file</label>
+            <input id="pdfFile" type="file" accept=".pdf,application/pdf" aria-describedby="pdfStatus" />
+            <p id="pdfStatus" class="status" role="status"></p>
+            <div id="pdfPreviewPanel" hidden>
+              <label for="pdfBankName" data-i18n="pdfNameLabel">Word bank name</label>
+              <input id="pdfBankName" class="mastery-input" type="text" maxlength="100" />
+              <label for="pdfPreview" data-i18n="pdfPreviewLabel">Review and edit extracted words</label>
+              <textarea id="pdfPreview" rows="8" spellcheck="false" aria-describedby="pdfPreviewCount pdfWarnings"></textarea>
+              <p id="pdfPreviewCount" class="status" role="status"></p>
+              <p id="pdfWarnings" class="setting-hint" role="status"></p>
+              <p class="setting-hint" data-i18n="pdfReplaceHint">Import replaces the current deck and resets its word progress.</p>
+              <div class="button-row">
+                <button id="pdfImportButton" type="button" data-i18n="pdfImportButton" disabled>Import word bank</button>
+                <button id="pdfDownloadButton" type="button" class="secondary" data-i18n="pdfDownloadButton" disabled>Download word bank</button>
+              </div>
+            </div>
+          </details>
           <div class="preset-grid" aria-label="Preset word banks" data-i18n-aria="presetBanksLabel">
+            <button id="baicizhanBankButton" type="button" class="secondary" data-i18n="baicizhanBankButton">Baicizhan favorites · 569</button>
             <button id="fpsBankButton" type="button" class="secondary" data-i18n="fpsBankButton">FPS terms</button>
             <button id="cs2BankButton" type="button" class="secondary" data-i18n="cs2BankButton">CS2 callouts</button>
             <button id="valorantBankButton" type="button" class="secondary" data-i18n="valorantBankButton">Valorant callouts</button>
@@ -187,6 +211,6 @@ banana - 香蕉</textarea>
       <a id="alipayLink" class="button-link alipay-button" target="_blank" rel="noopener noreferrer" data-i18n="alipayOpen" hidden>Open Alipay payment</a>
       <p class="setting-hint" data-i18n="alipayPaymentHint">Check the recipient and amount in Alipay before paying. Confirm the result in Alipay; this page cannot verify payments.</p>
     </dialog>
-    <script type="module" src="./src/main.js?v=mastery-alipay"></script>
+    <script type="module" src="./src/main.js?v=baicizhan-pdf"></script>
   </body>
 </html>

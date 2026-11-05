@@ -982,3 +982,17 @@ body.night-mode .answer-bubble {
     box-shadow: 0 18px 34px rgba(15, 118, 110, .34);
   }
 }
+
+.pdf-import {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--border, #b9c1cc);
+  border-radius: 12px;
+}
+.pdf-import summary { cursor: pointer; font-weight: 700; }
+.pdf-import label { display: block; margin: 14px 0 6px; }
+.pdf-import input[type="file"] { display: block; width: 100%; font-size: 0.85rem; }
+.pdf-import .full-button { margin-top: 8px; }
+.pdf-import textarea { width: 100%; font-size: 0.85rem; }
+.pdf-import [hidden] { display: none; }
+.pdf-import .setting-hint { overflow-wrap: anywhere; }

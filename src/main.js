@@ -1,7 +1,8 @@
+import { setupPdfImport } from "./pdf-import-ui.js";
 import { parseVocabulary } from "./parser.js";
 import { createGameAudio, soundForAnswer } from "./audio.js?v=audio-lifecycle";
 import { answerCurrent, createSession, nextRound } from "./game.js?v=mastery-alipay";
-import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js?v=mastery-alipay";
+import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js?v=baicizhan-pdf";
 import { getReviewCards, isMastered, normalizeMasteryTarget, recordAnswer, summarizeProgress } from "./progress.js?v=mastery-alipay";
 import { createDefaultState, loadState, saveState } from "./storage.js?v=mastery-alipay";
 import { getAlipayPayment } from "./alipay.js?v=mastery-alipay";
@@ -14,6 +15,7 @@ const els = {
   importText: document.querySelector("#importText"),
   importButton: document.querySelector("#importButton"),
   demoDeckButton: document.querySelector("#demoDeckButton"),
+  baicizhanBankButton: document.querySelector("#baicizhanBankButton"),
   fpsBankButton: document.querySelector("#fpsBankButton"),
   cs2BankButton: document.querySelector("#cs2BankButton"),
   valorantBankButton: document.querySelector("#valorantBankButton"),
@@ -77,6 +79,7 @@ const DEMO_IMPORT_TEXT = [
   "flawless - 完美的",
 ].join("\n");
 const PRESET_BANKS = {
+  baicizhan: "./word-banks/baicizhan-favorites.txt",
   fps: "./word-banks/pro-fps-comms.txt",
   cs2: "./word-banks/cs2-map-callouts.txt",
   valorant: "./word-banks/valorant-map-callouts.txt",
@@ -100,6 +103,16 @@ audio.setEnabled(state.audioEnabled);
 audio.setMusicMuted(state.musicMuted);
 audio.setCorrectSound(state.correctSound || "ak");
 
+const pdfImport = setupPdfImport({
+  t, tv,
+  importBank: (text, name) => {
+    const imported = importVocabulary(text, { customName: name });
+    if (imported) els.importText.value = text;
+    return imported;
+  },
+  downloadBank: downloadTextFile,
+});
+
 fillDefaultImportText();
 renderLanguage();
 renderProgress();
@@ -120,6 +133,7 @@ els.demoDeckButton.addEventListener("click", () => {
   els.importText.value = DEMO_IMPORT_TEXT;
   importVocabulary(DEMO_IMPORT_TEXT, { demo: true });
 });
+els.baicizhanBankButton.addEventListener("click", () => loadPresetBank("baicizhan"));
 els.fpsBankButton.addEventListener("click", () => loadPresetBank("fps"));
 els.cs2BankButton.addEventListener("click", () => loadPresetBank("cs2"));
 els.valorantBankButton.addEventListener("click", () => loadPresetBank("valorant"));
@@ -392,7 +406,7 @@ function importVocabulary(text, options = {}) {
   if (result.cards.length === 0) {
     els.importSummary.textContent = t("pasteFirst");
     renderImportErrors(result.errors);
-    return;
+    return false;
   }
 
   state = { ...state, cards: result.cards };
@@ -403,6 +417,8 @@ function importVocabulary(text, options = {}) {
   persistState();
   els.importSummary.textContent = options.demo
     ? tv("demoDeckLoaded", { cards: result.summary.cardCount })
+    : options.customName
+      ? tv("presetBankLoaded", { name: options.customName, cards: result.summary.cardCount })
     : options.bankName
       ? tv("presetBankLoaded", { name: t(`${options.bankName}BankName`), cards: result.summary.cardCount })
     : tv("importedSummary", {
@@ -413,6 +429,7 @@ function importVocabulary(text, options = {}) {
   renderImportErrors(result.errors);
   renderProgress();
   renderIdleGame();
+  return true;
 }
 
 async function loadPresetBank(bankName) {
@@ -496,6 +513,7 @@ function renderLanguage() {
   els.masteryTarget.value = state.masteryTarget;
   els.masteryStatus.textContent = "";
   renderAlipay();
+  pdfImport.refresh();
   renderProgress();
   if (!currentRound) {
     renderIdleGame();
@@ -584,6 +602,7 @@ function setUiReady(ready) {
   const controls = [
     els.importButton,
     els.demoDeckButton,
+    els.baicizhanBankButton,
     els.fpsBankButton,
     els.cs2BankButton,
     els.valorantBankButton,
