@@ -27,10 +27,3 @@ These word banks are curated for English comms practice, not copied as exhaustiv
 4. In the app, use word-to-meaning first.
 5. Switch to meaning-to-word when learners can recognize the terms.
 6. Ask players to say one complete sentence after each answer, such as `Two B main, spike down`.
-
-## Baicizhan favorites (收藏的单词)
-
-- Source supplied by the user: https://vol-v6.bczcdn.com/pdf2c/c199dd1758757cd9ab1f8952f6588b4a.pdf
-- 14-page Baicizhan Classic Vocabulary List; entries 1–569.
-- `baicizhan-favorites.txt` contains 569 unique terms with Chinese definitions and parts of speech, extracted from both table columns. Letter ligatures and wrapped cells have been normalized.
-- Some source definitions contain ellipses. These are preserved, not completed or inferred. The importer flags them for review.

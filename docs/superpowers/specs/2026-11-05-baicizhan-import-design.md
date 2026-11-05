@@ -12,7 +12,7 @@ Support both a PDF URL and local PDF file upload. Extract in the browser and pre
 2. Use PDF.js to read selectable text, reconstruct numbered vocabulary rows across both table columns, join wrapped terms and meanings, and normalize letter ligatures such as “ﬂ” to “fl”. Exclude page titles, numbers, and column headings.
 3. Show extracted word count and an editable preview using the existing term/meaning format. Keep Chinese definitions and parts of speech. Preserve any ellipses already present in the original PDF; do not invent missing text. Flag entries requiring review.
 4. Allow a bank name, download as a UTF-8 word-bank text file, and explicit import into the game. A successful import replaces the active deck and resets its word progress, following existing app behavior. Failed extraction leaves the active deck intact.
-5. Include a playable preset word bank converted from the supplied 14-page sample, with source attribution. Check entry numbering and extraction completeness against the PDF.
+5. Treat the supplied PDF strictly as a format example and validation fixture. Do not bundle its vocabulary or add an example-specific preset. Users create their own banks from their PDF links or files.
 
 ## Constraints and implementation choices
 

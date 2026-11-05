@@ -54,4 +54,4 @@ Importing replaces the current deck and resets that deck's word progress. Loadin
 
 The importer supports Baicizhan **Classic Vocabulary List** exports with selectable text and numbered **No. / Word / Meaning** table columns, including two-column pages and wrapped phrases. Scanned PDFs require OCR first. Limits: 50 MB and 500 pages. If a PDF link fails because its host blocks browser access, download the PDF and upload the file instead. Uploaded PDFs are processed locally; the PDF.js library and worker are bundled with the app and loaded only when needed. Use a current browser that supports JavaScript modules and web workers.
 
-The **Baicizhan favorites · 569** preset is a ready-to-play bank converted from the supplied sample. Source definitions ending in ellipses remain as printed in the PDF; review them if you need complete definitions. See [word-bank sources](word-banks/SOURCES.md).
+The PDF link supplied during development is only a format example. No example vocabulary is bundled as a preset: use your own PDF link or file to create a word bank. Source definitions ending in ellipses remain as printed in the PDF; review them if you need complete definitions.

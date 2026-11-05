@@ -2,8 +2,6 @@ export const SUPPORTED_LANGUAGES = ["en", "zh"];
 
 export const TEXT = {
   en: {
-    baicizhanBankButton: "Baicizhan favorites · 569",
-    baicizhanBankName: "Baicizhan favorites",
     pdfHeading: "Import Baicizhan vocabulary PDF",
     pdfHint: "Paste a Baicizhan PDF link or choose a PDF file. Review the words before importing. Files are processed in your browser.",
     pdfUrlLabel: "Baicizhan PDF link",
@@ -148,8 +146,6 @@ export const TEXT = {
     practiceAgain: "Press Start Blast to practice again.",
   },
   zh: {
-    baicizhanBankButton: "百词斩收藏 · 569 词",
-    baicizhanBankName: "百词斩收藏",
     pdfHeading: "导入百词斩 PDF 词书",
     pdfHint: "粘贴百词斩 PDF 链接或选择 PDF 文件，预览并编辑后再导入。文件在浏览器本地处理。",
     pdfUrlLabel: "百词斩 PDF 链接",

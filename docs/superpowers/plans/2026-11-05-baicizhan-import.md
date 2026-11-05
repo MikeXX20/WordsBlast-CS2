@@ -24,21 +24,21 @@
 
 ### Task 1: PDF extraction and sample word bank
 
-**Files:** src/pdf-import.js, src/pdf-import.test.js, vendor/pdfjs/, word-banks/baicizhan-favorites.txt, word-banks/SOURCES.md.
+**Files:** src/pdf-import.js, src/pdf-import.test.js, vendor/pdfjs/.
 **Interfaces:** extractVocabularyFromPages(pages) returns {text, title, rowCount, warnings}; readVocabularyPdf(bytes, onProgress) resolves the same result. Pages contain {width, items} with PDF.js TextItems.
 
 - [x] Write failing tests for two-column pairing, cell wraps, ligatures, partial rows, scanned pages, and duplicate terms; run `node --test src/pdf-import.test.js` and confirm missing feature failure.
 - [x] Implement coordinate reconstruction and PDF loading with cleanup and PDF validation, vendor the pinned library with license, run the new tests.
-- [x] Run real sample extraction; inspect all 569 indices, selected difficult entries, and the final entry; generate and attribute the preset bank.
+- [x] Run real sample extraction; inspect all 569 indices, selected difficult entries, and the final entry; use the supplied PDF only as a validation fixture.
 
 ### Task 2: Import controls and integration
 
 **Files:** src/pdf-import-ui.js, index.html, src/main.js, src/i18n.js, src/styles.css, README.md.
 **Interfaces:** setupPdfImport({t, tv, importBank, downloadBank}) wires DOM controls; refresh() localizes dynamic status. importBank(text, name) delegates to importVocabulary.
 
-- [x] Add labeled PDF URL/file controls, editable named preview, count/warnings, download/import actions and sample preset in English and Chinese.
+- [x] Add labeled PDF URL/file controls, editable named preview, count/warnings, download/import actions in English and Chinese.
 - [x] Protect existing deck on load/parse errors; disable invalid preview actions and controls during extraction; reject malformed URLs and non-PDF input with clear messages.
-- [x] Browser-test URL extraction, file extraction, edited preview, persisted deck, preset, errors, language change and a game round. Run `npm test` and `git diff --check`.
+- [x] Browser-test URL extraction, file extraction, edited preview, persisted deck, errors, language change and a game round. Run `npm test` and `git diff --check`.
 
 ### Task 3: Review and delivery
 

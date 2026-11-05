@@ -15,7 +15,6 @@ const els = {
   importText: document.querySelector("#importText"),
   importButton: document.querySelector("#importButton"),
   demoDeckButton: document.querySelector("#demoDeckButton"),
-  baicizhanBankButton: document.querySelector("#baicizhanBankButton"),
   fpsBankButton: document.querySelector("#fpsBankButton"),
   cs2BankButton: document.querySelector("#cs2BankButton"),
   valorantBankButton: document.querySelector("#valorantBankButton"),
@@ -79,7 +78,6 @@ const DEMO_IMPORT_TEXT = [
   "flawless - 完美的",
 ].join("\n");
 const PRESET_BANKS = {
-  baicizhan: "./word-banks/baicizhan-favorites.txt",
   fps: "./word-banks/pro-fps-comms.txt",
   cs2: "./word-banks/cs2-map-callouts.txt",
   valorant: "./word-banks/valorant-map-callouts.txt",
@@ -133,7 +131,6 @@ els.demoDeckButton.addEventListener("click", () => {
   els.importText.value = DEMO_IMPORT_TEXT;
   importVocabulary(DEMO_IMPORT_TEXT, { demo: true });
 });
-els.baicizhanBankButton.addEventListener("click", () => loadPresetBank("baicizhan"));
 els.fpsBankButton.addEventListener("click", () => loadPresetBank("fps"));
 els.cs2BankButton.addEventListener("click", () => loadPresetBank("cs2"));
 els.valorantBankButton.addEventListener("click", () => loadPresetBank("valorant"));
@@ -602,7 +599,6 @@ function setUiReady(ready) {
   const controls = [
     els.importButton,
     els.demoDeckButton,
-    els.baicizhanBankButton,
     els.fpsBankButton,
     els.cs2BankButton,
     els.valorantBankButton,
