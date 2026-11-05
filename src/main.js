@@ -1,7 +1,8 @@
+import { setupPdfImport } from "./pdf-import-ui.js";
 import { parseVocabulary } from "./parser.js";
 import { createGameAudio, soundForAnswer } from "./audio.js?v=audio-lifecycle";
 import { answerCurrent, createSession, nextRound } from "./game.js?v=mastery-alipay";
-import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js?v=mastery-alipay";
+import { getText, getTextWithVars, nextLanguage, normalizeLanguage } from "./i18n.js?v=baicizhan-pdf";
 import { getReviewCards, isMastered, normalizeMasteryTarget, recordAnswer, summarizeProgress } from "./progress.js?v=mastery-alipay";
 import { createDefaultState, loadState, saveState } from "./storage.js?v=mastery-alipay";
 import { getAlipayPayment } from "./alipay.js?v=mastery-alipay";
@@ -99,6 +100,16 @@ const audio = createGameAudio();
 audio.setEnabled(state.audioEnabled);
 audio.setMusicMuted(state.musicMuted);
 audio.setCorrectSound(state.correctSound || "ak");
+
+const pdfImport = setupPdfImport({
+  t, tv,
+  importBank: (text, name) => {
+    const imported = importVocabulary(text, { customName: name });
+    if (imported) els.importText.value = text;
+    return imported;
+  },
+  downloadBank: downloadTextFile,
+});
 
 fillDefaultImportText();
 renderLanguage();
@@ -392,7 +403,7 @@ function importVocabulary(text, options = {}) {
   if (result.cards.length === 0) {
     els.importSummary.textContent = t("pasteFirst");
     renderImportErrors(result.errors);
-    return;
+    return false;
   }
 
   state = { ...state, cards: result.cards };
@@ -403,6 +414,8 @@ function importVocabulary(text, options = {}) {
   persistState();
   els.importSummary.textContent = options.demo
     ? tv("demoDeckLoaded", { cards: result.summary.cardCount })
+    : options.customName
+      ? tv("presetBankLoaded", { name: options.customName, cards: result.summary.cardCount })
     : options.bankName
       ? tv("presetBankLoaded", { name: t(`${options.bankName}BankName`), cards: result.summary.cardCount })
     : tv("importedSummary", {
@@ -413,6 +426,7 @@ function importVocabulary(text, options = {}) {
   renderImportErrors(result.errors);
   renderProgress();
   renderIdleGame();
+  return true;
 }
 
 async function loadPresetBank(bankName) {
@@ -496,6 +510,7 @@ function renderLanguage() {
   els.masteryTarget.value = state.masteryTarget;
   els.masteryStatus.textContent = "";
   renderAlipay();
+  pdfImport.refresh();
   renderProgress();
   if (!currentRound) {
     renderIdleGame();
